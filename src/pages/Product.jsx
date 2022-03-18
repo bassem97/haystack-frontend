@@ -2,13 +2,16 @@ import { Add, Remove } from "@material-ui/icons";
 import styled from "styled-components";
 import Footer from "../components/Footer";
 import Newsletter from "../components/Newsletter";
-import React from "react";
+import React, {useEffect} from "react";
 import { useLocation } from "react-router-dom";
 import { useState } from 'react';
 import { StarIcon } from '@heroicons/react/solid';
 import { RadioGroup } from '@headlessui/react';
+import Axios from "axios";
+import {useApi} from "../hooks/useApi";
+import {color} from "tailwindcss/lib/util/dataTypes";
 
-const product = {
+/*const product = {
   name: 'Basic Tee 6-Pack',
   price: '$192',
   href: '#',
@@ -59,7 +62,7 @@ const product = {
   ],
   details:
       'The 6-Pack includes two black, two white, and two heather gray Basic Tees. Sign up for our subscription service and be the first to get new, exciting colors, like our upcoming "Charcoal Gray" limited release.',
-}
+}*/
 const reviews = { href: '#', average: 4, totalCount: 117 }
 
 function classNames(...classes) {
@@ -75,14 +78,32 @@ function useQuery() {
 
 const Product = () => {
   const id = useQuery().get('id');
-  console.log(id);
-  const [selectedColor, setSelectedColor] = useState(product.colors[0])
-  const [selectedSize, setSelectedSize] = useState(product.sizes[2])
+
+  // Get product from DB
+
+  const [product, setProduct] = useState([]);
+  /*const [selectedColor, setSelectedColor] = useState(product.colors[0])
+  const [selectedSize, setSelectedSize] = useState(product.sizes[2])*/
+
+  useEffect(() => {
+      Axios.get('http://localhost:8080/products/' + id).then(res => {
+      setProduct(res.data.product);
+    })
+  }, []);
+
+  const [toRender, err] = useApi("products/" + id);
+
+  console.log("rendeeer");
+  console.log(toRender);
+
   return (
+      <>
     <Container>
+      {toRender ? (
+          <>
       <div className="bg-white">
         <div className="pt-6">
-          <nav aria-label="Breadcrumb">
+          {/*<nav aria-label="Breadcrumb">
             <ol role="list" className="max-w-2xl mx-auto px-4 flex items-center space-x-2 sm:px-6 lg:max-w-7xl lg:px-8">
               {product.breadcrumbs.map((breadcrumb) => (
                   <li key={breadcrumb.id}>
@@ -110,55 +131,75 @@ const Product = () => {
                 </a>
               </li>
             </ol>
-          </nav>
+          </nav>*/}
 
           {/* Image gallery */}
           <div className="mt-6 max-w-2xl mx-auto sm:px-6 lg:max-w-7xl lg:px-8 lg:grid lg:grid-cols-3 lg:gap-x-8">
             <div className="hidden aspect-w-3 aspect-h-4 rounded-lg overflow-hidden lg:block">
               <img
-                  src={product.images[0].src}
-                  alt={product.images[0].alt}
+                  src={'http://localhost:8080/files/' + product.image}
+                  alt="Product Image"
                   className="w-full h-full object-center object-cover"
               />
             </div>
+
+            {/*Optional Images*/}
+
             <div className="hidden lg:grid lg:grid-cols-1 lg:gap-y-8">
-              <div className="aspect-w-3 aspect-h-2 rounded-lg overflow-hidden">
+
+              {/*Image 0*/}
+
+              {product.optional_images[0] &&
+                  <div className="aspect-w-3 aspect-h-2 rounded-lg overflow-hidden">
+
                 <img
-                    src={product.images[1].src}
-                    alt={product.images[1].alt}
+                    src={'http://localhost:8080/files/' + product.optional_images[0]}
+                    alt="Image"
                     className="w-full h-full object-center object-cover"
                 />
               </div>
-              <div className="aspect-w-3 aspect-h-2 rounded-lg overflow-hidden">
-                <img
-                    src={product.images[2].src}
-                    alt={product.images[2].alt}
-                    className="w-full h-full object-center object-cover"
-                />
-              </div>
-            </div>
-            <div className="aspect-w-4 aspect-h-5 sm:rounded-lg sm:overflow-hidden lg:aspect-w-3 lg:aspect-h-4">
-              <img
-                  src={product.images[3].src}
-                  alt={product.images[3].alt}
-                  className="w-full h-full object-center object-cover"
-              />
+              }
+
+              {/*Image 1*/}
+
+              {product.optional_images[1] &&
+                  <div className="aspect-w-3 aspect-h-2 rounded-lg overflow-hidden">
+
+                    <img
+                        src={'http://localhost:8080/files/' + product.optional_images[1]}
+                        alt="Image"
+                        className="w-full h-full object-center object-cover"
+                    />
+                  </div>
+              }
+
+              {/*Image 2*/}
+
+              {product.optional_images[2] &&
+                  <div className="aspect-w-3 aspect-h-2 rounded-lg overflow-hidden">
+                    <img
+                        src={'http://localhost:8080/files/' + product.optional_images[2]}
+                        alt="Image"
+                        className="w-full h-full object-center object-cover"
+                    />
+                  </div>
+              }
             </div>
           </div>
 
           {/* Product info */}
           <div className="max-w-2xl mx-auto pt-10 pb-16 px-4 sm:px-6 lg:max-w-7xl lg:pt-16 lg:pb-24 lg:px-8 lg:grid lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8">
             <div className="lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
-              <h1 className="text-2xl font-extrabold tracking-tight text-gray-900 sm:text-3xl">{product.name}</h1>
+              <h1 className="text-2xl font-extrabold tracking-tight text-gray-900 sm:text-3xl">{product.name} x</h1>
             </div>
 
             {/* Options */}
             <div className="mt-4 lg:mt-0 lg:row-span-3">
               <h2 className="sr-only">Product information</h2>
-              <p className="text-3xl text-gray-900">{product.price}</p>
+              <p className="text-3xl text-gray-900">{product.price} DT</p>
 
               {/* Reviews */}
-              <div className="mt-6">
+              {/*<div className="mt-6">
                 <h3 className="sr-only">Reviews</h3>
                 <div className="flex items-center">
                   <div className="flex items-center">
@@ -178,11 +219,11 @@ const Product = () => {
                     {reviews.totalCount} reviews
                   </a>
                 </div>
-              </div>
+              </div>*/}
 
               <form className="mt-10">
                 {/* Colors */}
-                <div>
+                {/*<div>
                   <h3 className="text-sm text-gray-900 font-medium">Color</h3>
 
                   <RadioGroup value={selectedColor} onChange={setSelectedColor} className="mt-4">
@@ -215,10 +256,10 @@ const Product = () => {
                       ))}
                     </div>
                   </RadioGroup>
-                </div>
+                </div>*/}
 
                 {/* Sizes */}
-                <div className="mt-10">
+                {/*<div className="mt-10">
                   <div className="flex items-center justify-between">
                     <h3 className="text-sm text-gray-900 font-medium">Size</h3>
                     <a href="#" className="text-sm font-medium text-indigo-600 hover:text-indigo-500">
@@ -277,14 +318,17 @@ const Product = () => {
                       ))}
                     </div>
                   </RadioGroup>
-                </div>
+                </div>*/}
 
-                <button
-                    type="submit"
-                    className="mt-10 w-full bg-indigo-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                >
-                  Add to bag
-                </button>
+                {product.stock > 0 ?
+                    <button
+                        type="submit"
+                        className="mt-10 w-full bg-indigo-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                    >
+                      Add to bag
+                    </button>
+                    : <p>Out of Stock !</p>
+                }
               </form>
             </div>
 
@@ -298,7 +342,7 @@ const Product = () => {
                 </div>
               </div>
 
-              <div className="mt-10">
+             {/* <div className="mt-10">
                 <h3 className="text-sm font-medium text-gray-900">Highlights</h3>
 
                 <div className="mt-4">
@@ -318,14 +362,19 @@ const Product = () => {
                 <div className="mt-4 space-y-6">
                   <p className="text-sm text-gray-600">{product.details}</p>
                 </div>
-              </div>
+              </div>*/}
             </div>
           </div>
         </div>
       </div>
       <Newsletter />
       <Footer />
+          </>
+      ) : (
+          <p>Product not found</p>
+      )}
     </Container>
+        </>
   );
 };
 
