@@ -7,7 +7,8 @@ import Product from "./pages/Product";
 import './assets/styles/index.css';
 import Navbar from "./components/Navbar";
 import Profile from "./pages/Profile";
-
+import Success from "./pages/Success";
+import { useSelector } from "react-redux";
 
 
 const Home = React.lazy(() => import("./pages/Home"));
@@ -28,9 +29,10 @@ const App = () => {
               <Route path="/"  element={<Home/>}/>
               <Route path="/login"  element={<Login/>}/>
               <Route path="/register"  element={<Register/>}/>
-              <Route path="/shoppingCart"  element={<Cart/>}/>
+              <Route path="/cart"  element={<Cart/>}/>
               <Route path="/products"  element={<ProductList/>}/>
-              <Route path="/product"  element={<Product/>}/>
+              <Route path="/product/:id"  element={<Product/>}/>
+                <Route path="/success" element={<Success/>}/>
               {/*<Route path="/profile"  element={<Profile/>}/>*/}
             </Routes>
           </Suspense>

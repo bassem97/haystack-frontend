@@ -6,7 +6,7 @@ import {Link} from "@material-ui/icons";
 
 const navigation = [
     { name: 'الدبش', href: '/products', current: true },
-    { name: 'الكماندة', href: '/shoppingCart', current: false },
+    { name: 'الكماندة', href: '/cart', current: false },
     { name: 'Projects', href: '#', current: false },
     { name: 'Calendar', href: '#', current: false },
 ]
