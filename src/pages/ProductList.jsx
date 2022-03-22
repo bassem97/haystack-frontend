@@ -46,6 +46,7 @@ export default function ProductList(props) {
             console.log(productsLists);
         })
     }, []);
+    
     return (
         <Container>
             <Title>Products</Title>
