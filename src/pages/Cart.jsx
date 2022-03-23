@@ -1,9 +1,7 @@
 import { Add, Remove } from "@material-ui/icons";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
-import Announcement from "../components/Announcement";
 import Footer from "../components/Footer";
-import Navbar from "../components/Navbar";
 import { mobile } from "../responsive";
 import StripeCheckout from "react-stripe-checkout";
 import { useEffect, useState } from "react";
@@ -184,8 +182,6 @@ const Cart = () => {
     }, [stripeToken, cart.total, navigate]);
     return (
         <Container>
-            <Navbar />
-            <Announcement />
             <Wrapper>
                 <Title>YOUR BAG</Title>
                 <Top>

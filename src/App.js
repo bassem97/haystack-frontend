@@ -1,6 +1,5 @@
 import React, { Suspense } from "react";
 import {BrowserRouter, Route, Routes} from 'react-router-dom';
-import Navbar1 from "./components/Navbar1";
 import Cart from "./pages/Cart";
 import ProductList from "./pages/ProductList";
 import Product from "./pages/Product";
@@ -12,15 +11,15 @@ import { useSelector } from "react-redux";
 
 
 const Home = React.lazy(() => import("./pages/Home"));
-const Login = React.lazy(() => import("./pages/Login"));
-const Register = React.lazy(() => import("./pages/Register"));
-
+const Login = React.lazy(() => import("./pages/auth/Login"));
+const Register = React.lazy(() => import("./pages/auth/Register"));
 
 
 const App = () => {
 
   return (
       <>
+
         <BrowserRouter basename="/">
           <Navbar/>
           <Suspense fallback={<p>...Loading page please wait</p>}>
@@ -28,6 +27,9 @@ const App = () => {
               <Route path="/"  element={<Home/>}/>
               <Route path="/login"  element={<Login/>}/>
               <Route path="/register"  element={<Register/>}/>
+              {/*<Route path="/auth" component={Auth} />*/}
+
+              <Route path="/shoppingCart"  element={<Cart/>}/>
               <Route path="/cart"  element={<Cart/>}/>
               <Route path="/products"  element={<ProductList/>}/>
               <Route path="/product/:id"  element={<Product/>}/>
