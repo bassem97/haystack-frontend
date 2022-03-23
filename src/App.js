@@ -21,7 +21,6 @@ const App = () => {
 
   return (
       <>
-
         <BrowserRouter basename="/">
           <Navbar/>
           <Suspense fallback={<p>...Loading page please wait</p>}>
@@ -32,8 +31,8 @@ const App = () => {
               <Route path="/cart"  element={<Cart/>}/>
               <Route path="/products"  element={<ProductList/>}/>
               <Route path="/product/:id"  element={<Product/>}/>
-                <Route path="/success" element={<Success/>}/>
-              {/*<Route path="/profile"  element={<Profile/>}/>*/}
+              <Route path="/success" element={<Success/>}/>
+              <Route path="/profile"  element={<Profile/>}/>
             </Routes>
           </Suspense>
         </BrowserRouter>

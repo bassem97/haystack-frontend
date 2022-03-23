@@ -1,142 +1,162 @@
 import React from "react";
+import styled from "styled-components"
 
-// import Footer from "components/Footers/Footer.js";
-import Navbar from "../components/Navbar";
+import Product from '../components/ProductAlt'
+
+const user = {
+  firstName: "Amine",
+  lastName: "Saddem",
+  email: "naceuramine.saddem@esprit.tn",
+  image: "https://media-exp1.licdn.com/dms/image/C4D03AQGd4HSQgO1FQA/profile-displayphoto-shrink_800_800/0/1602410272149?e=1653523200&v=beta&t=B3U9lavz8LPs6Nl4eu-szw_xleaSgVEzR5ldjQpKLOc",
+  cover: "https://images.unsplash.com/photo-1476984251899-8d7fdfc5c92c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=3700&q=80",
+  birthdate: new Date(),
+  phone: "20027987",
+  bio: "I am here to sell clothes. blablabla lorem this lorem that.",
+  level: 66,
+  experience: 1256,
+  newLevelExperience: 2033,
+  followers: ['test'],
+  products: [
+    {
+      label:"maryoul khalaa",
+      description:"Un simple débardeur noir. Neuf.",
+      image:"https://agnesb-agnesb-com-storage.omn.proximis.com/Imagestorage/imagesSynchro/0/0/2a31200d83d34ed4a59384bead344b6191777dfc_3111JG13_000_1.jpeg",
+      size:"M",
+      color:"black",
+      price:7
+    },
+    {
+      label:"maryoul khalaa",
+      description:"Un simple débardeur blanc. Neuf.",
+      image:"https://lp2.hm.com/hmgoepprod?set=quality%5B79%5D%2Csource%5B%2F72%2F54%2F72544c5457a3c00e2bb408ddaaafba66298e6ba0.jpg%5D%2Corigin%5Bdam%5D%2Ccategory%5Bladies_tops_vests%5D%2Ctype%5BDESCRIPTIVESTILLLIFE%5D%2Cres%5Bm%5D%2Chmver%5B1%5D&call=url[file:/product/main",
+      size:"S",
+      color:"white",
+      price:6
+    },
+    {
+      label:"maryoul khalaa",
+      description:"Un simple débardeur bleu. Neuf.",
+      image:"https://m.media-amazon.com/images/I/71nqV9iFmYL._SL1500_.jpg",
+      size:"M",
+      color:"blue",
+      price:7
+    }
+  ]
+}
+
+const Banner = styled.div`
+  width: 100vw;
+  background: url('${user.cover}') rgba(31, 41, 55, 0.6);
+  background-size: cover;
+  background-position: center center;
+  background-blend-mode: multiply;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  padding: 100px 0 25px 0;
+  box-shadow: 0px 2px 15px rgb(31, 41, 55);
+`
+
+const Avatar = styled.img`
+  border-radius: 50%;
+  border: 7px solid white;
+  width: 250px
+`
+
+const Title = styled.h1`
+  color: white;
+  font-size: ${props => props.size || 3}rem;
+  display: block;
+  width: ${props => props.width || 'auto'}
+`
+
+const Text = styled.p`
+  font-size: 1em;
+  color: ${props => props.color || 'white'}
+`
+
+const Container = styled.div`
+  margin-top: 25px;
+  width: ${props => props.width || 'auto'};
+  padding: ${props => props.padding || 'auto'};
+  margin-right: ${props => props.marginRight || 'auto'};
+  margin: ${props => props.margin || 'auto'};
+  
+  display: flex;
+  justify-content: ${props => props.justify || 'flex-start'};
+
+  flex-direction: ${props => props.direction || 'row'};
+  flex-wrap: ${props => props.wrap || 'no-wrap'};
+
+  background-color: ${props => props.backgroundColor || 'none'};
+  border-radius: ${props => props.radius || '0px'};
+
+  box-shadow: ${props => props.shadow || 'none'}
+`
+
+const Lego = styled(Container)`
+  background-color: #1f2937DD;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 0px 0px 15px;
+  flex-wrap: wrap;
+  box-shadow: 0px 2px 5px rgb(31, 41, 55)
+`
 
 export default function Profile() {
   return (
     <>
-      <Navbar transparent />
-      <main className="profile-page">
-        <section className="relative block h-500-px">
-          <div
-            className="absolute top-0 w-full h-full bg-center bg-cover"
-            style={{
-              backgroundImage:
-                "url('https://images.unsplash.com/photo-1499336315816-097655dcfbda?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2710&q=80')",
-            }}
-          >
-            <span
-    id="blackOverlay"
-    className="w-full h-full absolute opacity-50 bg-black"
-    />
-          </div>
-          <div
-            className="top-auto bottom-0 left-0 right-0 w-full absolute pointer-events-none overflow-hidden h-70-px"
-            style={{ transform: "translateZ(0)" }}
-          >
-            <svg
-              className="absolute bottom-0 overflow-hidden"
-              xmlns="http://www.w3.org/2000/svg"
-              preserveAspectRatio="none"
-              version="1.1"
-              viewBox="0 0 2560 100"
-              x="0"
-              y="0"
-            >
-              <polygon
-                className="text-blueGray-200 fill-current"
-                points="2560 0 2560 100 0 100"
-              ></polygon>
-            </svg>
-          </div>
-        </section>
-        <section className="relative py-16 bg-blueGray-200">
-          <div className="container mx-auto px-4">
-            <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-xl rounded-lg -mt-64">
-              <div className="px-6">
-                <div className="flex flex-wrap justify-center">
-                  <div className="w-full lg:w-3/12 px-4 lg:order-2 flex justify-center">
-                    <div className="relative">
-                      <img
-                        alt="..."
-                        src={require("../assets/img/team-2-800x800.jpg").default}
-                        className="shadow-xl rounded-full h-auto align-middle border-none absolute -m-16 -ml-20 lg:-ml-16 max-w-150-px"
-                      />
-                    </div>
-                  </div>
-                  <div className="w-full lg:w-4/12 px-4 lg:order-3 lg:text-right lg:self-center">
-                    <div className="py-6 px-3 mt-32 sm:mt-0">
-                      <button
-                        className="bg-lightBlue-500 active:bg-lightBlue-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-2 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150"
-                        type="button"
-                      >
-                        Connect
-                      </button>
-                    </div>
-                  </div>
-                  <div className="w-full lg:w-4/12 px-4 lg:order-1">
-                    <div className="flex justify-center py-4 lg:pt-4 pt-8">
-                      <div className="mr-4 p-3 text-center">
-                        <span className="text-xl font-bold block uppercase tracking-wide text-blueGray-600">
-                          22
-                        </span>
-                        <span className="text-sm text-blueGray-400">
-                          Friends
-                        </span>
-                      </div>
-                      <div className="mr-4 p-3 text-center">
-                        <span className="text-xl font-bold block uppercase tracking-wide text-blueGray-600">
-                          10
-                        </span>
-                        <span className="text-sm text-blueGray-400">
-                          Photos
-                        </span>
-                      </div>
-                      <div className="lg:mr-4 p-3 text-center">
-                        <span className="text-xl font-bold block uppercase tracking-wide text-blueGray-600">
-                          89
-                        </span>
-                        <span className="text-sm text-blueGray-400">
-                          Comments
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="text-center mt-12">
-                  <h3 className="text-4xl font-semibold leading-normal mb-2 text-blueGray-700 mb-2">
-                    Jenna Stones
-                  </h3>
-                  <div className="text-sm leading-normal mt-0 mb-2 text-blueGray-400 font-bold uppercase">
-                    <i className="fas fa-map-marker-alt mr-2 text-lg text-blueGray-400"/>{" "}
-                    Los Angeles, California
-                  </div>
-                  <div className="mb-2 text-blueGray-600 mt-10">
-                    <i className="fas fa-briefcase mr-2 text-lg text-blueGray-400"></i>
-                    Solution Manager - Creative Tim Officer
-                  </div>
-                  <div className="mb-2 text-blueGray-600">
-                    <i className="fas fa-university mr-2 text-lg text-blueGray-400"></i>
-                    University of Computer Science
-                  </div>
-                </div>
-                <div className="mt-10 py-10 border-t border-blueGray-200 text-center">
-                  <div className="flex flex-wrap justify-center">
-                    <div className="w-full lg:w-9/12 px-4">
-                      <p className="mb-4 text-lg leading-relaxed text-blueGray-700">
-                        An artist of considerable range, Jenna the name taken by
-                        Melbourne-raised, Brooklyn-based Nick Murphy writes,
-                        performs and records all of his own music, giving it a
-                        warm, intimate feel with a solid groove structure. An
-                        artist of considerable range.
-                      </p>
-                      <a
-                        href="#pablo"
-                        className="font-normal text-lightBlue-500"
-                        onClick={(e) => e.preventDefault()}
-                      >
-                        Show more
-                      </a>
-                    </div>
-                  </div>
-                </div>
+      <Banner>
+        <Avatar src={user.image} />
+        <Title size={3}>{`${user.firstName} ${user.lastName}`}</Title>
+        <Title size={1.5}>Level {user.level}</Title>
+      </Banner>
+
+      <Container width='100vw' padding='0px 350px' margin='25px 0px'>
+        <Container
+          width='33%' 
+          margin='15px'
+          direction='column'
+        >
+          <Lego>
+            <Title size='1.25'>
+              About {user.firstName}
+            </Title>
+            <Text>
+              {user.bio}
+            </Text>
+          </Lego>
+
+          <Lego>
+            <Title size='1.25' width='100%'>
+              Experience
+            </Title>
+            
+            <div class="w-full bg-gray-200 rounded-full my-1 dark:bg-gray-700">
+              <div class="bg-blue-600 text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full" style={{width: `${parseInt(user.experience / user.newLevelExperience * 100)}%`}}>
+                {parseInt(user.experience / user.newLevelExperience * 100)}%
               </div>
             </div>
-          </div>
-        </section>
-      </main>
-      {/*<Footer />*/}
+          </Lego>
+
+          <Lego>
+            <Title size='1.25' width='100%'>
+              Followers
+            </Title>
+            <Text>
+              {user.followers.length}
+            </Text>
+          </Lego>
+        </Container>
+        <Container 
+          width='66%'
+          direction='column'
+        >
+          {user.products.map(product => <Product product={product} />)}
+        </Container>
+      </Container>
     </>
   );
 }
