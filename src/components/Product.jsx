@@ -1,8 +1,3 @@
-import {
-  FavoriteBorderOutlined,
-  SearchOutlined,
-  ShoppingCartOutlined,
-} from "@material-ui/icons";
 import styled from "styled-components";
 
 const Info = styled.div`
@@ -24,66 +19,38 @@ const Info = styled.div`
 const Container = styled.div`
   flex: 1;
   margin: 5px;
-  min-width: 280px;
   height: 350px;
+  width: 350px;
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-wrap: wrap;
   background-color: #f5fbfd;
   position: relative;
-
   &:hover ${Info}{
     opacity: 1;
   }
 `;
-
-const Circle = styled.div`
-  width: 200px;
-  height: 200px;
-  border-radius: 50%;
-  background-color: white;
-  position: absolute;
-`;
-
 const Image = styled.img`
-  height: 75%;
-  z-index: 2;
-`;
-
-const Icon = styled.div`
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background-color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 10px;
-  transition: all 0.5s ease;
-  &:hover {
-    background-color: #e9f5f5;
-    transform: scale(1.1);
-  }
+  height: 20%;
+  width: 20%;
 `;
 
 const Product = ({ item }) => {
-  return (
-    <Container>
-      <Circle />
-      <Image src={item.img} />
-      <Info>
-        <Icon>
-          <ShoppingCartOutlined />
-        </Icon>
-        <Icon>
-          <SearchOutlined />
-        </Icon>
-        <Icon>
-          <FavoriteBorderOutlined />
-        </Icon>
-      </Info>
-    </Container>
-  );
+    return (
+        <Container>
+            <a key={item._id} href={`/product/${item._id}`} className="group">
+                    <Image
+                        src={'http://localhost:8080/files/' + item.image}
+                        alt="Image"
+                    />
+                <h3 className="mt-4 text-sm text-gray-700">{item.name}</h3>
+                <p className="mt-2 text-lg font-medium text-gray-900">{item.description}</p>
+                <p className="mt-1 text-lg font-medium text-gray-900">{item.price} DT</p>
+
+            </a>
+        </Container>
+    );
 };
 
 export default Product;

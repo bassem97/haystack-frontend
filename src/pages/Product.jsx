@@ -1,169 +1,143 @@
-import { Add, Remove } from "@material-ui/icons";
 import styled from "styled-components";
 import Footer from "../components/Footer";
 import Newsletter from "../components/Newsletter";
-import { mobile } from "../responsive";
-
-
-const Product = () => {
-  return (
-    <Container>
-      <Wrapper>
-        <ImgContainer>
-          <Image src="https://i.ibb.co/S6qMxwr/jean.jpg" />
-        </ImgContainer>
-        <InfoContainer>
-          <Title>Denim Jumpsuit</Title>
-          <Desc>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec
-            venenatis, dolor in finibus malesuada, lectus ipsum porta nunc, at
-            iaculis arcu nisi sed mauris. Nulla fermentum vestibulum ex, eget
-            tristique tortor pretium ut. Curabitur elit justo, consequat id
-            condimentum ac, volutpat ornare.
-          </Desc>
-          <Price>$ 20</Price>
-          <FilterContainer>
-            <Filter>
-              <FilterTitle>Color</FilterTitle>
-              <FilterColor color="black" />
-              <FilterColor color="darkblue" />
-              <FilterColor color="gray" />
-            </Filter>
-            <Filter>
-              <FilterTitle>Size</FilterTitle>
-              <FilterSize>
-                <FilterSizeOption>XS</FilterSizeOption>
-                <FilterSizeOption>S</FilterSizeOption>
-                <FilterSizeOption>M</FilterSizeOption>
-                <FilterSizeOption>L</FilterSizeOption>
-                <FilterSizeOption>XL</FilterSizeOption>
-              </FilterSize>
-            </Filter>
-          </FilterContainer>
-          <AddContainer>
-            <AmountContainer>
-              <Remove />
-              <Amount>1</Amount>
-              <Add />
-            </AmountContainer>
-            <Button>ADD TO CART</Button>
-          </AddContainer>
-        </InfoContainer>
-      </Wrapper>
-      <Newsletter />
-      <Footer />
-    </Container>
-  );
-};
-
-export default Product;
-
+import { useLocation } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { publicRequest } from "../requestMethods";
+import { addProduct } from "../redux/carttRedux";
+import { useDispatch } from "react-redux";
 
 const Container = styled.div``;
 
-const Wrapper = styled.div`
-  padding: 50px;
-  display: flex;
-  ${mobile({ padding: "10px", flexDirection:"column" })}
-`;
+const Product = () => {
+    const location = useLocation();
+    const id = location.pathname.split("/")[2];
+    const [product, setProduct] = useState({});
+    const [quantity, setQuantity] = useState(1);
+    const [color, setColor] = useState("");
+    const [size, setSize] = useState("");
+    const dispatch = useDispatch();
 
-const ImgContainer = styled.div`
-  flex: 1;
-`;
+    useEffect(() => {
+        const getProduct = async () => {
+            try {
+                const res = await publicRequest.get("/products/" + id);
+                setProduct(res.data.product);
+            } catch {}
+        };
+        getProduct();
+    }, [id]);
 
-const Image = styled.img`
-  width: 100%;
-  height: 90vh;
-  object-fit: cover;
-  ${mobile({ height: "40vh" })}
-`;
+    const handleQuantity = (type) => {
+        if (type === "dec") {
+            quantity > 1 && setQuantity(quantity - 1);
+        } else {
+            setQuantity(quantity + 1);
+        }
+    };
 
-const InfoContainer = styled.div`
-  flex: 1;
-  padding: 0 50px;
-  ${mobile({padding: "10px"})}
-`;
+    const handleClick = () => {
+        dispatch(
+            addProduct({ ...product, quantity, color, size })
+        );
+    };
+    return (
+        <Container>
+            <div className="bg-white">
+                <div className="pt-6">
 
-const Title = styled.h1`
-  font-weight: 200;
-`;
+                    {/* Image gallery */}
+                    <div className="mt-6 max-w-2xl mx-auto sm:px-6 lg:max-w-7xl lg:px-8 lg:grid lg:grid-cols-3 lg:gap-x-8">
+                        <div className="hidden aspect-w-3 aspect-h-4 rounded-lg overflow-hidden lg:block">
+                            <img
+                                src={'http://localhost:8080/files/' + product.image}
+                                alt="Product Image"
+                                className="w-full h-full object-center object-cover"
+                            />
+                        </div>
 
-const Desc = styled.p`
-  margin: 20px 0;
-`;
+                        {/*Optional Images*/}
 
-const Price = styled.span`
-  font-weight: 100;
-  font-size: 40px;
-`;
+                        <div className="hidden lg:grid lg:grid-cols-1 lg:gap-y-8">
 
-const FilterContainer = styled.div`
-  width: 50%;
-  margin: 30px 0;
-  display: flex;
-  justify-content: space-between;
-  ${mobile({width: "100%"})}
-`;
+                            {/*Image 0*/}
 
-const Filter = styled.div`
-  display: flex;
-  align-items: center;
-`;
+                            {product.optional_images &&
+                                <div className="aspect-w-3 aspect-h-2 rounded-lg overflow-hidden">
 
-const FilterTitle = styled.span`
-  font-size: 20px;
-  font-weight: 200;
-`;
+                                    <img
+                                        src={'http://localhost:8080/files/' + product.optional_images[0]}
+                                        alt="Image"
+                                        className="w-full h-full object-center object-cover"
+                                    />
+                                </div>
+                            }
 
-const FilterColor = styled.div`
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background-color: ${(props) => props.color};
-  margin: 0 5px;
-  cursor: pointer;
-`;
+                            {/*Image 1*/}
 
-const FilterSize = styled.select`
-  margin-left: 10px;
-  padding: 5px;
-`;
+                            {product.optional_images &&
+                                <div className="aspect-w-3 aspect-h-2 rounded-lg overflow-hidden">
 
-const FilterSizeOption = styled.option``;
+                                    <img
+                                        src={'http://localhost:8080/files/' + product.optional_images[1]}
+                                        alt="Image"
+                                        className="w-full h-full object-center object-cover"
+                                    />
+                                </div>
+                            }
 
-const AddContainer = styled.div`
-  width: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  ${mobile({ width: "100%" })}
-`;
+                            {/*Image 2*/}
 
-const AmountContainer = styled.div`
-  display: flex;
-  align-items: center;
-  font-weight: 700;
-`;
+                            {product.optional_images &&
+                                <div className="aspect-w-3 aspect-h-2 rounded-lg overflow-hidden">
+                                    <img
+                                        src={'http://localhost:8080/files/' + product.optional_images[2]}
+                                        alt="Image"
+                                        className="w-full h-full object-center object-cover"
+                                    />
+                                </div>
+                            }
+                        </div>
+                    </div>
 
-const Amount = styled.span`
-  width: 30px;
-  height: 30px;
-  border-radius: 10px;
-  border: 1px solid teal;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 5px;
-`;
+                    {/* Product info */}
+                    <div className="max-w-2xl mx-auto pt-10 pb-16 px-4 sm:px-6 lg:max-w-7xl lg:pt-16 lg:pb-24 lg:px-8 lg:grid lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8">
+                        <div className="lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
+                            <h1 className="text-2xl font-extrabold tracking-tight text-gray-900 sm:text-3xl">{product.name} x</h1>
+                        </div>
 
-const Button = styled.button`
-  padding: 15px;
-  border: 2px solid teal;
-  background-color: white;
-  cursor: pointer;
-  font-weight: 500;
+                        {/* Options */}
+                        <div className="mt-4 lg:mt-0 lg:row-span-3">
+                            <h2 className="sr-only">Product information</h2>
+                            <p className="text-3xl text-gray-900">{product.price} DT</p>
 
-  &:hover{
-      background-color: #f8f4f4;
-  }
-`;
+                                {product.stock > 0 ?
+                                    <button
+                                        className="mt-10 w-full bg-indigo-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                                    >
+                                        Add to bag
+                                    </button>
+                                    : <p>Out of Stock !</p>
+                                }
+                        </div>
+
+                        <div className="py-10 lg:pt-6 lg:pb-16 lg:col-start-1 lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
+                            {/* Description and details */}
+                            <div>
+                                <h3 className="sr-only">Description</h3>
+
+                                <div className="space-y-6">
+                                    <p className="text-base text-gray-900">{product.description}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <Newsletter />
+            <Footer />
+        </Container>
+    );
+};
+
+export default Product;
