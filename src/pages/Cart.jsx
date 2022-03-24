@@ -186,18 +186,15 @@ const Cart = () => {
                 <Title>YOUR BAG</Title>
                 <Top>
                     <TopButton>CONTINUE SHOPPING</TopButton>
-                    <TopTexts>
-                        <TopText>Shopping Bag(2)</TopText>
-                        <TopText>Your Wishlist (0)</TopText>
-                    </TopTexts>
-                    <TopButton type="filled">CHECKOUT NOW</TopButton>
+
+
                 </Top>
                 <Bottom>
                     <Info>
                         {cart.products.map((product) => (
                             <Product>
                                 <ProductDetail>
-                                    <Image src={product.image} />
+                                    <Image  src={'http://localhost:8080/files/' + product.image} />
                                     <Details>
                                         <ProductName>
                                             <b>Product:</b> {product.name}
@@ -231,14 +228,7 @@ const Cart = () => {
                             <SummaryItemText>Subtotal</SummaryItemText>
                             <SummaryItemPrice>$ {cart.total}</SummaryItemPrice>
                         </SummaryItem>
-                        <SummaryItem>
-                            <SummaryItemText>Estimated Shipping</SummaryItemText>
-                            <SummaryItemPrice>$ 5.90</SummaryItemPrice>
-                        </SummaryItem>
-                        <SummaryItem>
-                            <SummaryItemText>Shipping Discount</SummaryItemText>
-                            <SummaryItemPrice>$ -5.90</SummaryItemPrice>
-                        </SummaryItem>
+
                         <SummaryItem type="total">
                             <SummaryItemText>Total</SummaryItemText>
                             <SummaryItemPrice>$ {cart.total}</SummaryItemPrice>
