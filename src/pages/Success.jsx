@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useLocation } from "react-router";
 import { userRequest } from "../requestMethods";
+import localStorage from "redux-persist/es/storage";
 
 const Success = () => {
 
@@ -10,8 +11,10 @@ const Success = () => {
     const cart = location.state.cart;
     const data = location.state.stripeData;
 
-    //const currentUser = useSelector((state) => state.user.currentUser);
+
+    // const currentUser = localStorage.getItem('user').userId;
     const [orderId, setOrderId] = useState(null);
+
 
     useEffect(() => {
         const createOrder = async () => {

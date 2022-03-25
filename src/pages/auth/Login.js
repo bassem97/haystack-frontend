@@ -21,6 +21,7 @@ export default function Login() {
         if( res.data.error) setMsg(res.data.error)
         else {
           localStorage.setItem('user',JSON.stringify(res.data));
+          localStorage.setItem('user_id',JSON.stringify(res.data.userId));
           window.location.href = "/"
 
         }
