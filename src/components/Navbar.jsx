@@ -16,6 +16,8 @@ function classNames(...classes) {
 
 export default function Navbar() {
     const isAuth  = !!localStorage.getItem("user");
+    console.log(localStorage.getItem('user_id'));
+
     return (
         <Disclosure as="nav" className="bg-gray-800 sticky top-0 z-50">
             {({ open }) => (
@@ -123,7 +125,7 @@ export default function Navbar() {
                                                     <Menu.Item>
                                                         {({ active }) => (
                                                             <a
-                                                                onClick={()=> {localStorage.clear(); window.location.reload()}}
+                                                                onClick={()=> {localStorage.removeItem("user"); window.location.reload()}}
                                                                 className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
                                                             >
                                                                 Sign out

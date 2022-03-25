@@ -7,6 +7,7 @@ import StripeCheckout from "react-stripe-checkout";
 import { useEffect, useState } from "react";
 import { userRequest } from "../requestMethods";
 import { useNavigate } from "react-router-dom";
+import {Size} from "@material-ui/core";
 
 const KEY = "pk_test_51KdlDGLEkrbTJcCqkL6LpNLGfpWaJdcyAq84KLY8YUokfRRQEq2jKGgpfvQw7Bd5t7cnasr6mEIol1emsrmauMox00ybSS6XOH";
 
@@ -174,8 +175,12 @@ const Cart = () => {
                     amount: cart.total * 100,
                 });
                 navigate ("/success", {
-                    stripeData: res.data,
-                    products: cart, });
+                    state : {
+                        stripeData: res.data,
+                        cart : cart
+                    } });
+                    // products: cart });
+
             } catch {}
         };
         stripeToken && makeRequest();
@@ -186,18 +191,15 @@ const Cart = () => {
                 <Title>YOUR BAG</Title>
                 <Top>
                     <TopButton>CONTINUE SHOPPING</TopButton>
-                    <TopTexts>
-                        <TopText>Shopping Bag(2)</TopText>
-                        <TopText>Your Wishlist (0)</TopText>
-                    </TopTexts>
-                    <TopButton type="filled">CHECKOUT NOW</TopButton>
+
+
                 </Top>
                 <Bottom>
                     <Info>
                         {cart.products.map((product) => (
                             <Product>
                                 <ProductDetail>
-                                    <Image src={product.image} />
+                                    <Image  src={'http://localhost:8080/files/' + product.image} />
                                     <Details>
                                         <ProductName>
                                             <b>Product:</b> {product.name}
@@ -205,18 +207,14 @@ const Cart = () => {
                                         <ProductId>
                                             <b>ID:</b> {product._id}
                                         </ProductId>
-                                        <ProductColor color={product.color} />
-                                        <ProductSize>
-                                            <b>Size:</b> {product.size}
-                                        </ProductSize>
+                                        <ProductDetail>
+                                            <b>Desc :</b> {product.description}
+                                        </ProductDetail>
+
                                     </Details>
                                 </ProductDetail>
                                 <PriceDetail>
-                                    <ProductAmountContainer>
-                                        <Add />
-                                        <ProductAmount>{product.quantity}</ProductAmount>
-                                        <Remove />
-                                    </ProductAmountContainer>
+
                                     <ProductPrice>
                                         $ {product.price * product.quantity}
                                     </ProductPrice>
@@ -231,14 +229,7 @@ const Cart = () => {
                             <SummaryItemText>Subtotal</SummaryItemText>
                             <SummaryItemPrice>$ {cart.total}</SummaryItemPrice>
                         </SummaryItem>
-                        <SummaryItem>
-                            <SummaryItemText>Estimated Shipping</SummaryItemText>
-                            <SummaryItemPrice>$ 5.90</SummaryItemPrice>
-                        </SummaryItem>
-                        <SummaryItem>
-                            <SummaryItemText>Shipping Discount</SummaryItemText>
-                            <SummaryItemPrice>$ -5.90</SummaryItemPrice>
-                        </SummaryItem>
+
                         <SummaryItem type="total">
                             <SummaryItemText>Total</SummaryItemText>
                             <SummaryItemPrice>$ {cart.total}</SummaryItemPrice>
