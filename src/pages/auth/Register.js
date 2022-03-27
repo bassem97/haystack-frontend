@@ -1,6 +1,9 @@
 import React, {useState} from "react";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
+import GoogleLogin from "react-google-login";
+
+
 
 export default function Register() {
 
@@ -12,6 +15,16 @@ export default function Register() {
   const [msg, setMsg] = useState('');
 
   const navigate = useNavigate();
+
+  const clientId = "912577134712-br4ui585rlm1k3ptrkpbkfhaqiaurmgh.apps.googleusercontent.com"
+
+  const onSuccess = (res)=>{
+    console.log("LOGIN SUCCESS !"+ res.profileObj)
+  }
+
+  const onFailure = (res)=>{
+    console.log("LOGIN FAILED !"+ JSON.stringify(res))
+  }
 
 
 
@@ -56,17 +69,27 @@ export default function Register() {
                   />
                   Facebook
                 </button>
-                <button
-                    className="bg-white active:bg-blueGray-50 text-blueGray-700 font-normal px-4 py-2 rounded outline-none focus:outline-none mr-1 mb-1 uppercase shadow hover:shadow-md inline-flex items-center font-bold text-xs ease-linear transition-all duration-150"
-                    type="button"
+                <GoogleLogin
+                  clientId={clientId}
+                  buttonText="google"
+                  onSuccess={onSuccess}
+                  onFailure={onFailure}
+                  cookiePolicy={'single_host_origin'}
+                  isSignedIn={true}
                 >
-                  <img
-                      alt="..."
-                      className="w-5 mr-1"
-                      src={require("../../assets/img/google.svg").default}
-                  />
-                  Google
-                </button>
+
+                </GoogleLogin>
+                {/*<button*/}
+                {/*    className="bg-white active:bg-blueGray-50 text-blueGray-700 font-normal px-4 py-2 rounded outline-none focus:outline-none mr-1 mb-1 uppercase shadow hover:shadow-md inline-flex items-center font-bold text-xs ease-linear transition-all duration-150"*/}
+                {/*    type="button"*/}
+                {/*>*/}
+                {/*  <img*/}
+                {/*      alt="..."*/}
+                {/*      className="w-5 mr-1"*/}
+                {/*      src={require("../../assets/img/google.svg").default}*/}
+                {/*  />*/}
+                {/*  Google*/}
+                {/*</button>*/}
               </div>
               <hr className="mt-6 border-b-1 border-blueGray-300" />
             </div>
