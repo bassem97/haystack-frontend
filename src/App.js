@@ -2,6 +2,7 @@ import React, {Suspense, useEffect} from "react";
 import {BrowserRouter, Route, Routes} from 'react-router-dom';
 import Cart from "./pages/Cart";
 import ProductList from "./pages/ProductList";
+import AddProduct from "./pages/AddProduct";
 import Product from "./pages/Product";
 import './assets/styles/index.css';
 import Navbar from "./components/Navbar";
@@ -45,6 +46,7 @@ const App = () => {
               <Route path="/shoppingCart"  element={<Cart/>}/>
               <Route path="/cart"  element={<Cart/>}/>
               <Route path="/products"  element={<ProductList/>}/>
+              <Route path="/products/add"  element={<AddProduct/>}/>
               <Route path="/product/:id"  element={<Product/>}/>
               <Route path="/success" element={<Success/>}/>
               <Route path="/profile"  element={<Profile/>}/>
