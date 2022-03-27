@@ -15,8 +15,7 @@ function classNames(...classes) {
 }
 
 export default function Navbar() {
-    const isAuth  = !!localStorage.getItem("user");
-    console.log(localStorage.getItem('user_id'));
+    const isAuth  = !!localStorage.getItem("data");
 
     return (
         <Disclosure as="nav" className="bg-gray-800 sticky top-0 z-50">
@@ -73,6 +72,9 @@ export default function Navbar() {
                             <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                                 {isAuth ? (
                                     <>
+                                        <div className="font-bold text-white">
+                                            Bassem jadoui
+                                        </div>
                                         <button
                                             type="button"
                                             className="bg-gray-800 p-1 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
@@ -125,7 +127,7 @@ export default function Navbar() {
                                                     <Menu.Item>
                                                         {({ active }) => (
                                                             <a
-                                                                onClick={()=> {localStorage.removeItem("user"); window.location.reload()}}
+                                                                onClick={()=> {localStorage.removeItem("data"); window.location.reload()}}
                                                                 className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
                                                             >
                                                                 Sign out

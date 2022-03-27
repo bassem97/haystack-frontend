@@ -20,8 +20,7 @@ export default function Login() {
       }).then(res => {
         if( res.data.error) setMsg(res.data.error)
         else {
-          localStorage.setItem('user',JSON.stringify(res.data));
-          localStorage.setItem('user_id',JSON.stringify(res.data.userId));
+          localStorage.setItem('data',JSON.stringify(res.data));
           window.location.href = "/"
 
         }

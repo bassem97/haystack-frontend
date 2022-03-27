@@ -4,9 +4,10 @@ import styled from "styled-components"
 import Product from '../components/ProductAlt'
 
 const user = {
-  firstName: "Amine",
-  lastName: "Saddem",
-  email: "naceuramine.saddem@esprit.tn",
+  // firstName: "Amine",
+  firstName: JSON.parse(localStorage.getItem('data')).user.firstName,
+  lastName: JSON.parse(localStorage.getItem('data')).user.lastName,
+  email: JSON.parse(localStorage.getItem('data')).user.email,
   image: "https://media-exp1.licdn.com/dms/image/C4D03AQGd4HSQgO1FQA/profile-displayphoto-shrink_800_800/0/1602410272149?e=1653523200&v=beta&t=B3U9lavz8LPs6Nl4eu-szw_xleaSgVEzR5ldjQpKLOc",
   cover: "https://images.unsplash.com/photo-1476984251899-8d7fdfc5c92c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=3700&q=80",
   birthdate: new Date(),
