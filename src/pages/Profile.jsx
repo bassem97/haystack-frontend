@@ -1,11 +1,16 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import styled from "styled-components"
 
 import Product from '../components/ProductAlt'
 
+
+// const user  = JSON.parse(localStorage.getItem('data')).user
+
 const user = {
   // firstName: "Amine",
-  firstName: JSON.parse(localStorage.getItem('data')).user.firstName,
+  // lastName: "Saddem",
+  // email: "email rass zebbi",
+  firstName: JSON.parse(localStorage.getItem('data')).user.firstName || null,
   lastName: JSON.parse(localStorage.getItem('data')).user.lastName,
   email: JSON.parse(localStorage.getItem('data')).user.email,
   image: "https://media-exp1.licdn.com/dms/image/C4D03AQGd4HSQgO1FQA/profile-displayphoto-shrink_800_800/0/1602410272149?e=1653523200&v=beta&t=B3U9lavz8LPs6Nl4eu-szw_xleaSgVEzR5ldjQpKLOc",
@@ -44,6 +49,63 @@ const user = {
     }
   ]
 }
+
+export default function Profile() {
+  return (
+    <>
+      <Banner>
+        <Avatar src={user.image} />
+        <Title size={3}>{`${user.firstName} ${user.lastName}`}</Title>
+        <Title size={1.5}>Level {user.level}</Title>
+      </Banner>
+
+      <Container width='100vw' padding='0px 350px' margin='25px 0px'>
+        <Container
+          width='33%' 
+          margin='15px'
+          direction='column'
+        >
+          <Lego>
+            <Title size='1.25'>
+              About {user.firstName}
+            </Title>
+            <Text>
+              {user.bio}
+            </Text>
+          </Lego>
+
+          <Lego>
+            <Title size='1.25' width='100%'>
+              Experience
+            </Title>
+            
+            <div class="w-full bg-gray-200 rounded-full my-1 dark:bg-gray-700">
+              <div class="bg-blue-600 text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full" style={{width: `${parseInt(user.experience / user.newLevelExperience * 100)}%`}}>
+                {parseInt(user.experience / user.newLevelExperience * 100)}%
+              </div>
+            </div>
+          </Lego>
+
+          <Lego>
+            <Title size='1.25' width='100%'>
+              Followers
+            </Title>
+            <Text>
+              {user.followers.length}
+            </Text>
+          </Lego>
+        </Container>
+        <Container 
+          width='66%'
+          direction='column'
+        >
+          {user.products.map(product => <Product product={product} />)}
+        </Container>
+      </Container>
+    </>
+  );
+}
+
 
 const Banner = styled.div`
   width: 100vw;
@@ -105,59 +167,3 @@ const Lego = styled(Container)`
   flex-wrap: wrap;
   box-shadow: 0px 2px 5px rgb(31, 41, 55)
 `
-
-export default function Profile() {
-  return (
-    <>
-      <Banner>
-        <Avatar src={user.image} />
-        <Title size={3}>{`${user.firstName} ${user.lastName}`}</Title>
-        <Title size={1.5}>Level {user.level}</Title>
-      </Banner>
-
-      <Container width='100vw' padding='0px 350px' margin='25px 0px'>
-        <Container
-          width='33%' 
-          margin='15px'
-          direction='column'
-        >
-          <Lego>
-            <Title size='1.25'>
-              About {user.firstName}
-            </Title>
-            <Text>
-              {user.bio}
-            </Text>
-          </Lego>
-
-          <Lego>
-            <Title size='1.25' width='100%'>
-              Experience
-            </Title>
-            
-            <div class="w-full bg-gray-200 rounded-full my-1 dark:bg-gray-700">
-              <div class="bg-blue-600 text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full" style={{width: `${parseInt(user.experience / user.newLevelExperience * 100)}%`}}>
-                {parseInt(user.experience / user.newLevelExperience * 100)}%
-              </div>
-            </div>
-          </Lego>
-
-          <Lego>
-            <Title size='1.25' width='100%'>
-              Followers
-            </Title>
-            <Text>
-              {user.followers.length}
-            </Text>
-          </Lego>
-        </Container>
-        <Container 
-          width='66%'
-          direction='column'
-        >
-          {user.products.map(product => <Product product={product} />)}
-        </Container>
-      </Container>
-    </>
-  );
-}
