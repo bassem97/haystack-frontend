@@ -75,7 +75,7 @@ export default function Navbar() {
                                 {isAuth ? (
                                     <>
                                         <div className="font-bold text-white">
-                                            Bassem jadoui
+                                            {user.firstName} {user.lastName}
                                         </div>
                                         <button
                                             type="button"
