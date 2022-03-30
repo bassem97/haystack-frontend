@@ -7,12 +7,12 @@ import Product from '../components/ProductAlt'
 // const user  = JSON.parse(localStorage.getItem('data')).user
 
 const user = {
-  // firstName: "Amine",
-  // lastName: "Saddem",
-  // email: "email rass zebbi",
-  firstName: JSON.parse(localStorage.getItem('data')).user.firstName || null,
-  lastName: JSON.parse(localStorage.getItem('data')).user.lastName,
-  email: JSON.parse(localStorage.getItem('data')).user.email,
+  firstName: "Amine",
+  lastName: "Saddem",
+  email: "email rass zebbi",
+  // firstName: JSON.parse(localStorage.getItem('data')).user.firstName || null,
+  // lastName: JSON.parse(localStorage.getItem('data')).user.lastName,
+  // email: JSON.parse(localStorage.getItem('data')).user.email,
   image: "https://media-exp1.licdn.com/dms/image/C4D03AQGd4HSQgO1FQA/profile-displayphoto-shrink_800_800/0/1602410272149?e=1653523200&v=beta&t=B3U9lavz8LPs6Nl4eu-szw_xleaSgVEzR5ldjQpKLOc",
   cover: "https://images.unsplash.com/photo-1476984251899-8d7fdfc5c92c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=3700&q=80",
   birthdate: new Date(),
@@ -54,7 +54,9 @@ export default function Profile() {
   return (
     <>
       <Banner>
-        <Avatar src={user.image} />
+
+        {/*<Avatar src={user.image?} />*/}
+        <Avatar  src={ user.image?'http://localhost:8080/files/' + user.image : 'http://localhost:8080/files/avatar.jpg' } />
         <Title size={3}>{`${user.firstName} ${user.lastName}`}</Title>
         <Title size={1.5}>Level {user.level}</Title>
       </Banner>
