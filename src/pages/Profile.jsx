@@ -54,7 +54,9 @@ export default function Profile() {
   return (
     <>
       <Banner>
-        <Avatar src={user.image} />
+
+        {/*<Avatar src={user.image?} />*/}
+        <Avatar  src={ user.image?'http://localhost:8080/files/' + user.image : 'http://localhost:8080/files/avatar.jpg' } />
         <Title size={3}>{`${user.firstName} ${user.lastName}`}</Title>
         <Title size={1.5}>Level {user.level}</Title>
       </Banner>
