@@ -7,13 +7,14 @@ import Product from '../components/ProductAlt'
 // const user  = JSON.parse(localStorage.getItem('data')).user
 
 const user = {
-  firstName: "Amine",
-  lastName: "Saddem",
-  email: "amine.saddem@esprit.tn",
-  // firstName: JSON.parse(localStorage.getItem('data')).user.firstName || null,
-  // lastName: JSON.parse(localStorage.getItem('data')).user.lastName,
-  // email: JSON.parse(localStorage.getItem('data')).user.email,
-  image: "https://media-exp1.licdn.com/dms/image/C4D03AQGd4HSQgO1FQA/profile-displayphoto-shrink_800_800/0/1602410272149?e=1653523200&v=beta&t=B3U9lavz8LPs6Nl4eu-szw_xleaSgVEzR5ldjQpKLOc",
+  email: JSON.parse(localStorage.getItem('data')).user.email,
+  firstName: JSON.parse(localStorage.getItem('data')).user.firstName || null,
+  lastName: JSON.parse(localStorage.getItem('data')).user.lastName,
+  // firstName: "Amine",
+  // lastName: "Saddem",
+  // email: "amine.saddem@esprit.tn",
+  // image: "https://media-exp1.licdn.com/dms/image/C4D03AQGd4HSQgO1FQA/profile-displayphoto-shrink_800_800/0/1602410272149?e=1653523200&v=beta&t=B3U9lavz8LPs6Nl4eu-szw_xleaSgVEzR5ldjQpKLOc",
+  image: JSON.parse(localStorage.getItem('data')).user.image,
   cover: "https://images.unsplash.com/photo-1476984251899-8d7fdfc5c92c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=3700&q=80",
   birthdate: new Date(),
   phone: "20027987",
@@ -80,7 +81,7 @@ export default function Profile() {
             <Title size='1.25' width='100%'>
               Experience
             </Title>
-
+            
             <div class="w-full bg-gray-200 rounded-full my-1 dark:bg-gray-700">
               <div class="bg-blue-600 text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full" style={{width: `${parseInt(user.experience / user.newLevelExperience * 100)}%`}}>
                 {parseInt(user.experience / user.newLevelExperience * 100)}%
