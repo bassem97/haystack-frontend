@@ -9,7 +9,7 @@ import Product from '../components/ProductAlt'
 const user = {
   firstName: "Amine",
   lastName: "Saddem",
-  email: "email rass zebbi",
+  email: "amine.saddem@esprit.tn",
   // firstName: JSON.parse(localStorage.getItem('data')).user.firstName || null,
   // lastName: JSON.parse(localStorage.getItem('data')).user.lastName,
   // email: JSON.parse(localStorage.getItem('data')).user.email,
@@ -63,7 +63,7 @@ export default function Profile() {
 
       <Container width='100vw' padding='0px 350px' margin='25px 0px'>
         <Container
-          width='33%' 
+          width='33%'
           margin='15px'
           direction='column'
         >
@@ -80,7 +80,7 @@ export default function Profile() {
             <Title size='1.25' width='100%'>
               Experience
             </Title>
-            
+
             <div class="w-full bg-gray-200 rounded-full my-1 dark:bg-gray-700">
               <div class="bg-blue-600 text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full" style={{width: `${parseInt(user.experience / user.newLevelExperience * 100)}%`}}>
                 {parseInt(user.experience / user.newLevelExperience * 100)}%
@@ -97,7 +97,7 @@ export default function Profile() {
             </Text>
           </Lego>
         </Container>
-        <Container 
+        <Container
           width='66%'
           direction='column'
         >
