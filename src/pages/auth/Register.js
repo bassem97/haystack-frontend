@@ -38,8 +38,10 @@ export default function Register() {
         lastName: lastName,
         email: email,
         password: password,
+      }).then(res => {
+         axios.get("http://localhost:8080/email/send/" + res.data._id);
+        navigate("/verification");
       });
-      navigate("/");
     } catch (error) {
       if (error.response) {
         setMsg(error.response.data.error);

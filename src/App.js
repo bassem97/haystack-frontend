@@ -10,6 +10,7 @@ import Profile from "./pages/Profile";
 import Success from "./pages/Success";
 import { useSelector } from "react-redux";
 import {gapi} from "gapi-script";
+import Verification from "./pages/Verification";
 
 
 const Home = React.lazy(() => import("./pages/Home"));
@@ -40,6 +41,7 @@ const App = () => {
             <Routes>
               <Route path="/"  element={<Home/>}/>
               <Route path="/login"  element={<Login/>}/>
+              <Route path="/login/verified"  element={<Login/>}/>
               <Route path="/register"  element={<Register/>}/>
               {/*<Route path="/auth" component={Auth} />*/}
 
@@ -50,6 +52,7 @@ const App = () => {
               <Route path="/product/:id"  element={<Product/>}/>
               <Route path="/success" element={<Success/>}/>
               <Route path="/profile"  element={<Profile/>}/>
+              <Route path="/verification"  element={<Verification/>}/>
             </Routes>
           </Suspense>
         </BrowserRouter>
