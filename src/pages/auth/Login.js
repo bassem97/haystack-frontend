@@ -73,7 +73,6 @@ export default function Login() {
               {/*<p className="has-text-centered text-red-100">{msg}</p>*/}
               {renderErrorMessage()}
 
-
               <input type="hidden" name="remember" defaultValue="true" />
               <div className="rounded-md shadow-sm -space-y-px">
                 <div>
