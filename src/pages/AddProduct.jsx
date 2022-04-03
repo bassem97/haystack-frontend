@@ -1,17 +1,46 @@
 import styled from "styled-components";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {mobile} from "../responsive";
 import { publicRequest } from "../requestMethods";
 import {useNavigate} from "react-router";
+import Select from 'react-select';
+import axios from "axios";
 
 const AddProduct = () => {
 
+    /*let options = [
+        { value: 'chocolate', label: 'Chocolate' },
+        { value: 'strawberry', label: 'Strawberry' },
+        { value: 'vanilla', label: 'Vanilla' }
+    ]*/
+
     const navigate = useNavigate();
+    const [categoriesList, setCategoriesList] = useState([]);
+    const [options, setOptions] = useState([]);
+    // maps the appropriate column to categories  fields property
+
+    useEffect(() => {
+        const getCategories = async () => {
+            try {
+                const res = await axios.get(
+
+                    "http://localhost:8080/category"
+                );
+                setCategoriesList(res.data.categories);
+                res.data.categories.forEach(value => {
+                    options.push({value: value._id, label: value.name})
+                })
+            } catch (err) {}
+        };
+        getCategories();
+    }, []);
+
 
     const [formData, setFormData] = useState({
         name: "",
         description: "",
         price: "",
+        categories: [categoriesList],
         image: "",
         optional_images: []
     });
@@ -22,6 +51,12 @@ const AddProduct = () => {
 
     const onChange = (e) => {
         setFormData({...formData, [e.target.name]: e.target.value});
+    };
+
+    const onChangeCategory = (e) => {
+        const result = [];
+        e.forEach(x => result.push(x.value));
+        setFormData({...formData, categories: result});
     };
 
 
@@ -90,7 +125,7 @@ const AddProduct = () => {
         }
     };
 
-    const {name, description, price, image, optional_images} = formData;
+    const {name, description, price, image, optional_images, categories} = formData;
 
     return (
         <Wrapper>
@@ -126,6 +161,14 @@ const AddProduct = () => {
                         onChange={(e) => onChange(e)}
                     />
                 </FormGroup>
+                    {/*<MultiSelectComponent
+                        dataSource={categoriesList} fields={{value: "_id", text: "name"}} placeholder="Select a category"
+                        name="categories"
+                        value={categories}
+                        onChange={(e) => onChange(e)}
+                        />*/}
+                <Select isMulti={true} options={options}
+                        onChange={(e) => onChangeCategory(e)}/>
                 <FormGroup>
                         <p>Image
                     <FormField
@@ -171,7 +214,7 @@ const Form = styled.form`
   color: black;
   display: flex;
   flex-direction: column;
-  width: 33%;
+  width: 63%;
   align-self: center;
 `;
 const FormField = styled.input`
