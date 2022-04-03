@@ -10,7 +10,7 @@ const Container = styled.div`
   justify-content: space-between;
 `;
 
-const Products = ({ cat, filters, sort }) => {
+const Products = ({ cat, filters, sort, search }) => {
     const [products, setProducts] = useState([]);
     const [filteredProducts, setFilteredProducts] = useState([]);
 
@@ -22,12 +22,13 @@ const Products = ({ cat, filters, sort }) => {
                     "http://localhost:8080/products"
                 );
                 setProducts(res.data.products);
+                setFilteredProducts(res.data.products)
             } catch (err) {}
         };
         getProducts();
     }, [cat]);
 
-    useEffect(() => {
+   /* useEffect(() => {
         cat &&
         setFilteredProducts(
             products.filter((item) =>
@@ -36,7 +37,13 @@ const Products = ({ cat, filters, sort }) => {
                 )
             )
         );
-    }, [products, cat, filters]);
+    }, [products, cat, filters]);*/
+
+    useEffect(() => {
+        setFilteredProducts(products);
+        setFilteredProducts((prev) =>
+        [...prev].filter(value => (value.name.toUpperCase().includes(search.toUpperCase())) || (value.description.toUpperCase().includes(search.toUpperCase())) || (value.price.toString().toUpperCase().includes(search.toUpperCase()))))
+    }, [search])
 
     useEffect(() => {
         if (sort === "newest") {
@@ -101,7 +108,7 @@ const Products = ({ cat, filters, sort }) => {
                 <h2 className="text-2xl font-extrabold tracking-tight text-gray-900">Customers also purchased</h2>
 
                 <div className="mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
-                    {products.map((product) => (
+                    {filteredProducts.map((product) => (
                         <div key={product.id} className="group relative">
                             <div className="w-full min-h-80 bg-gray-200 aspect-w-1 aspect-h-1 rounded-md overflow-hidden group-hover:opacity-75 lg:h-80 lg:aspect-none">
                                 <img
