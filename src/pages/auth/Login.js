@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {LockClosedIcon} from "@heroicons/react/solid";
 import axios from "axios";
 
@@ -7,11 +7,17 @@ export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [msg, setMsg] = useState('');
+  const isVerified = window.location.href == "http://localhost:3000/login/verified";
+
+  useEffect(() => {
+    if(isVerified){
+      setMsg("Email verified !!")
+    }
+  });
 
 
 
   const Login = async (e) => {
-    console.log(e)
     e.preventDefault();
 
       await axios.post('http://localhost:8080/auth/login', {
@@ -31,14 +37,28 @@ export default function Login() {
       //   setMsg(error.response.data.error);
       // }
   }
+  const renderErrorMessage = function () {
+    if (msg)
+      return (
+          <div className={`${msg=="Email verified !!"?"flex items-center bg-blue-500 text-white text-sm font-bold px-4 py-3":"bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"}`} role="alert">
+            <strong className="font-bold text-sm">{msg}</strong>
+            <span className="absolute top-0 bottom-0 right-0 px-4 py-3">
+                  <svg className="fill-current h-6 w-6 text-red-500" role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><title>Close</title><path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z"/></svg>
+                  </span>
+          </div>
+      )
+    return null
+
+  }
   return (
     <>
       <div className="flex items-center justify-center min-h-screen bg-gray-100">
         <div className="px-8 py-6 mx-4 -mt-7 text-left bg-white shadow-lg md:w-1/3 lg:w-1/3 sm:w-1/3">
+
             <div>
               <img
                   className="mx-auto h-12 w-auto"
-                  src="https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg"
+                  src='http://localhost:8080/files/haystack.png'
                   alt="Workflow"
               />
               <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">Sign in to your account</h2>
@@ -50,7 +70,8 @@ export default function Login() {
               </p>
             </div>
             <form className="mt-8 space-y-6" onSubmit={Login}>
-              <p className="has-text-centered">{msg}</p>
+              {/*<p className="has-text-centered text-red-100">{msg}</p>*/}
+              {renderErrorMessage()}
 
               <input type="hidden" name="remember" defaultValue="true" />
               <div className="rounded-md shadow-sm -space-y-px">
