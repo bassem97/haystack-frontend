@@ -8,6 +8,7 @@ const navigation = [
     { name: 'الكماندة', href: '/cart', current: false },
     { name: 'Projects', href: '#', current: false },
     { name: 'Calendar', href: '#', current: false },
+    // { name: 'زيد دبش', href: '/products/add', current: false },
 ]
 
 function classNames(...classes) {
@@ -70,13 +71,7 @@ export default function Navbar() {
                                                 {item.name}
                                             </a>
                                         ))}
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                                {isAuth ? (
-                                    <>
-                                        <a
+                                        {isAuth && <a
                                             href="/products/add"
                                             className={classNames(
                                                 'text-gray-300 hover:bg-gray-700 hover:text-white',
@@ -85,7 +80,13 @@ export default function Navbar() {
                                             aria-current={undefined}
                                         >
                                             زيد دبش
-                                        </a>
+                                        </a> }
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+                                {isAuth ? (
+                                    <>
                                         <div className="font-bold text-white">
                                             {user.firstName} {user.lastName}
                                         </div>
@@ -186,6 +187,17 @@ export default function Navbar() {
                                     {item.name}
                                 </Disclosure.Button>
                             ))}
+                            {isAuth && <Disclosure.Button
+                                href="/products/add"
+                                className={classNames(
+                                    'text-gray-300 hover:bg-gray-700 hover:text-white',
+                                    'px-3 py-2 rounded-md text-sm font-medium'
+                                )}
+                                aria-current={undefined}
+                            >
+                                زيد دبش
+                            </Disclosure.Button> }
+
                         </div>
                     </Disclosure.Panel>
                 </>
