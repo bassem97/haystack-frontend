@@ -8,11 +8,8 @@ import axios from "axios";
 
 const AddProduct = () => {
 
-    /*let options = [
-        { value: 'chocolate', label: 'Chocolate' },
-        { value: 'strawberry', label: 'Strawberry' },
-        { value: 'vanilla', label: 'Vanilla' }
-    ]*/
+    const isAuth  = !!localStorage.getItem("data");
+    const user = isAuth ? JSON.parse(localStorage.getItem("data")).user : null;
 
     const navigate = useNavigate();
     const [categoriesList, setCategoriesList] = useState([]);
@@ -42,7 +39,8 @@ const AddProduct = () => {
         price: "",
         categories: [categoriesList],
         image: "",
-        optional_images: []
+        optional_images: [],
+        owner: user._id
     });
     let imageFormData = new FormData();
 
