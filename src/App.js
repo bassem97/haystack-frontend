@@ -11,6 +11,8 @@ import Success from "./pages/Success";
 import { useSelector } from "react-redux";
 import {gapi} from "gapi-script";
 import Verification from "./pages/Verification";
+import PasswordRecovery from "./pages/auth/PasswordRecovery";
+import NewPasswordRecovery from "./pages/auth/NewPasswordRecovery";
 
 
 const Home = React.lazy(() => import("./pages/Home"));
@@ -18,6 +20,8 @@ const Login = React.lazy(() => import("./pages/auth/Login"));
 const Register = React.lazy(() => import("./pages/auth/Register"));
 
 const clientId = "912577134712-br4ui585rlm1k3ptrkpbkfhaqiaurmgh.apps.googleusercontent.com"
+
+
 
 
 const App = () => {
@@ -53,6 +57,8 @@ const App = () => {
               <Route path="/success" element={<Success/>}/>
               <Route path="/profile"  element={<Profile/>}/>
               <Route path="/verification"  element={<Verification/>}/>
+              <Route path="/password-recovery"  element={<PasswordRecovery/>}/>
+              <Route path="/password-recovery/:id"  element={<NewPasswordRecovery/>}/>
             </Routes>
           </Suspense>
         </BrowserRouter>
