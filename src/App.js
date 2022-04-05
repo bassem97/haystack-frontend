@@ -14,7 +14,12 @@ import Verification from "./pages/Verification";
 import PasswordRecovery from "./pages/auth/PasswordRecovery";
 import NewPasswordRecovery from "./pages/auth/NewPasswordRecovery";
 import SupportEngine from "./components/SupportEngine";
-
+import Admin from "./layouts/Admin.js";
+import Dashboard from "./pages/admin/Dashboard";
+import Maps from "./pages/admin/Maps";
+import Settings from "./pages/admin/Settings";
+import Tables from "./pages/admin/Tables";
+import ProfileSettings from './pages/Settings'
 
 const Home = React.lazy(() => import("./pages/Home"));
 const Login = React.lazy(() => import("./pages/auth/Login"));
@@ -50,6 +55,13 @@ const App = () => {
               <Route path="/register"  element={<Register/>}/>
               {/*<Route path="/auth" component={Auth} />*/}
 
+              <Route path="/admin" element={<Admin/>} />
+              <Route path="/admin/dashboard"  element={<Dashboard/>} />
+              <Route path="/admin/maps"  element={<Maps/>} />
+              <Route path="/admin/settings"  element={<Settings/>} />
+              <Route path="/admin/tables"  element={<Tables/>} />
+
+
               <Route path="/shoppingCart"  element={<Cart/>}/>
               <Route path="/cart"  element={<Cart/>}/>
               <Route path="/products"  element={<ProductList/>}/>
@@ -60,6 +72,7 @@ const App = () => {
               <Route path="/verification"  element={<Verification/>}/>
               <Route path="/password-recovery"  element={<PasswordRecovery/>}/>
               <Route path="/password-recovery/:id"  element={<NewPasswordRecovery/>}/>
+              <Route path="/settings"  element={<ProfileSettings/>}/>
             </Routes>
           </Suspense>
           <SupportEngine/>

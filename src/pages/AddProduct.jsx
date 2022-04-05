@@ -114,7 +114,10 @@ const AddProduct = () => {
             console.log("POST")
             await publicRequest.post(
                 "/products",
-                    formData
+                    formData,
+                {
+                    headers: { Authorization: `Bearer ${JSON.parse(localStorage.getItem("data")).token}` }
+                     },
             ).then(() => {
                 navigate('/products');
             });

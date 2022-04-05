@@ -2,71 +2,41 @@ import React, {useEffect, useState} from "react";
 import styled from "styled-components"
 
 import Product from '../components/ProductAlt'
+import axios from "axios";
 
+const user  = localStorage.getItem('data') && localStorage.getItem('data') && JSON.parse(localStorage.getItem('data')).user;
 
-// const user  = JSON.parse(localStorage.getItem('data')).user
-
-const user = {
-  cover: "https://images.unsplash.com/photo-1476984251899-8d7fdfc5c92c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=3700&q=80",
-  birthdate: new Date(),
-  phone: "20027987",
-  bio: "I am here to sell clothes. blablabla lorem this lorem that.",
-  level: 66,
-  experience: 1256,
-  newLevelExperience: 2033,
-  followers: ['test'],
-  products: [
-    {
-      label:"maryoul khalaa",
-      description:"Un simple débardeur noir. Neuf.",
-      image:"https://agnesb-agnesb-com-storage.omn.proximis.com/Imagestorage/imagesSynchro/0/0/2a31200d83d34ed4a59384bead344b6191777dfc_3111JG13_000_1.jpeg",
-      size:"M",
-      color:"black",
-      price:7
-    },
-    {
-      label:"maryoul khalaa",
-      description:"Un simple débardeur blanc. Neuf.",
-      image:"https://lp2.hm.com/hmgoepprod?set=quality%5B79%5D%2Csource%5B%2F72%2F54%2F72544c5457a3c00e2bb408ddaaafba66298e6ba0.jpg%5D%2Corigin%5Bdam%5D%2Ccategory%5Bladies_tops_vests%5D%2Ctype%5BDESCRIPTIVESTILLLIFE%5D%2Cres%5Bm%5D%2Chmver%5B1%5D&call=url[file:/product/main",
-      size:"S",
-      color:"white",
-      price:6
-    },
-    {
-      label:"maryoul khalaa",
-      description:"Un simple débardeur bleu. Neuf.",
-      image:"https://m.media-amazon.com/images/I/71nqV9iFmYL._SL1500_.jpg",
-      size:"M",
-      color:"blue",
-      price:7
-    }
-  ]
-}
-try {
-      user.email = JSON.parse(localStorage.getItem('data')).user.email;
-      user.firstName = JSON.parse(localStorage.getItem('data')).user.firstName;
-      user.lastName = JSON.parse(localStorage.getItem('data')).user.lastName;
-      // firstName: "Amine",
-      // lastName: "Saddem",
-      // email: "amine.saddem@esprit.tn",
-      // image: "https://media-exp1.licdn.com/dms/image/C4D03AQGd4HSQgO1FQA/profile-displayphoto-shrink_800_800/0/1602410272149?e=1653523200&v=beta&t=B3U9lavz8LPs6Nl4eu-szw_xleaSgVEzR5ldjQpKLOc",
-      user.image = JSON.parse(localStorage.getItem('data')).user.image;
-}
-catch (e) {
-      user.firstName = "Amine";
-      user.lastName ="Saddem";
-      user.email = "amine.saddem@esprit.tn";
-      user.image ="avatar.jpg";
-}
 export default function Profile() {
+    let [products, setProducts] = useState([]);
+
+    useEffect(() => {
+        const getProducts = async () => {
+            try {
+                const res = await axios.get(
+                    "http://localhost:8080/products/owner/" + user._id
+                );
+                await setProducts(res.data.products);
+            } catch (err) {
+            }
+        };
+        getProducts();
+    }, products)
+
   return (
     <>
-      <Banner>
+      <Banner
+        style={{
+          background: `url('${user.cover ? `http://localhost:8080/files/${user.cover}` : 'http://localhost:8080/files/cover.jpg'}') rgba(31, 41, 55, 0.6)`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center center',
+          backgroundBlendMode: 'multiply'
+        }}
+      >
 
         {/*<Avatar src={user.image?} />*/}
         <Avatar  src={ user.image?'http://localhost:8080/files/' + user.image : 'http://localhost:8080/files/avatar.jpg' } />
         <Title size={3}>{`${user.firstName} ${user.lastName}`}</Title>
-        <Title size={1.5}>Level {user.level}</Title>
+        <Title size={1.5}>Level {user.level || 0}</Title>
       </Banner>
 
       <Container width='100vw' padding='0px 350px' margin='25px 0px'>
@@ -80,7 +50,7 @@ export default function Profile() {
               About {user.firstName}
             </Title>
             <Text>
-              {user.bio}
+              {user.bio || `${user.firstName} just landed in Haystack!` }
             </Text>
           </Lego>
 
@@ -89,9 +59,9 @@ export default function Profile() {
               Experience
             </Title>
 
-            <div class="w-full bg-gray-200 rounded-full my-1 dark:bg-gray-700">
-              <div class="bg-blue-600 text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full" style={{width: `${parseInt(user.experience / user.newLevelExperience * 100)}%`}}>
-                {parseInt(user.experience / user.newLevelExperience * 100)}%
+            <div className="w-full bg-gray-200 rounded-full my-1 dark:bg-gray-700">
+              <div className="bg-blue-600 text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full" style={{width: `${user.newLevelExperience ? parseInt(user.experience / user.newLevelExperience * 100) : user.newLevelExperience}%`}}>
+                {user.newLevelExperience ? parseInt(user.experience / user.newLevelExperience * 100) : user.newLevelExperience}%
               </div>
             </div>
           </Lego>
@@ -109,7 +79,11 @@ export default function Profile() {
           width='66%'
           direction='column'
         >
-          {user.products.map(product => <Product product={product} />)}
+          {
+            products.length > 0
+            ? products.map(product => <Product product={product} />)
+            : <h1 className="text-2xl text-center">No products yet...</h1>
+          }
         </Container>
       </Container>
     </>
@@ -119,11 +93,6 @@ export default function Profile() {
 
 const Banner = styled.div`
   width: 100vw;
-  background: url('${user.cover}') rgba(31, 41, 55, 0.6);
-  background-size: cover;
-  background-position: center center;
-  background-blend-mode: multiply;
-
   display: flex;
   flex-direction: column;
   align-items: center;
