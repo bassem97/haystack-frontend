@@ -1,11 +1,27 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import styled from "styled-components"
 
 import Product from '../components/ProductAlt'
+import axios from "axios";
 
-const user  = localStorage.getItem('data') && localStorage.getItem('data') && JSON.parse(localStorage.getItem('data')).user
+const user  = localStorage.getItem('data') && localStorage.getItem('data') && JSON.parse(localStorage.getItem('data')).user;
 
 export default function Profile() {
+    let [products, setProducts] = useState([]);
+
+    useEffect(() => {
+        const getProducts = async () => {
+            try {
+                const res = await axios.get(
+                    "http://localhost:8080/products/owner/" + user._id
+                );
+                await setProducts(res.data.products);
+            } catch (err) {
+            }
+        };
+        getProducts();
+    }, products)
+
   return (
     <>
       <Banner
@@ -64,8 +80,8 @@ export default function Profile() {
           direction='column'
         >
           {
-            user.products === []
-            ? user.products.map(product => <Product product={product} />)
+            products.length > 0
+            ? products.map(product => <Product product={product} />)
             : <h1 className="text-2xl text-center">No products yet...</h1>
           }
         </Container>
