@@ -1,7 +1,32 @@
-import React from "react";
+import React, {useEffect} from "react";
 import Chart from "chart.js";
+import axios from "axios";
 
 export default function CardLineChart() {
+  const salesPerMonth = [];
+  useEffect(() => {
+    const getOrders = async () => {
+      try {
+        const res = await axios.get(
+
+            "http://localhost:8080/orders"
+        );
+
+         for (let i=0; i<12; i++) {
+            let amount = 0;
+            await res.data.forEach(order => {
+              if (new Date(order.createdAt).getMonth() === i)
+                amount += order.amount;
+                }
+            );
+           salesPerMonth.push(amount);
+        }
+      } catch (err) {}
+    };
+    getOrders();
+  });
+
+
   React.useEffect(() => {
     var config = {
       type: "line",
@@ -14,22 +39,27 @@ export default function CardLineChart() {
           "May",
           "June",
           "July",
+          "August",
+          "September",
+          "October",
+          "November",
+          "December"
         ],
         datasets: [
           {
             label: new Date().getFullYear(),
             backgroundColor: "#4c51bf",
             borderColor: "#4c51bf",
-            data: [65, 78, 66, 44, 56, 67, 75],
+            data: salesPerMonth,
             fill: false,
           },
-          {
+      /*    {
             label: new Date().getFullYear() - 1,
             fill: false,
             backgroundColor: "#fff",
             borderColor: "#fff",
-            data: [40, 68, 86, 74, 56, 60, 87],
-          },
+            data: /!*[40, 68, 86, 74, 56, 60, 87]*!/salesPerMonth,
+          },*/
         ],
       },
       options: {
