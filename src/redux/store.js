@@ -12,6 +12,7 @@ import {
     REGISTER,
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
+import message_reducer from "./_reducers/message_reducer";
 
 const persistConfig = {
     key: "root",
@@ -19,7 +20,7 @@ const persistConfig = {
     storage,
 };
 
-const rootReducer = combineReducers({ cart: cartReducer });
+const rootReducer = combineReducers({ cart: cartReducer , message: message_reducer});
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 

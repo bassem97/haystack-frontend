@@ -13,6 +13,7 @@ import {gapi} from "gapi-script";
 import Verification from "./pages/Verification";
 import PasswordRecovery from "./pages/auth/PasswordRecovery";
 import NewPasswordRecovery from "./pages/auth/NewPasswordRecovery";
+import SupportEngine from "./components/SupportEngine";
 
 
 const Home = React.lazy(() => import("./pages/Home"));
@@ -61,6 +62,7 @@ const App = () => {
               <Route path="/password-recovery/:id"  element={<NewPasswordRecovery/>}/>
             </Routes>
           </Suspense>
+          <SupportEngine/>
         </BrowserRouter>
       </>
   )
