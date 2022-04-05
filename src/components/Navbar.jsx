@@ -3,6 +3,8 @@ import { Fragment } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { BellIcon, MenuIcon, XIcon } from '@heroicons/react/outline'
 
+import { useNavigate } from 'react-router-dom'
+
 const navigation = [
     { name: 'الدبش', href: '/products', current: true },
     { name: 'الكماندة', href: '/cart', current: false },
@@ -19,6 +21,7 @@ export default function Navbar() {
     const isAuth  = !!localStorage.getItem("data");
     const user = isAuth ? JSON.parse(localStorage.getItem("data")).user : null;
 
+    const navigate = useNavigate()
 
     return (
         <Disclosure as="nav" className="bg-gray-800 sticky top-0 z-50">
@@ -143,7 +146,10 @@ export default function Navbar() {
                                                     <Menu.Item>
                                                         {({ active }) => (
                                                             <a
-                                                                onClick={()=> {localStorage.removeItem("data"); window.location.href = "/"}}
+                                                                onClick={()=> {
+                                                                    localStorage.removeItem("data"); 
+                                                                    navigate('/')
+                                                                }}
                                                                 className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
                                                             >
                                                                 Sign out
