@@ -1,6 +1,6 @@
 const product = ({product}) => (
     <div class="w-75 max-w-m my-3 mx-4 rounded-md shadow-md overflow-hidden">
-        <div class="flex items-end justify-end h-56 w-full bg-cover bg-top" style={{backgroundImage: `url(${product.image})`}}>
+        <div class="flex items-end justify-end h-56 w-full bg-cover bg-top" style={{backgroundImage: `url('http://localhost:8080/files/${product.image}')`}}>
             <button class={`p-4 rounded-full text-white mx-5 -mb-4 focus:outline-none`}
             style={{backgroundColor: product.color}}
             >

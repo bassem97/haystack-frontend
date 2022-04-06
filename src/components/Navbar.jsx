@@ -3,7 +3,7 @@ import { Fragment } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { BellIcon, MenuIcon, XIcon } from '@heroicons/react/outline'
 
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 
 const navigation = [
     { name: 'الدبش', href: '/products', current: true },
@@ -135,19 +135,19 @@ export default function Navbar() {
                                                     </Menu.Item>
                                                     <Menu.Item>
                                                         {({ active }) => (
-                                                            <a
-                                                                href="#"
+                                                            <Link
+                                                                to="/settings"
                                                                 className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
                                                             >
                                                                 Settings
-                                                            </a>
+                                                            </Link>
                                                         )}
                                                     </Menu.Item>
                                                     <Menu.Item>
                                                         {({ active }) => (
                                                             <a
                                                                 onClick={()=> {
-                                                                    localStorage.removeItem("data"); 
+                                                                    localStorage.removeItem("data");
                                                                     navigate('/')
                                                                 }}
                                                                 className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
@@ -162,10 +162,10 @@ export default function Navbar() {
                                     </>
                                 ) : (
                                     <button type="button"
-                                    className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-3 md:mr-0 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                                    onClick={()=> window.location.href="/login"}
+                                            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-3 md:mr-0 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                                            onClick={()=> window.location.href="/login"}
                                     >
-                                    Login/Register
+                                        Login/Register
                                     </button>
                                 )
                                 }
