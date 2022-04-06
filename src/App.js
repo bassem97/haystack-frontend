@@ -13,7 +13,6 @@ import {gapi} from "gapi-script";
 import Verification from "./pages/Verification";
 import PasswordRecovery from "./pages/auth/PasswordRecovery";
 import NewPasswordRecovery from "./pages/auth/NewPasswordRecovery";
-import SupportEngine from "./components/SupportEngine";
 import Admin from "./layouts/Admin.js";
 import Dashboard from "./pages/admin/Dashboard";
 import Maps from "./pages/admin/Maps";
@@ -75,7 +74,6 @@ const App = () => {
               <Route path="/settings"  element={<ProfileSettings/>}/>
             </Routes>
           </Suspense>
-          <SupportEngine/>
         </BrowserRouter>
       </>
   )
