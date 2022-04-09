@@ -12,6 +12,7 @@
     "@testing-library/jest-dom": "^5.16.2",
     "@testing-library/react": "^12.1.4",
     "@testing-library/user-event": "^13.5.0",
+    "antd": "^3.26.5",
     "assets": "^3.0.1",
     "axios": "^0.26.1",
     "chart.js": "2.9.4",
@@ -28,8 +29,12 @@
     "react-scripts": "5.0.0",
     "react-select": "^5.2.2",
     "react-stripe-checkout": "^2.6.3",
+    "redux": "^4.1.2",
     "redux-persist": "^6.0.0",
+    "redux-promise": "^0.6.0",
+    "redux-thunk": "^2.4.1",
     "styled-components": "^5.3.3",
+    "uuid": "^3.3.2",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
@@ -60,6 +65,7 @@
     "@heroicons/react": "^1.0.6",
     "@material-ui/icons": "^4.11.2",
     "autoprefixer": "^10.4.2",
+    "http-proxy-middleware": "^2.0.4",
     "postcss": "^8.4.8",
     "tailwindcss": "^3.0.23"
   }

@@ -1,8 +1,10 @@
 import React, {useEffect, useState} from "react"
-import { useParams } from "react-router-dom"
 import styled from "styled-components"
 import Product from '../components/ProductAlt'
-import axios from "axios"
+import axios from "axios";
+
+import { useParams } from "react-router-dom"
+
 // localStorage.getItem('data') && localStorage.getItem('data') && JSON.parse(localStorage.getItem('data')).user
 
 export default function Profile() {
@@ -144,7 +146,7 @@ const Container = styled.div`
   padding: ${props => props.padding || 'auto'};
   margin-right: ${props => props.marginRight || 'auto'};
   margin: ${props => props.margin || 'auto'};
-  
+
   display: flex;
   justify-content: ${props => props.justify || 'flex-start'};
 
@@ -164,4 +166,4 @@ const Lego = styled(Container)`
   margin: 0px 0px 15px;
   flex-wrap: wrap;
   box-shadow: 0px 2px 5px rgb(31, 41, 55)
-`
+  `

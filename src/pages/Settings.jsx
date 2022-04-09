@@ -14,13 +14,14 @@ const Settings = () => {
         newPassword: ""
     })
     let [color, setColor] = useState('lightBlue')
+    let [prompt, setPrompt] = useState('update profile')
 
     React.useEffect(() => {
         (async () => {
             const userData = (await axios.get(`http://localhost:8080/user/${user._id}`)).data.user
             setUser({...user, bio: userData.bio, email: userData.email, firstName: userData.firstName, lastName: userData.lastName})
         })()
-    }, [])
+    }, [user])
 
     const changeHandler = e => {
         setUser({
@@ -28,14 +29,28 @@ const Settings = () => {
             [e.target.name]: e.target.value
         })
         setColor('lightBlue')
+        setPrompt('update profile')
     }
 
     const submitHandler = async e => {
         e.preventDefault();
-        console.log(user)
-        const response = await publicRequest.put(`/user/${user._id}`, user)
         
-        setColor(response.status === 200 ? 'green' : 'red')
+        publicRequest.put(`/user/${user._id}`, user)
+        .then(response => {
+            if(response.status === 200){
+                setColor('green')
+                setPrompt('✔')
+            }
+            else{
+                setColor('red')
+                setPrompt('❌')    
+            }
+        })
+        .catch(error => {
+            console.log(error)
+            setColor('red')
+            setPrompt('❌')    
+        })
     }
 
     return (
@@ -49,71 +64,96 @@ const Settings = () => {
                                 className={`bg-${color}-500 text-white active:bg-${color}-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150`}
                                 type="submit"
                             >
-                                Update Profile
+                                {prompt}
                             </button>
                         </div>
                     </div>
-                </div>
-                <div class="flex-auto px-4 lg:px-10 py-10 pt-0">
-                    <h6 class="text-blueGray-400 text-sm mt-3 mb-6 font-bold uppercase">User Information</h6>
-                    <div class="flex flex-wrap">
-                        <div class="w-full lg:w-6/12 px-4">
-                            <div class="relative w-full mb-3">
-                                <label
-                                    class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
-                                    for="grid-password">Username
-                                </label>
-                                <input 
-                                    type="text"
-                                    class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                                />    
-                            </div>
-                        </div>
-                        <div class="w-full lg:w-6/12 px-4">
-                            <div class="relative w-full mb-3"><label
-                                    class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
-                                    for="grid-password">Email address</label>
-                                    <input 
-                                        type="email"
-                                        class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                    <div className="flex-auto px-4 lg:px-10 py-10 pt-0">
+                        <h6 className="text-blueGray-400 text-sm mt-3 mb-6 font-bold uppercase">User Information</h6>
+                        <div className="flex flex-wrap">
+                            <div className="w-full lg:w-6/12 px-4">
+                                <div className="relative w-full mb-3">
+                                    <label
+                                        className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                                    >
+                                        First Name
+                                    </label>
+                                    <input
+                                        type="text"
+                                        className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                                        name="firstName"
+                                        value={user.firstName}
+                                        onChange={changeHandler}
                                     />
+                                </div>
+                            </div>
+                            <div className="w-full lg:w-6/12 px-4">
+                                <div className="relative w-full mb-3">
+                                    <label
+                                        className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                                    >
+                                        Last Name
+                                    </label>
+                                    <input
+                                        type="text"
+                                        className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                                        name="lastName"
+                                        value={user.lastName}
+                                        onChange={changeHandler}
+                                    />
+                                </div>
+                            </div>
+                            <div className="w-full lg:w-6/12 px-4">
+                                <div className="relative w-full mb-3">
+                                    <label
+                                        className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                                    >
+                                        Old Password
+                                    </label>
+                                    <input
+                                        type="password"
+                                        className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                                        name="password"
+                                        value={user.password}
+                                        onChange={changeHandler}
+                                    />
+                                </div>
+                            </div>
+                            <div className="w-full lg:w-6/12 px-4">
+                                <div className="relative w-full mb-3">
+                                    <label
+                                        className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                                    >
+                                        New Password
+                                    </label>
+                                    <input
+                                        type="password"
+                                        className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                                        name="newPassword"
+                                        value={user.newPassword || ''}
+                                        onChange={changeHandler}
+                                    />
+                                </div>    
                             </div>
                         </div>
-                        <div class="w-full lg:w-6/12 px-4">
-                            <div class="relative w-full mb-3">
-                                <label
-                                    class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
-                                    for="grid-password"
-                                >
-                                    First Name
-                                </label>
-                                <input type="text"
-                                    class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                                />
-                            </div>
-                        </div>
-                        <div class="w-full lg:w-6/12 px-4">
-                            <div class="relative w-full mb-3">
-                                <label
-                                    class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
-                                    for="grid-password">Last Name
-                                </label>
-                                <input 
-                                    type="text"
-                                    class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                                />
-                            </div>
-                        </div>
-                    </div>
-                    <hr class="mt-6 border-b-1 border-blueGray-300" />
-                    <h6 class="text-blueGray-400 text-sm mt-3 mb-6 font-bold uppercase">About Me</h6>
-                    <div class="flex flex-wrap">
-                        <div class="w-full lg:w-12/12 px-4">
-                            <div class="relative w-full mb-3"><label
-                                    class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
-                                    for="grid-password">About me</label><textarea type="text"
-                                    class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                                    rows="4">A beautiful UI Kit and Admin for React &amp; Tailwind CSS. It is Free and Open Source.</textarea>
+                        <hr className="mt-6 border-b-1 border-blueGray-300" />
+                        <h6 className="text-blueGray-400 text-sm mt-3 mb-6 font-bold uppercase">About Me</h6>
+                        <div className="flex flex-wrap">
+                            <div className="w-full lg:w-12/12 px-4">
+                                <div className="relative w-full mb-3">
+                                    <label
+                                        className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                                    >
+                                        About me
+                                    </label>
+                                    <textarea type="text"
+                                        className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 h-60"
+                                        name="bio"
+                                        value={user.bio}
+                                        onChange={changeHandler}
+                                    >
+                                    </textarea>
+                                </div>
                             </div>
                         </div>
                     </div>

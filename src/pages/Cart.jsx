@@ -1,5 +1,5 @@
 import { Add, Remove } from "@material-ui/icons";
-import { useSelector } from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import styled from "styled-components";
 import Footer from "../components/Footer";
 import { mobile } from "../responsive";
@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import { userRequest } from "../requestMethods";
 import { useNavigate } from "react-router-dom";
 import {Size} from "@material-ui/core";
+import { removeProduct} from "../redux/carttRedux";
 
 const KEY = "pk_test_51KdlDGLEkrbTJcCqkL6LpNLGfpWaJdcyAq84KLY8YUokfRRQEq2jKGgpfvQw7Bd5t7cnasr6mEIol1emsrmauMox00ybSS6XOH";
 
@@ -162,11 +163,18 @@ const Cart = () => {
     const cart = useSelector((state) => state.cart);
     const [stripeToken, setStripeToken] = useState(null);
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const onToken = (token) => {
         setStripeToken(token);
     };
 
+    const handleClick = () => {
+        dispatch(
+            removeProduct({ })
+
+        );
+    };
     useEffect(() => {
         const makeRequest = async () => {
             try {
@@ -218,8 +226,14 @@ const Cart = () => {
                                     <ProductPrice>
                                         $ {product.price * product.quantity}
                                     </ProductPrice>
+                                    <button  onClick={handleClick}
+                                    >
+                                        remove
+                                    </button>
                                 </PriceDetail>
+
                             </Product>
+
                         ))}
                         <Hr />
                     </Info>

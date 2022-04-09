@@ -1,10 +1,61 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 
 // components
 
 import CardStats from "../Cards/CardStats.js";
+import axios from "axios";
 
 export default function HeaderStats() {
+  const [productsNumber, setProductsNumber] = useState(0);
+  const [soldProductsNumber, setSoldProductsNumber] = useState(0);
+  const [usersNumber, setUsersNumber] = useState(0);
+  const [ordersNumber, setOrdersNumber] = useState(0);
+
+  useEffect(() => {
+    const getProductsNumber = async () => {
+      try {
+        const res = await axios.get(
+
+            "http://localhost:8080/products"
+        );
+        setProductsNumber(res.data.products.length);
+        setSoldProductsNumber(res.data.products.filter(value => value.stock == 0).length);
+      } catch (err) {}
+    };
+    getProductsNumber();
+  });
+
+  useEffect(() => {
+    const getUsersNumber = async () => {
+      try {
+        const res = await axios.get(
+
+            "http://localhost:8080/user",
+            {
+              headers: { Authorization: `Bearer ${JSON.parse(localStorage.getItem("data")).token}` }
+            }
+        );
+        setUsersNumber(res.data.users.length);
+      } catch (err) {}
+    };
+    getUsersNumber();
+  });
+
+  useEffect(() => {
+    const getOrdersNumber = async () => {
+      try {
+        const res = await axios.get(
+
+            "http://localhost:8080/orders",
+            {
+              headers: { Authorization: `Bearer ${JSON.parse(localStorage.getItem("data")).token}` }
+            }
+        );
+        setOrdersNumber(res.data.length);
+      } catch (err) {}
+    };
+    getOrdersNumber();
+  });
   return (
     <>
       {/* Header */}
@@ -15,8 +66,8 @@ export default function HeaderStats() {
             <div className="flex flex-wrap">
               <div className="w-full lg:w-6/12 xl:w-3/12 px-4">
                 <CardStats
-                  statSubtitle="TRAFFIC"
-                  statTitle="350,897"
+                  statSubtitle="Users"
+                  statTitle={usersNumber.toString()}
                   statArrow="up"
                   statPercent="3.48"
                   statPercentColor="text-emerald-500"
@@ -27,8 +78,8 @@ export default function HeaderStats() {
               </div>
               <div className="w-full lg:w-6/12 xl:w-3/12 px-4">
                 <CardStats
-                  statSubtitle="NEW USERS"
-                  statTitle="2,356"
+                  statSubtitle="Products"
+                  statTitle={productsNumber.toString()}
                   statArrow="down"
                   statPercent="3.48"
                   statPercentColor="text-red-500"
@@ -40,7 +91,7 @@ export default function HeaderStats() {
               <div className="w-full lg:w-6/12 xl:w-3/12 px-4">
                 <CardStats
                   statSubtitle="SALES"
-                  statTitle="924"
+                  statTitle={ordersNumber.toString()}
                   statArrow="down"
                   statPercent="1.10"
                   statPercentColor="text-orange-500"
@@ -51,8 +102,8 @@ export default function HeaderStats() {
               </div>
               <div className="w-full lg:w-6/12 xl:w-3/12 px-4">
                 <CardStats
-                  statSubtitle="PERFORMANCE"
-                  statTitle="49,65%"
+                  statSubtitle="Sold Products"
+                  statTitle={soldProductsNumber.toString()}
                   statArrow="up"
                   statPercent="12"
                   statPercentColor="text-emerald-500"

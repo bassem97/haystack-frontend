@@ -19,6 +19,7 @@ import Maps from "./pages/admin/Maps";
 import Settings from "./pages/admin/Settings";
 import Tables from "./pages/admin/Tables";
 import ProfileSettings from './pages/Settings'
+//import SupportEngine from "./components/SupportEngine";
 
 const Home = React.lazy(() => import("./pages/Home"));
 const Login = React.lazy(() => import("./pages/auth/Login"));
@@ -75,6 +76,7 @@ const App = () => {
               <Route path="/settings"  element={<ProfileSettings/>}/>
             </Routes>
           </Suspense>
+          {/*<SupportEngine/>*/}
         </BrowserRouter>
       </>
   )
