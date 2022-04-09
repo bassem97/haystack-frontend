@@ -1,13 +1,30 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react"
 import styled from "styled-components"
 
 import Product from '../components/ProductAlt'
 import axios from "axios";
 
-const user  = localStorage.getItem('data') && localStorage.getItem('data') && JSON.parse(localStorage.getItem('data')).user
+import { useParams } from "react-router-dom"
+
+// localStorage.getItem('data') && localStorage.getItem('data') && JSON.parse(localStorage.getItem('data')).user
 
 export default function Profile() {
+    const params = useParams() 
     let [products, setProducts] = useState([]);
+    let [user, setUser] = useState({
+        _id: params.userId || (localStorage.getItem('data') && JSON.parse(localStorage.getItem('data')).user._id),
+        bio: "", email: "", 
+        experience: 0, 
+        firstName: "", 
+        lastName: "",
+        image: "avatar.jpg",
+        level: 0,
+        newLevelExperience: 0,
+        followers: [],
+        products: []
+    })
+
+    console.log(params)
 
     useEffect(() => {
         const getProducts = async () => {
@@ -20,7 +37,12 @@ export default function Profile() {
             }
         };
         getProducts();
-    }, products)
+
+        (async () => {
+            const newUser = await axios.get(`http://localhost:8080/user/${user._id}`)
+            setUser(newUser.data.user)
+        })()
+    }, [user._id])
 
     return (
         <>
@@ -81,7 +103,7 @@ export default function Profile() {
                 >
                     {
                         products.length > 0
-                            ? products.map(product => <Product product={product} />)
+                            ? products.map((product, index) => <Product key={index} product={product} />)
                             : <h1 className="text-2xl text-center">No products yet...</h1>
                     }
                 </Container>

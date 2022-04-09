@@ -1,23 +1,44 @@
 import React, { useState } from "react"
 import { publicRequest } from "../requestMethods";
 
+import axios from "axios";
+
 const Settings = () => {
-    const [user, setUser] = useState(localStorage.getItem('data') ? {...JSON.parse(localStorage.getItem('data')).user, password: ''} : null)
+    let [user, setUser] = useState({
+        _id: localStorage.getItem('data') && JSON.parse(localStorage.getItem('data')).user._id,
+        bio: "", 
+        email: "", 
+        firstName: "", 
+        lastName: "",
+        password: "",
+        newPassword: ""
+    })
+    let [color, setColor] = useState('lightBlue')
+    let [prompt, setPrompt] = useState('update profile')
+
+    React.useEffect(() => {
+        (async () => {
+            const userData = (await axios.get(`http://localhost:8080/user/${user._id}`)).data.user
+            setUser({...user, bio: userData.bio, email: userData.email, firstName: userData.firstName, lastName: userData.lastName})
+        })()
+    }, [])
 
     const changeHandler = e => {
         setUser({
             ...user,
             [e.target.name]: e.target.value
         })
+        setColor('lightBlue')
+        setPrompt('update profile')
     }
 
     const submitHandler = async e => {
         e.preventDefault();
         console.log(user)
-        await publicRequest
-            .put(`/user/${user._id}`, user)
-            .then(res => console.log(res))
-            .catch(err => console.error(err))
+        const response = await publicRequest.put(`/user/${user._id}`, user)
+        
+        setColor(response.status === 200 ? 'green' : 'red')
+        setPrompt(response.status === 200 ? '✔' : '❌')
     }
 
     return (
@@ -28,10 +49,10 @@ const Settings = () => {
                         <div className="text-center flex justify-between">
                             <h6 className="text-blueGray-700 text-xl font-bold">My account</h6>
                             <button
-                                className="bg-lightBlue-500 text-white active:bg-lightBlue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150"
+                                className={`bg-${color}-500 text-white active:bg-${color}-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150`}
                                 type="submit"
                             >
-                                Update Profile
+                                {prompt}
                             </button>
                         </div>
                     </div>
