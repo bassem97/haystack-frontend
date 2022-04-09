@@ -21,7 +21,7 @@ const Settings = () => {
             const userData = (await axios.get(`http://localhost:8080/user/${user._id}`)).data.user
             setUser({...user, bio: userData.bio, email: userData.email, firstName: userData.firstName, lastName: userData.lastName})
         })()
-    }, [])
+    }, [user])
 
     const changeHandler = e => {
         setUser({
@@ -34,11 +34,23 @@ const Settings = () => {
 
     const submitHandler = async e => {
         e.preventDefault();
-        console.log(user)
-        const response = await publicRequest.put(`/user/${user._id}`, user)
         
-        setColor(response.status === 200 ? 'green' : 'red')
-        setPrompt(response.status === 200 ? '✔' : '❌')
+        publicRequest.put(`/user/${user._id}`, user)
+        .then(response => {
+            if(response.status === 200){
+                setColor('green')
+                setPrompt('✔')
+            }
+            else{
+                setColor('red')
+                setPrompt('❌')    
+            }
+        })
+        .catch(error => {
+            console.log(error)
+            setColor('red')
+            setPrompt('❌')    
+        })
     }
 
     return (
@@ -121,7 +133,7 @@ const Settings = () => {
                                         value={user.newPassword || ''}
                                         onChange={changeHandler}
                                     />
-                                </div>
+                                </div>    
                             </div>
                         </div>
                         <hr className="mt-6 border-b-1 border-blueGray-300" />
@@ -135,10 +147,10 @@ const Settings = () => {
                                         About me
                                     </label>
                                     <textarea type="text"
-                                              className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 h-60"
-                                              name="bio"
-                                              value={user.bio}
-                                              onChange={changeHandler}
+                                        className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 h-60"
+                                        name="bio"
+                                        value={user.bio}
+                                        onChange={changeHandler}
                                     >
                                     </textarea>
                                 </div>

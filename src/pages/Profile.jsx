@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from "react"
 import styled from "styled-components"
-
 import Product from '../components/ProductAlt'
 import axios from "axios";
 
