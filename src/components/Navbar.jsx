@@ -6,10 +6,10 @@ import { BellIcon, MenuIcon, XIcon } from '@heroicons/react/outline'
 import { useNavigate, NavLink} from 'react-router-dom'
 
 const navigation = [
-    { name: 'الدبش', href: '/products', requiresAuth: false },
-    { name: 'الكماندة', href: '/cart', requiresAuth: false },
-    { name: 'الحبل', href: '/feed', requiresAuth: false },
-    { name: 'زيد دبش', href: '/products/add', requiresAuth: true }
+    { name: 'الدبش', href: 'products', requiresAuth: false },
+    { name: 'الكماندة', href: 'cart', requiresAuth: false },
+    { name: 'الحبل', href: 'feed', requiresAuth: false },
+    { name: 'زيد دبش', href: 'products/add', requiresAuth: true }
 ]
 
 function classNames(...classes) {
@@ -57,7 +57,8 @@ export default function Navbar() {
                                             <>
                                                 {!(item.requiresAuth && !isAuth) && <NavLink
                                                     key={item.name}
-                                                    to={item.href}
+                                                    to={item.href} 
+                                                    end
                                                     className={navData => `${navData.isActive ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white'} px-3 py-2 rounded-md text-sm font-medium`}
                                                     aria-current={item.current ? 'page' : undefined}
                                                 >
