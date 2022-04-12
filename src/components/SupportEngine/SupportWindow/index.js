@@ -1,7 +1,5 @@
 import React from "react";
 import {styles} from "../styles";
-import {Icon} from "antd";
-import SupportEngine from "../index";
 import Chatbot from "../../Chatbot/Chatbot";
 
 const SupportWindow = props =>{
