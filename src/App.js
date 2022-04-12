@@ -8,7 +8,6 @@ import './assets/styles/index.css';
 import Navbar from "./components/Navbar";
 import Profile from "./pages/Profile";
 import Success from "./pages/Success";
-import { useSelector } from "react-redux";
 import {gapi} from "gapi-script";
 import Verification from "./pages/Verification";
 import PasswordRecovery from "./pages/auth/PasswordRecovery";
@@ -67,14 +66,15 @@ const App = () => {
               <Route path="/products/add" element={<AddProduct/>}/>
               <Route path="/product/:id"  element={<Product/>}/>
               <Route path="/success" element={<Success/>}/>
+              
               <Route path="/profile"  element={<Profile/>}/>
               <Route path="/profile/:userId"  element={<Profile/>}/>
+              <Route path="/settings"  element={<ProfileSettings/>}/>
+              <Route path="/feed" element={<Feed/>}/>
+              
               <Route path="/verification"  element={<Verification/>}/>
               <Route path="/password-recovery"  element={<PasswordRecovery/>}/>
               <Route path="/password-recovery/:id"  element={<NewPasswordRecovery/>}/>
-              <Route path="/settings"  element={<ProfileSettings/>}/>
-
-              <Route path="/feed" element={<Feed/>}/>
             </Routes>
           </Suspense>
           {/*<SupportEngine/>*/}

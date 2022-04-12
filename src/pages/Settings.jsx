@@ -18,7 +18,7 @@ const Settings = () => {
 
     React.useEffect(() => {
         (async () => {
-            const userData = (await axios.get(`http://localhost:8080/user/${user._id}`)).data.user
+            const userData = (await axios.get(`${process.env.REACT_APP_API_URL}/user/${user._id}`)).data.user
             setUser({...user, bio: userData.bio, email: userData.email, firstName: userData.firstName, lastName: userData.lastName})
         })()
     // eslint-disable-next-line react-hooks/exhaustive-deps
