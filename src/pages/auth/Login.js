@@ -1,6 +1,9 @@
 import React, {useEffect, useState} from "react";
 import {LockClosedIcon} from "@heroicons/react/solid";
 import axios from "axios";
+import GoogleLogin from "react-google-login";
+import FacebookLogin from "react-facebook-login";
+import {useNavigate} from "react-router-dom";
 
 
 export default function Login() {
@@ -8,6 +11,8 @@ export default function Login() {
   const [password, setPassword] = useState('');
   const [msg, setMsg] = useState('');
   const isVerified = window.location.href == "http://localhost:3000/login/verified";
+  const navigate = useNavigate();
+
 
   useEffect(() => {
     if(isVerified){
@@ -27,7 +32,8 @@ export default function Login() {
         if( res.data.error) setMsg(res.data.error)
         else {
           localStorage.setItem('data',JSON.stringify(res.data));
-          window.location.href = "/"
+          navigate("/");
+
 
         }
 
@@ -49,6 +55,49 @@ export default function Login() {
       )
     return null
 
+  }
+
+  const responseGoogle = async (response) => {
+    console.log(response)
+    const user = await axios.get('http://localhost:8080/user/email/'+response.profileObj.email);
+    if(!user){
+      await axios.post('http://localhost:8080/auth/register', {
+        firstName: response.profileObj.givenName,
+        lastName: response.profileObj.familyName,
+        email: response.profileObj.email,
+        image: response.profileObj.imageUrl,
+        googleId: response.profileObj.googleId,
+      })
+    }
+    await axios.post('http://localhost:8080/auth/google/login', {email: response.profileObj.email})
+        .then(res =>{
+            if( res.data.error) setMsg(res.data.error)
+            else{
+              localStorage.setItem('data',JSON.stringify(res.data));
+              navigate("/");
+            }
+          })
+  }
+  const responseFacebook = async (response) => {
+    console.log(response)
+    const user = await axios.get('http://localhost:8080/user/email/'+response.email);
+    if(user.data){
+      await axios.post('http://localhost:8080/auth/register', {
+        firstName: response.name.split(' ')[0],
+        lastName: response.name.split(' ')[1],
+        email: response.email,
+        image: response.picture.data.url,
+        facebookId: response.userID,
+      })
+    }
+    await axios.post('http://localhost:8080/auth/google/login', {email: response.email})
+        .then(res =>{
+          if( res.data.error) setMsg(res.data.error)
+          else{
+            localStorage.setItem('data',JSON.stringify(res.data));
+            navigate("/");
+          }
+        })
   }
   return (
     <>
@@ -142,7 +191,35 @@ export default function Login() {
                   Sign in
                 </button>
               </div>
+              <div>
+                <button
+                    className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-700 hover:bg-blue-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                    type="button"
+                    onClick={()=>document.getElementById('facebook').click()}
+
+                >
+                  <img
+                      alt="..."
+                      className="w-5 mr-1"
+                      src={require("../../assets/img/facebook.svg").default}
+                  />
+                  <FacebookLogin
+                      appId="1090878681476995"
+                      fields="name,email,picture"
+                      cssClass="my-facebook-button-class"
+                      textButton="Facebook"
+                      id="facebook"
+                      callback={responseFacebook} />
+                </button>
+                    <GoogleLogin
+                        clientId="912577134712-br4ui585rlm1k3ptrkpbkfhaqiaurmgh.apps.googleusercontent.com"
+                        onSuccess={responseGoogle}
+                        onFailure={responseGoogle}
+                        buttonText="Google"
+                    />
+                </div>
             </form>
+
           </div>
         </div>
 

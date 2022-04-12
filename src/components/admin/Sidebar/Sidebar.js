@@ -140,13 +140,13 @@ export default function Sidebar() {
                 >
                   <i
                     className={
-                      "fas fa-table mr-2 text-sm " +
+                      "fas fa-user mr-2 text-sm " +
                       (window.location.href.indexOf("/admin/tables") !== -1
                         ? "opacity-75"
                         : "text-blueGray-300")
                     }
                   ></i>{" "}
-                  Tables
+                  Users
                 </Link>
               </li>
 
