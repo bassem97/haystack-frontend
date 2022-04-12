@@ -5,13 +5,14 @@ import axios from "axios";
 
 import { useParams } from "react-router-dom"
 
-// localStorage.getItem('data') && localStorage.getItem('data') && JSON.parse(localStorage.getItem('data')).user
-
 export default function Profile() {
     const params = useParams() 
+    const connectedUser = (localStorage.getItem('data') && JSON.parse(localStorage.getItem('data')).user._id)
+
     let [products, setProducts] = useState([]);
+
     let [user, setUser] = useState({
-        _id: params.userId || (localStorage.getItem('data') && JSON.parse(localStorage.getItem('data')).user._id),
+        _id: params.userId || connectedUser,
         bio: "", email: "", 
         experience: 0, 
         firstName: "", 
@@ -23,13 +24,22 @@ export default function Profile() {
         products: []
     })
 
-    console.log(params)
+    let [prompt, setPrompt] = useState('⏳')
+
+    const handleFollow = () => {
+        axios.post(`${process.env.REACT_APP_API_URL}/user/${prompt}`, {
+            id: connectedUser,
+            followerId: params.userId
+        })
+
+        setPrompt(prompt === 'unfollow' ? 'follow' : 'unfollow')
+    }
 
     useEffect(() => {
         const getProducts = async () => {
             try {
                 const res = await axios.get(
-                    "http://localhost:8080/products/owner/" + user._id
+                    process.env.REACT_APP_API_URL+"/products/owner/" + user._id
                 );
                 await setProducts(res.data.products);
             } catch (err) {
@@ -38,10 +48,22 @@ export default function Profile() {
         getProducts();
 
         (async () => {
-            const newUser = await axios.get(`http://localhost:8080/user/${user._id}`)
+            const newUser = await axios.get(`${process.env.REACT_APP_API_URL}/user/${user._id}`)
+            console.log(newUser)
             setUser(newUser.data.user)
         })()
-    }, [user._id])
+
+        //prompt set up
+        if(params.userId)
+            axios
+                .get(`${process.env.REACT_APP_API_URL}/user/${connectedUser}/following/${params.userId}`)
+                .then(res => {
+                    setPrompt(res.data.following ? 'unfollow' : 'follow')
+                })
+        
+    }, [user._id, connectedUser, params.userId])
+
+    // useEffect(() => console.log(user), [user])
 
     return (
         <>
@@ -58,6 +80,15 @@ export default function Profile() {
                 <Avatar  src={ user.image?'http://localhost:8080/files/' + user.image : 'http://localhost:8080/files/avatar.jpg' } />
                 <Title size={3}>{`${user.firstName} ${user.lastName}`}</Title>
                 <Title size={1.5}>Level {user.level || 0}</Title>
+                {
+                    (params.userId && localStorage.getItem('data')) &&
+                    <button 
+                        className="bg-gray-800 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded mt-6 w-24 text-sm"
+                        onClick={handleFollow}
+                    >
+                        {prompt}
+                    </button>
+                }
             </Banner>
 
             <Container width='100vw' padding='0px 350px' margin='25px 0px'>

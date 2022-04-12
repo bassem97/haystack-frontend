@@ -8,7 +8,6 @@ import './assets/styles/index.css';
 import Navbar from "./components/Navbar";
 import Profile from "./pages/Profile";
 import Success from "./pages/Success";
-import { useSelector } from "react-redux";
 import {gapi} from "gapi-script";
 import Verification from "./pages/Verification";
 import PasswordRecovery from "./pages/auth/PasswordRecovery";
@@ -24,6 +23,7 @@ import ProfileSettings from './pages/Settings'
 const Home = React.lazy(() => import("./pages/Home"));
 const Login = React.lazy(() => import("./pages/auth/Login"));
 const Register = React.lazy(() => import("./pages/auth/Register"));
+const Feed = React.lazy(() => import("./pages/Feed"));
 
 const clientId = "912577134712-br4ui585rlm1k3ptrkpbkfhaqiaurmgh.apps.googleusercontent.com"
 
@@ -53,7 +53,6 @@ const App = () => {
               <Route path="/login"  element={<Login/>}/>
               <Route path="/login/verified"  element={<Login/>}/>
               <Route path="/register"  element={<Register/>}/>
-              {/*<Route path="/auth" component={Auth} />*/}
 
               <Route path="/admin" element={<Admin/>} />
               <Route path="/admin/dashboard"  element={<Dashboard/>} />
@@ -61,19 +60,21 @@ const App = () => {
               <Route path="/admin/settings"  element={<Settings/>} />
               <Route path="/admin/tables"  element={<Tables/>} />
 
-
               <Route path="/shoppingCart"  element={<Cart/>}/>
               <Route path="/cart"  element={<Cart/>}/>
               <Route path="/products"  element={<ProductList/>}/>
-              <Route exact path="/products/add"  element={<AddProduct/>}/>
+              <Route path="/products/add" element={<AddProduct/>}/>
               <Route path="/product/:id"  element={<Product/>}/>
               <Route path="/success" element={<Success/>}/>
+              
               <Route path="/profile"  element={<Profile/>}/>
               <Route path="/profile/:userId"  element={<Profile/>}/>
+              <Route path="/settings"  element={<ProfileSettings/>}/>
+              <Route path="/feed" element={<Feed/>}/>
+              
               <Route path="/verification"  element={<Verification/>}/>
               <Route path="/password-recovery"  element={<PasswordRecovery/>}/>
               <Route path="/password-recovery/:id"  element={<NewPasswordRecovery/>}/>
-              <Route path="/settings"  element={<ProfileSettings/>}/>
             </Routes>
           </Suspense>
           {/*<SupportEngine/>*/}
