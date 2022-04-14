@@ -7,12 +7,19 @@ import {PersistGate} from "redux-persist/integration/react";
 
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "./assets/styles/tailwind.css";
+import {AuthProvider} from "./Context";
+import * as serviceWorker from "./serviceWorker";
 
 ReactDOM.render(
     <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
-            <App />
+            <AuthProvider>
+                <App />
+            </AuthProvider>
         </PersistGate>
     </Provider>,
     document.getElementById("root")
 );
+
+serviceWorker.register();
+

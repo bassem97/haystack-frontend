@@ -4,6 +4,7 @@ import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { BellIcon, MenuIcon, XIcon } from '@heroicons/react/outline'
 
 import { useNavigate, NavLink} from 'react-router-dom'
+import {logout, useAuthDispatch, useAuthState} from "../Context";
 
 const navigation = [
     { name: 'الدبش', href: 'products', requiresAuth: false },
@@ -17,10 +18,17 @@ function classNames(...classes) {
 }
 
 export default function Navbar() {
-    const isAuth  = !!localStorage.getItem("data");
-    const user = isAuth ? JSON.parse(localStorage.getItem("data")).user : null;
+    const dispatch = useAuthDispatch();
+    const userDetails = useAuthState();
+
+    const user = userDetails.user;
 
     const navigate = useNavigate()
+
+    function handleLogout() {
+        logout(dispatch);
+        navigate('/');
+    }
 
     return (
         <Disclosure as="nav" className="bg-gray-800 sticky top-0 z-50">
@@ -55,7 +63,7 @@ export default function Navbar() {
                                     <div className="flex space-x-4">
                                         {navigation.map((item) => (
                                             <>
-                                                {!(item.requiresAuth && !isAuth) && <NavLink
+                                                {!(item.requiresAuth && !user) && <NavLink
                                                     key={item.name}
                                                     to={item.href} 
                                                     end
@@ -70,7 +78,7 @@ export default function Navbar() {
                                 </div>
                             </div>
                             <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                                {isAuth ? (
+                                {user ? (
                                     <>
                                         <div className="font-bold text-white hidden md:block">
                                             {user.firstName} {user.lastName}
@@ -129,10 +137,7 @@ export default function Navbar() {
                                                     <Menu.Item>
                                                         {({ active }) => (
                                                             <button
-                                                                onClick={()=> {
-                                                                    localStorage.removeItem("data");
-                                                                    navigate('/')
-                                                                }}
+                                                                onClick={()=> handleLogout()}
                                                                 className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700 w-full text-left')}
                                                             >
                                                                 Sign out
@@ -172,7 +177,7 @@ export default function Navbar() {
                                     {item.name}
                                 </Disclosure.Button>
                             ))}
-                            {isAuth && <Disclosure.Button
+                            {user && <Disclosure.Button
                                 href="/products/add"
                                 className={classNames(
                                     'text-gray-300 hover:bg-gray-700 hover:text-white',

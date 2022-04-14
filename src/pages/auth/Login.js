@@ -4,14 +4,17 @@ import axios from "axios";
 import GoogleLogin from "react-google-login";
 import FacebookLogin from "react-facebook-login";
 import {useNavigate} from "react-router-dom";
+import { loginUser, useAuthState, useAuthDispatch } from "../../Context"
 
 
-export default function Login() {
+
+export default function Login(props) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [msg, setMsg] = useState('');
   const isVerified = window.location.href == "http://localhost:3000/login/verified";
   const navigate = useNavigate();
+  const dispatch = useAuthDispatch() //get the dispatch method from the useDispatch custom hook
 
 
   useEffect(() => {
@@ -24,25 +27,68 @@ export default function Login() {
 
   const Login = async (e) => {
     e.preventDefault();
-
-      await axios.post('http://localhost:8080/auth/login', {
-        email: email,
-        password: password,
-      }).then(res => {
-        if( res.data.error) setMsg(res.data.error)
-        else {
-          localStorage.setItem('data',JSON.stringify(res.data));
-          navigate("/");
-
-
-        }
-
-      });
-
-      // if (error.response) {
-      //   setMsg(error.response.data.error);
-      // }
+    let payload = {email, password}
+    let path = "login"
+    try {
+      let response = await loginUser(dispatch, payload,path) //loginUser action makes the request and handles all the neccessary state changes
+      if (!response.user)
+        setMsg(response)
+      else
+        navigate("/");
+    } catch (error) {
+      console.log(error)
+    }
   }
+
+
+  const responseGoogle = async (response) => {
+
+    const user = await axios.get('http://localhost:8080/user/email/'+response.profileObj.email);
+    if(!!user){
+      await axios.post('http://localhost:8080/auth/register', {
+        firstName: response.profileObj.givenName,
+        lastName: response.profileObj.familyName,
+        email: response.profileObj.email,
+        image: response.profileObj.imageUrl,
+        googleId: response.profileObj.googleId,
+      })
+    }
+    let payload = {email : response.profileObj.email}
+    let path = "google/login"
+    try {
+      let response = await loginUser(dispatch, payload,path )//loginUser action makes the request and handles all the neccessary state changes
+      if (!response.user) setMsg(response)
+      navigate("/");
+    } catch (error) {
+      console.log(error)
+      setMsg(error)
+    }
+  }
+  const responseFacebook = async (response) => {
+    console.log(response)
+    const user = await axios.get('http://localhost:8080/user/email/'+response.email);
+    if(!!user){
+      await axios.post('http://localhost:8080/auth/register', {
+        firstName: response.name.split(' ')[0],
+        lastName: response.name.split(' ')[1],
+        email: response.email,
+        image: response.picture.data.url,
+        facebookId: response.userID,
+      })
+    }
+    let payload = {email : response.email}
+    let path = "google/login"
+
+    try {
+      let response = await loginUser(dispatch, payload,path )//loginUser action makes the request and handles all the neccessary state changes
+      if (!response.user) setMsg(response)
+      navigate("/");
+    } catch (error) {
+      console.log(error)
+      setMsg(error)
+    }
+  }
+
   const renderErrorMessage = function () {
     if (msg)
       return (
@@ -55,49 +101,6 @@ export default function Login() {
       )
     return null
 
-  }
-
-  const responseGoogle = async (response) => {
-    console.log(response)
-    const user = await axios.get('http://localhost:8080/user/email/'+response.profileObj.email);
-    if(!user){
-      await axios.post('http://localhost:8080/auth/register', {
-        firstName: response.profileObj.givenName,
-        lastName: response.profileObj.familyName,
-        email: response.profileObj.email,
-        image: response.profileObj.imageUrl,
-        googleId: response.profileObj.googleId,
-      })
-    }
-    await axios.post('http://localhost:8080/auth/google/login', {email: response.profileObj.email})
-        .then(res =>{
-            if( res.data.error) setMsg(res.data.error)
-            else{
-              localStorage.setItem('data',JSON.stringify(res.data));
-              navigate("/");
-            }
-          })
-  }
-  const responseFacebook = async (response) => {
-    console.log(response)
-    const user = await axios.get('http://localhost:8080/user/email/'+response.email);
-    if(user.data){
-      await axios.post('http://localhost:8080/auth/register', {
-        firstName: response.name.split(' ')[0],
-        lastName: response.name.split(' ')[1],
-        email: response.email,
-        image: response.picture.data.url,
-        facebookId: response.userID,
-      })
-    }
-    await axios.post('http://localhost:8080/auth/google/login', {email: response.email})
-        .then(res =>{
-          if( res.data.error) setMsg(res.data.error)
-          else{
-            localStorage.setItem('data',JSON.stringify(res.data));
-            navigate("/");
-          }
-        })
   }
   return (
     <>

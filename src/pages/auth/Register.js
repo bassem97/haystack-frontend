@@ -3,6 +3,7 @@ import axios from "axios";
 import {useNavigate} from "react-router-dom";
 import GoogleLogin from "react-google-login";
 import FacebookLogin from 'react-facebook-login';
+import {loginUser, useAuthDispatch} from "../../Context";
 
 
 
@@ -16,15 +17,16 @@ export default function Register() {
   const [password,setPassword] = useState("");
   const [repassword,setRepassword] = useState("");
   const [msg, setMsg] = useState('');
-
+  const dispatch = useAuthDispatch() //get the dispatch method from the useDispatch custom hook
   const navigate = useNavigate();
 
 
 
-  const responseGoogle = async (response) => {
+   const responseGoogle = async (response) => {
     console.log(response)
     const user = await axios.get('http://localhost:8080/user/email/'+response.profileObj.email);
-    if(!user){
+     console.log(!user);
+     if(!!user){
       await axios.post('http://localhost:8080/auth/register', {
         firstName: response.profileObj.givenName,
         lastName: response.profileObj.familyName,
@@ -33,20 +35,22 @@ export default function Register() {
         googleId: response.profileObj.googleId,
       })
     }
-    await axios.post('http://localhost:8080/auth/google/login', {email: response.profileObj.email})
-        .then(res =>{
-          if( res.data.error) setMsg(res.data.error)
-          else{
-            localStorage.setItem('data',JSON.stringify(res.data));
-            navigate("/");
-          }
-        })
+     let payload = {email : response.profileObj.email}
+     let path = "google/login"
+     try {
+       let response = await loginUser(dispatch, payload,path )//loginUser action makes the request and handles all the neccessary state changes
+       if (!response.user) setMsg(response)
+       navigate("/");
+     } catch (error) {
+       console.log(error)
+       setMsg(error)
+     }
   }
 
   const responseFacebook = async (response) => {
     console.log(response)
     const user = await axios.get('http://localhost:8080/user/email/'+response.email);
-    if(user.data){
+    if(!!user){
       await axios.post('http://localhost:8080/auth/register', {
         firstName: response.name.split(' ')[0],
         lastName: response.name.split(' ')[1],
@@ -55,14 +59,17 @@ export default function Register() {
         facebookId: response.userID,
       })
     }
-    await axios.post('http://localhost:8080/auth/google/login', {email: response.email})
-        .then(res =>{
-          if( res.data.error) setMsg(res.data.error)
-          else{
-            localStorage.setItem('data',JSON.stringify(res.data));
-            navigate("/");
-          }
-        })
+    let payload = {email : response.email}
+    let path = "google/login"
+
+    try {
+      let response = await loginUser(dispatch, payload,path )//loginUser action makes the request and handles all the neccessary state changes
+      if (!response.user) setMsg(response)
+      navigate("/");
+    } catch (error) {
+      console.log(error)
+      setMsg(error)
+    }
   }
 
 

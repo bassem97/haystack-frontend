@@ -106,7 +106,7 @@ export default function CardTable({ color }) {
                       : "bg-lightBlue-800 text-lightBlue-300 border-lightBlue-700")
                   }
                 >
-                  Products
+                  Level
                 </th>
                 <th
                   className={
@@ -153,7 +153,7 @@ export default function CardTable({ color }) {
                                   (<img
                                       src={users.find(usr => usr._id == u).image ? users.find(usr => usr._id == u).image.includes("http") ? users.find(usr => usr._id == u).image : 'http://localhost:8080/files/' + users.find(usr => usr._id == u).image : 'http://localhost:8080/files/avatar.jpg'}
                                       title={users.find(usr => usr._id == u).email}
-                                      className="w-10 h-10 rounded-full border-2 border-blueGray-50 shadow"
+                                      className="w-10 h-10 rounded-full border-2 border-blueGray-50 shadow -ml-4"
                                       alt={users.find(usr => usr._id == u).email}/>)
 
                               )}

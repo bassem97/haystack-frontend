@@ -5,11 +5,13 @@ import { publicRequest } from "../requestMethods";
 import {useNavigate} from "react-router";
 import Select from 'react-select';
 import axios from "axios";
+import {useAuthDispatch, useAuthState} from "../Context";
 
 const AddProduct = () => {
 
-    const isAuth  = !!localStorage.getItem("data");
-    const user = isAuth ? JSON.parse(localStorage.getItem("data")).user : null;
+    const userDetails = useAuthState();
+
+    const user = userDetails.user;
 
     const navigate = useNavigate();
     const [categoriesList, setCategoriesList] = useState([]);
