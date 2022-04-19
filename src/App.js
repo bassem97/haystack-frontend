@@ -17,6 +17,7 @@ import Dashboard from "./pages/admin/Dashboard";
 import Maps from "./pages/admin/Maps";
 import Settings from "./pages/admin/Settings";
 import Tables from "./pages/admin/Tables";
+import Orders from "./pages/admin/Orders";
 import ProfileSettings from './pages/Settings'
 //import SupportEngine from "./components/SupportEngine";
 
@@ -59,6 +60,7 @@ const App = () => {
               <Route path="/admin/maps"  element={<Maps/>} />
               <Route path="/admin/settings"  element={<Settings/>} />
               <Route path="/admin/tables"  element={<Tables/>} />
+              <Route path="/admin/orders"  element={<Orders/>} />
 
               <Route path="/shoppingCart"  element={<Cart/>}/>
               <Route path="/cart"  element={<Cart/>}/>
