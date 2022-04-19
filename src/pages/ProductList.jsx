@@ -5,6 +5,7 @@ import Footer from "../components/Footer";
 import {mobile} from "../responsive";
 import {useLocation} from "react-router";
 import {useState} from "react";
+import {useAuthState} from "../Context";
 
 const Container = styled.div``;
 
@@ -42,6 +43,9 @@ const ProductList = () => {
     const [filters, setFilters] = useState({});
     const [sort, setSort] = useState("newest");
     const [search, setSearch] = useState("");
+    const userDetails = useAuthState();
+    const user = userDetails.user;
+    console.log(user);
 
     const handleFilters = (e) => {
         const value = e.target.value;

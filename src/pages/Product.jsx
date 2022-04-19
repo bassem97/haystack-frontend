@@ -20,8 +20,12 @@ const Product = () => {
     const [color, setColor] = useState("");
     const [size, setSize] = useState("");
     const dispatch = useDispatch();
+    const userDetails = useAuthState();
+    const user = userDetails.user;
+    console.log(userDetails);
     const navigate = useNavigate();
-    const connectedUser = (localStorage.getItem('currentUser') && JSON.parse(localStorage.getItem('currentUser')).user)
+    
+    //const connectedUser = (localStorage.getItem('currentUser') && JSON.parse(localStorage.getItem('currentUser')).user)
     //const connectedUser = useAuthState().user;
 
 

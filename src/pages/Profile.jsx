@@ -4,10 +4,13 @@ import Product from '../components/ProductAlt'
 import axios from "axios";
 
 import { useParams } from "react-router-dom"
+import {useAuthState} from "../Context";
 
 export default function Profile() {
-    const params = useParams() 
-    const connectedUser = (localStorage.getItem('data') && JSON.parse(localStorage.getItem('data')).user._id)
+    const params = useParams()
+    const userDetails = useAuthState();
+    const connectedUser = userDetails.user;
+    console.log(connectedUser);
 
     let [products, setProducts] = useState([]);
 
@@ -39,7 +42,7 @@ export default function Profile() {
         const getProducts = async () => {
             try {
                 const res = await axios.get(
-                    process.env.REACT_APP_API_URL+"/products/owner/" + user._id
+                    process.env.REACT_APP_API_URL+"/products/owner/" + user._id._id
                 );
                 await setProducts(res.data.products);
             } catch (err) {
@@ -48,7 +51,8 @@ export default function Profile() {
         getProducts();
 
         (async () => {
-            const newUser = await axios.get(`${process.env.REACT_APP_API_URL}/user/${user._id}`)
+            console.log(user._id._id)
+            const newUser = await axios.get(`${process.env.REACT_APP_API_URL}/user/${user._id._id}`)
             console.log(newUser)
             setUser(newUser.data.user)
         })()
