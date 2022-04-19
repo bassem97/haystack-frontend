@@ -5,19 +5,33 @@ import { publicRequest } from "../requestMethods";
 import {useNavigate} from "react-router";
 import Select from 'react-select';
 import axios from "axios";
-import {useAuthDispatch, useAuthState} from "../Context";
+import {useLocation} from "react-router-dom";
 
-const AddProduct = () => {
+const UpdateProduct = () => {
 
-    const userDetails = useAuthState();
 
-    // const user = userDetails.userDetails;
-    const user = (localStorage.getItem('currentUser') && JSON.parse(localStorage.getItem('currentUser')).user);
+
+    const user = (localStorage.getItem('currentUser') && JSON.parse(localStorage.getItem('currentUser')).user)
+    const location = useLocation();
+    const id = location.pathname.split("/")[2];
+    const [product, setProduct] = useState({});
+    useEffect(() => {
+        const getProduct = async () => {
+            try {
+                const res = await publicRequest.get("/products/" + id);
+                setProduct(res.data.product);
+            } catch {}
+        };
+        getProduct();
+    }, []);
+    const [quantity, setQuantity] = useState(1);
 
     const navigate = useNavigate();
     const [categoriesList, setCategoriesList] = useState([]);
     const [options, setOptions] = useState([]);
     // maps the appropriate column to categories  fields property
+
+
 
     useEffect(() => {
         const getCategories = async () => {
@@ -51,13 +65,13 @@ const AddProduct = () => {
 
 
     const onChange = (e) => {
-        setFormData({...formData, [e.target.name]: e.target.value});
+        setProduct({...product, [e.target.name]: e.target.value});
     };
 
     const onChangeCategory = (e) => {
         const result = [];
         e.forEach(x => result.push(x.value));
-        setFormData({...formData, categories: result});
+        setProduct({...product, categories: result});
     };
 
 
@@ -77,7 +91,7 @@ const AddProduct = () => {
                     imageFormData
                 );
                 console.log(res.data.name);
-                setFormData({...formData, image: res.data.name});
+                setProduct({...product, image: res.data.name});
             } catch (e) {
                 console.log(e);
             }
@@ -112,16 +126,13 @@ const AddProduct = () => {
 
     const onSubmit = async (e) => {
         e.preventDefault();
-        console.log(formData);
         try {
-            console.log("POST")
-            console.log(JSON.parse(localStorage.getItem("currentUser")).token)
-            await publicRequest.post(
-                "/products/",
-                    formData,
+            await publicRequest.put(
+                "/products/" + product._id,
+                product,
                 {
-                    headers: { Authorization: `Bearer ${JSON.parse(localStorage.getItem("currentUser")).token}` }
-                     },
+                    headers: { Authorization: `Bearer ${user.token}` }
+                },
             ).then(() => {
                 navigate('/products');
             });
@@ -130,7 +141,7 @@ const AddProduct = () => {
         }
     };
 
-    const {name, description, price, image, optional_images, categories} = formData;
+    const {name, description, price, image, optional_images, categories} = product;
 
     return (
         <Wrapper>
@@ -145,7 +156,7 @@ const AddProduct = () => {
                         name="name"
                         placeholder="name"
                         value={name}
-                        onChange={(e) => onChange(e)}
+                        onChange={onChange}
                     />
                 </FormGroup>
                 <FormGroup>
@@ -166,22 +177,22 @@ const AddProduct = () => {
                         onChange={(e) => onChange(e)}
                     />
                 </FormGroup>
-                    {/*<MultiSelectComponent
+                {/*<MultiSelectComponent
                         dataSource={categoriesList} fields={{value: "_id", text: "name"}} placeholder="Select a category"
                         name="categories"
                         value={categories}
                         onChange={(e) => onChange(e)}
                         />*/}
-                <Select isMulti={true} options={options}
+                <Select isMulti={true} options={options} defaultInputValue={categories}
                         onChange={(e) => onChangeCategory(e)}/>
                 <FormGroup>
-                        <p>Image
-                    <FormField
-                        type="file"
-                        name="image"
-                        onChange={(e) => onChangeFile(e)}
-                    />
-                        </p>
+                    <p>Image
+                        <FormField
+                            type="file"
+                            name="image"
+                            onChange={(e) => onChangeFile(e)}
+                        />
+                    </p>
                 </FormGroup>
                 <FormGroup>
                     <p>Optional Images (Up to 3)
@@ -193,7 +204,7 @@ const AddProduct = () => {
                         />
                     </p>
                 </FormGroup>
-                <FormButton>Save</FormButton>
+                <FormButton>Update</FormButton>
             </Form>
         </Wrapper>
     );
@@ -296,4 +307,4 @@ const Loader = styled.svg`
   }
 `;
 
-export default AddProduct;
+export default UpdateProduct;

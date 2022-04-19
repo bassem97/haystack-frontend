@@ -21,7 +21,7 @@ export default function Navbar() {
     const dispatch = useAuthDispatch();
     const userDetails = useAuthState();
 
-    const user = userDetails.user;
+    const user = (localStorage.getItem('currentUser') && JSON.parse(localStorage.getItem('currentUser')).user);
 
     const navigate = useNavigate()
 
@@ -65,7 +65,7 @@ export default function Navbar() {
                                             <>
                                                 {!(item.requiresAuth && !user) && <NavLink
                                                     key={item.name}
-                                                    to={item.href} 
+                                                    to={item.href}
                                                     end
                                                     className={navData => `${navData.isActive ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white'} px-3 py-2 rounded-md text-sm font-medium`}
                                                     aria-current={item.current ? 'page' : undefined}
