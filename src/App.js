@@ -18,6 +18,7 @@ import Maps from "./pages/admin/Maps";
 import Settings from "./pages/admin/Settings";
 import Tables from "./pages/admin/Tables";
 import ProfileSettings from './pages/Settings'
+import VideoChat from "./pages/VideoChat";
 //import SupportEngine from "./components/SupportEngine";
 
 const Home = React.lazy(() => import("./pages/Home"));
@@ -71,7 +72,8 @@ const App = () => {
               <Route path="/profile/:userId"  element={<Profile/>}/>
               <Route path="/settings"  element={<ProfileSettings/>}/>
               <Route path="/feed" element={<Feed/>}/>
-              
+              <Route path="/video" element={<VideoChat/>}/>
+
               <Route path="/verification"  element={<Verification/>}/>
               <Route path="/password-recovery"  element={<PasswordRecovery/>}/>
               <Route path="/password-recovery/:id"  element={<NewPasswordRecovery/>}/>

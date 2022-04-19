@@ -21,6 +21,7 @@
     "postinstall-js": "^0.7.2",
     "prop-types": "^15.8.1",
     "react": "^17.0.2",
+    "react-copy-to-clipboard": "^5.1.0",
     "react-dom": "^17.0.2",
     "react-facebook-login": "^4.1.1",
     "react-google-login": "^5.2.2",
@@ -35,6 +36,7 @@
     "redux-persist": "^6.0.0",
     "redux-promise": "^0.6.0",
     "redux-thunk": "^2.4.1",
+    "socket.io-client": "^4.4.1",
     "styled-components": "^5.3.3",
     "uuid": "^3.3.2",
     "web-vitals": "^2.1.4"
