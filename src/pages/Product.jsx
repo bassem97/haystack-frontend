@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { publicRequest } from "../requestMethods";
 import { addProduct } from "../redux/carttRedux";
 import { useDispatch } from "react-redux";
+import {useAuthState} from "../Context";
 
 const Container = styled.div``;
 
@@ -17,6 +18,9 @@ const Product = () => {
     const [color, setColor] = useState("");
     const [size, setSize] = useState("");
     const dispatch = useDispatch();
+    const userDetails = useAuthState();
+    const user = userDetails.user;
+    console.log(userDetails);
 
     useEffect(() => {
         const getProduct = async () => {
