@@ -5,14 +5,19 @@ import PropTypes from "prop-types";
 
 import TableDropdown from "../Dropdowns/TableDropdown.js";
 import axios from "axios";
+import {useAuthState} from "../../../Context";
 
 export default function CardTable({ color }) {
+  const userDetails = useAuthState();
+  const user = userDetails.user;
+
   const [users, setusers] = useState([]);
   useEffect(() => {
     const getUsers = async () => {
+      console.log(userDetails);
       try {
         const res = await axios.get("http://localhost:8080/user",
-            { headers: {"Authorization" : `Bearer ${JSON.parse(localStorage.data).token}`} }
+            { headers: {"Authorization" : `Bearer ${JSON.parse(localStorage.currenttuser).token}`} }
         );
         console.log(res)
         setusers(res.data.users);
