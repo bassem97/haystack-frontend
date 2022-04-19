@@ -169,12 +169,7 @@ const Cart = () => {
         setStripeToken(token);
     };
 
-    const handleClick = () => {
-        dispatch(
-            removeProduct({ })
 
-        );
-    };
     useEffect(() => {
         const makeRequest = async () => {
             try {
@@ -198,8 +193,15 @@ const Cart = () => {
             <Wrapper>
                 <Title>YOUR BAG</Title>
                 <Top>
-                    <TopButton>CONTINUE SHOPPING</TopButton>
+                    <TopButton  onClick={()=> {
+                       localStorage.removeItem("persist:root");
+                        window.location.reload(true);
 
+
+                    }}
+                    >
+                        CLEAR CART
+                    </TopButton>
 
                 </Top>
                 <Bottom>
@@ -226,10 +228,7 @@ const Cart = () => {
                                     <ProductPrice>
                                         $ {product.price * product.quantity}
                                     </ProductPrice>
-                                    <button  onClick={handleClick}
-                                    >
-                                        remove
-                                    </button>
+
                                 </PriceDetail>
 
                             </Product>
@@ -260,7 +259,9 @@ const Cart = () => {
                         >
                             <Button>CHECKOUT NOW</Button>
                         </StripeCheckout>
+
                     </Summary>
+
                 </Bottom>
             </Wrapper>
             <Footer />
