@@ -37,6 +37,7 @@
     "redux-persist": "^6.0.0",
     "redux-promise": "^0.6.0",
     "redux-thunk": "^2.4.1",
+    "simple-peer": "^9.11.1",
     "socket.io-client": "^4.4.1",
     "styled-components": "^5.3.3",
     "uuid": "^3.3.2",

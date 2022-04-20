@@ -35,6 +35,7 @@ const VideoChat = () => {
         })
 
         socket.on("callUser", (data) => {
+            console.log(data.from);
             setReceivingCall(true)
             setCaller(data.from)
             setName(data.name)
@@ -90,6 +91,9 @@ const VideoChat = () => {
     const leaveCall = () => {
         setCallEnded(true)
         connectionRef.current.destroy()
+        // socket.on("leaveCall", (data) => {
+        //     console.log("leave call")
+        // })
     }
 
     return (
