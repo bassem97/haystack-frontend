@@ -9,10 +9,10 @@ import {useAuthDispatch, useAuthState} from "../Context";
 
 const AddProduct = () => {
 
-    const userDetails = useAuthState();
 
-    // const user = userDetails.userDetails;
-    const user = (localStorage.getItem('currentUser') && JSON.parse(localStorage.getItem('currentUser')).user);
+    // const user = (localStorage.getItem('currentUser') && JSON.parse(localStorage.getItem('currentUser')).user);
+    const userDetails = useAuthState();
+    const user = userDetails.user;
 
     const navigate = useNavigate();
     const [categoriesList, setCategoriesList] = useState([]);
@@ -120,7 +120,7 @@ const AddProduct = () => {
                 "/products/",
                     formData,
                 {
-                    headers: { Authorization: `Bearer ${JSON.parse(localStorage.getItem("currentUser")).token}` }
+                    headers: { Authorization: `Bearer ${userDetails.token}` }
                      },
             ).then(() => {
                 navigate('/products');
