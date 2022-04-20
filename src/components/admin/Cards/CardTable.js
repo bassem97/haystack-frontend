@@ -10,14 +10,13 @@ import {useAuthState} from "../../../Context";
 export default function CardTable({ color }) {
   const userDetails = useAuthState();
   const user = userDetails.user;
-
   const [users, setusers] = useState([]);
   useEffect(() => {
     const getUsers = async () => {
       console.log(userDetails);
       try {
         const res = await axios.get("http://localhost:8080/user",
-            { headers: {"Authorization" : `Bearer ${JSON.parse(localStorage.currenttuser).token}`} }
+            { headers: {"Authorization" : `Bearer ${userDetails.token}`} }
         );
         console.log(res)
         setusers(res.data.users);
