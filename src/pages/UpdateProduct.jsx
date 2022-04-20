@@ -6,12 +6,15 @@ import {useNavigate} from "react-router";
 import Select from 'react-select';
 import axios from "axios";
 import {useLocation} from "react-router-dom";
+import {useAuthState} from "../Context";
 
 const UpdateProduct = () => {
 
 
 
-    const user = (localStorage.getItem('currentUser') && JSON.parse(localStorage.getItem('currentUser')).user)
+    // const user = (localStorage.getItem('currentUser') && JSON.parse(localStorage.getItem('currentUser')).user)
+    const userDetails = useAuthState();
+    const user = userDetails.user;
     const location = useLocation();
     const id = location.pathname.split("/")[2];
     const [product, setProduct] = useState({});
@@ -131,7 +134,7 @@ const UpdateProduct = () => {
                 "/products/" + product._id,
                 product,
                 {
-                    headers: { Authorization: `Bearer ${user.token}` }
+                    headers: { Authorization: `Bearer ${userDetails.token}` }
                 },
             ).then(() => {
                 navigate('/products');

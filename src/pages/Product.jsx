@@ -24,7 +24,7 @@ const Product = () => {
     const user = userDetails.user;
     console.log(userDetails);
     const navigate = useNavigate();
-    
+
     //const connectedUser = (localStorage.getItem('currentUser') && JSON.parse(localStorage.getItem('currentUser')).user)
     //const connectedUser = useAuthState().user;
 
@@ -137,7 +137,7 @@ const Product = () => {
                                     : <p>Out of Stock !</p>
                                 }
 
-                            {connectedUser != null && product.owner == connectedUser._id &&
+                            {user != null && product.owner == user._id &&
                                 <div>
                                 <NavLink to={"/updateProduct/" + product._id}>
                                 <button
