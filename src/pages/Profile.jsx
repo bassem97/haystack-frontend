@@ -81,7 +81,7 @@ export default function Profile() {
             >
 
                 {/*<Avatar src={user.image?} />*/}
-                <Avatar  src={ user.image?'http://localhost:8080/files/' + user.image : 'http://localhost:8080/files/avatar.jpg' } />
+                <Avatar  src={ user.image? user.image.includes("http")?user.image:'http://localhost:8080/files/' + user.image : 'http://localhost:8080/files/avatar.jpg' } />
                 <Title size={3}>{`${user.firstName} ${user.lastName}`}</Title>
                 <Title size={1.5}>Level {user.level || 0}</Title>
                 {
