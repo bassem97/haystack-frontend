@@ -4,11 +4,11 @@ let user = localStorage.getItem("currentUser")
     ? JSON.parse(localStorage.getItem("currentUser")).user
     : "";
 let token = localStorage.getItem("currentUser")
-    ? JSON.parse(localStorage.getItem("currentUser")).auth_token
+    ? JSON.parse(localStorage.getItem("currentUser")).token
     : "";
 
 export const initialState = {
-    userDetails: "" || user,
+    user: "" || user,
     token: "" || token,
     loading: false,
     errorMessage: null
