@@ -10,7 +10,7 @@ const Container = styled.div`
   justify-content: space-between;
 `;
 
-const Products = ({ cat, filters, sort, search }) => {
+const Products = ({ cat, color, sort, search }) => {
     const [products, setProducts] = useState([]);
     const [filteredProducts, setFilteredProducts] = useState([]);
 
@@ -39,13 +39,32 @@ const Products = ({ cat, filters, sort, search }) => {
         );
     }, [products, cat, filters]);*/
 
-    useEffect(() => {
+/*    useEffect(() => {
         setFilteredProducts(products);
         setFilteredProducts((prev) =>
         [...prev].filter(value => (value.name.toUpperCase().includes(search.toUpperCase())) || (value.description.toUpperCase().includes(search.toUpperCase())) || (value.price.toString().toUpperCase().includes(search.toUpperCase()))))
-    }, [search])
+    }, [search])*/
+
+   /* useEffect(() => {
+        setFilteredProducts(products);
+        console.log("color")
+        console.log(color)
+        if (color !== "")
+            setFilteredProducts((prev) =>
+                [...prev].filter(value => value.color == color)
+            );
+    }, [color]);*/
 
     useEffect(() => {
+        setFilteredProducts(products);
+        if (color !== "")
+            setFilteredProducts((prev) =>
+                [...prev].filter(value => value.color == color)
+            );
+
+        setFilteredProducts((prev) =>
+            [...prev].filter(value => (value.name.toUpperCase().includes(search.toUpperCase())) || (value.description.toUpperCase().includes(search.toUpperCase())) || (value.price.toString().toUpperCase().includes(search.toUpperCase()))))
+
         if (sort === "newest") {
             setFilteredProducts((prev) =>
                 [...prev].sort((a, b) => a.createdAt - b.createdAt)
@@ -59,7 +78,7 @@ const Products = ({ cat, filters, sort, search }) => {
                 [...prev].sort((a, b) => b.price - a.price)
             );
         }
-    }, [sort]);
+    }, [sort, color, search]);
 
     return (
         /*<Container className="mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">>
