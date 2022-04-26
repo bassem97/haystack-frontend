@@ -1,13 +1,21 @@
 import React, {useEffect, useState} from "react";
 import {LockClosedIcon} from "@heroicons/react/solid";
 import axios from "axios";
+import GoogleLogin from "react-google-login";
+import FacebookLogin from "react-facebook-login";
+import {useNavigate} from "react-router-dom";
+import { loginUser, useAuthState, useAuthDispatch } from "../../Context"
 
 
-export default function Login() {
+
+export default function Login(props) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [msg, setMsg] = useState('');
   const isVerified = window.location.href == "http://localhost:3000/login/verified";
+  const navigate = useNavigate();
+  const dispatch = useAuthDispatch() //get the dispatch method from the useDispatch custom hook
+
 
   useEffect(() => {
     if(isVerified){
@@ -19,24 +27,68 @@ export default function Login() {
 
   const Login = async (e) => {
     e.preventDefault();
-
-      await axios.post('http://localhost:8080/auth/login', {
-        email: email,
-        password: password,
-      }).then(res => {
-        if( res.data.error) setMsg(res.data.error)
-        else {
-          localStorage.setItem('data',JSON.stringify(res.data));
-          window.location.href = "/"
-
-        }
-
-      });
-
-      // if (error.response) {
-      //   setMsg(error.response.data.error);
-      // }
+    let payload = {email, password}
+    let path = "login"
+    try {
+      let response = await loginUser(dispatch, payload,path) //loginUser action makes the request and handles all the neccessary state changes
+      if (!response.user)
+        setMsg(response)
+      else
+        navigate("/");
+    } catch (error) {
+      console.log(error)
+    }
   }
+
+
+  const responseGoogle = async (response) => {
+
+    const user = await axios.get('http://localhost:8080/user/email/'+response.profileObj.email);
+    if(!!user){
+      await axios.post('http://localhost:8080/auth/register', {
+        firstName: response.profileObj.givenName,
+        lastName: response.profileObj.familyName,
+        email: response.profileObj.email,
+        image: response.profileObj.imageUrl,
+        googleId: response.profileObj.googleId,
+      })
+    }
+    let payload = {email : response.profileObj.email}
+    let path = "google/login"
+    try {
+      let response = await loginUser(dispatch, payload,path )//loginUser action makes the request and handles all the neccessary state changes
+      if (!response.user) setMsg(response)
+      navigate("/");
+    } catch (error) {
+      console.log(error)
+      setMsg(error)
+    }
+  }
+  const responseFacebook = async (response) => {
+    console.log(response)
+    const user = await axios.get('http://localhost:8080/user/email/'+response.email);
+    if(!!user){
+      await axios.post('http://localhost:8080/auth/register', {
+        firstName: response.name.split(' ')[0],
+        lastName: response.name.split(' ')[1],
+        email: response.email,
+        image: response.picture.data.url,
+        facebookId: response.userID,
+      })
+    }
+    let payload = {email : response.email}
+    let path = "google/login"
+
+    try {
+      let response = await loginUser(dispatch, payload,path )//loginUser action makes the request and handles all the neccessary state changes
+      if (!response.user) setMsg(response)
+      navigate("/");
+    } catch (error) {
+      console.log(error)
+      setMsg(error)
+    }
+  }
+
   const renderErrorMessage = function () {
     if (msg)
       return (
@@ -142,7 +194,35 @@ export default function Login() {
                   Sign in
                 </button>
               </div>
+              <div>
+                <button
+                    className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-700 hover:bg-blue-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                    type="button"
+                    onClick={()=>document.getElementById('facebook').click()}
+
+                >
+                  <img
+                      alt="..."
+                      className="w-5 mr-1"
+                      src={require("../../assets/img/facebook.svg").default}
+                  />
+                  <FacebookLogin
+                      appId="1090878681476995"
+                      fields="name,email,picture"
+                      cssClass="my-facebook-button-class"
+                      textButton="Facebook"
+                      id="facebook"
+                      callback={responseFacebook} />
+                </button>
+                    <GoogleLogin
+                        clientId="912577134712-br4ui585rlm1k3ptrkpbkfhaqiaurmgh.apps.googleusercontent.com"
+                        onSuccess={responseGoogle}
+                        onFailure={responseGoogle}
+                        buttonText="Google"
+                    />
+                </div>
             </form>
+
           </div>
         </div>
 

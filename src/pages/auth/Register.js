@@ -2,6 +2,10 @@ import React, {useState} from "react";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
 import GoogleLogin from "react-google-login";
+import FacebookLogin from 'react-facebook-login';
+import {loginUser, useAuthDispatch} from "../../Context";
+
+
 
 
 
@@ -13,19 +17,60 @@ export default function Register() {
   const [password,setPassword] = useState("");
   const [repassword,setRepassword] = useState("");
   const [msg, setMsg] = useState('');
-
+  const dispatch = useAuthDispatch() //get the dispatch method from the useDispatch custom hook
   const navigate = useNavigate();
 
-  const clientId = "912577134712-br4ui585rlm1k3ptrkpbkfhaqiaurmgh.apps.googleusercontent.com"
 
-  const onSuccess = (res)=>{
-    console.log("LOGIN SUCCESS !"+ res.profileObj)
+
+   const responseGoogle = async (response) => {
+    console.log(response)
+    const user = await axios.get('http://localhost:8080/user/email/'+response.profileObj.email);
+     console.log(!user);
+     if(!!user){
+      await axios.post('http://localhost:8080/auth/register', {
+        firstName: response.profileObj.givenName,
+        lastName: response.profileObj.familyName,
+        email: response.profileObj.email,
+        image: response.profileObj.imageUrl,
+        googleId: response.profileObj.googleId,
+      })
+    }
+     let payload = {email : response.profileObj.email}
+     let path = "google/login"
+     try {
+       let response = await loginUser(dispatch, payload,path )//loginUser action makes the request and handles all the neccessary state changes
+       if (!response.user) setMsg(response)
+       navigate("/");
+     } catch (error) {
+       console.log(error)
+       setMsg(error)
+     }
   }
 
-  const onFailure = (res)=>{
-    console.log("LOGIN FAILED !"+ JSON.stringify(res))
-  }
+  const responseFacebook = async (response) => {
+    console.log(response)
+    const user = await axios.get('http://localhost:8080/user/email/'+response.email);
+    if(!!user){
+      await axios.post('http://localhost:8080/auth/register', {
+        firstName: response.name.split(' ')[0],
+        lastName: response.name.split(' ')[1],
+        email: response.email,
+        image: response.picture.data.url,
+        facebookId: response.userID,
+      })
+    }
+    let payload = {email : response.email}
+    let path = "google/login"
 
+    try {
+      let response = await loginUser(dispatch, payload,path )//loginUser action makes the request and handles all the neccessary state changes
+      if (!response.user) setMsg(response)
+      navigate("/");
+    } catch (error) {
+      console.log(error)
+      setMsg(error)
+    }
+  }
 
 
   const register = async (event)=>{
@@ -68,7 +113,7 @@ export default function Register() {
                   Sign up with
                 </h6>
               </div>
-              <div className="btn-wrapper text-center">
+              <div className="btn-wrapper text-center px-5">
                 <button
                     className="bg-white active:bg-blueGray-50 text-blueGray-700 font-normal px-4 py-2 rounded outline-none focus:outline-none mr-2 mb-1 uppercase shadow hover:shadow-md inline-flex items-center font-bold text-xs ease-linear transition-all duration-150"
                     type="button"
@@ -78,29 +123,26 @@ export default function Register() {
                       className="w-5 mr-1"
                       src={require("../../assets/img/facebook.svg").default}
                   />
-                  Facebook
+                  <FacebookLogin
+                      appId="1090878681476995"
+                      fields="name,email,picture"
+                      cssClass="my-facebook-button-class"
+                      textButton="Facebook"
+                      size="medium"
+                      // onClick={componentClicked}
+                      callback={responseFacebook} />
                 </button>
                 <GoogleLogin
-                  clientId={clientId}
-                  buttonText="google"
-                  onSuccess={onSuccess}
-                  onFailure={onFailure}
-                  cookiePolicy={'single_host_origin'}
-                  isSignedIn={true}
-                >
+                    clientId="912577134712-br4ui585rlm1k3ptrkpbkfhaqiaurmgh.apps.googleusercontent.com"
+                    // clientId="912577134712-br4ui585rlm1k3ptrkpbkfhaqiaurmgh.apps.googleusercontent.com"
+                    onSuccess={responseGoogle}
+                    onFailure={responseGoogle}
+                    buttonText="Google"
+                    style={{height:30}}
 
-                </GoogleLogin>
-                {/*<button*/}
-                {/*    className="bg-white active:bg-blueGray-50 text-blueGray-700 font-normal px-4 py-2 rounded outline-none focus:outline-none mr-1 mb-1 uppercase shadow hover:shadow-md inline-flex items-center font-bold text-xs ease-linear transition-all duration-150"*/}
-                {/*    type="button"*/}
-                {/*>*/}
-                {/*  <img*/}
-                {/*      alt="..."*/}
-                {/*      className="w-5 mr-1"*/}
-                {/*      src={require("../../assets/img/google.svg").default}*/}
-                {/*  />*/}
-                {/*  Google*/}
-                {/*</button>*/}
+                    cookiePolicy={'single_host_origin'}
+                />
+
               </div>
               <hr className="mt-6 border-b-1 border-blueGray-300" />
             </div>
@@ -166,7 +208,6 @@ export default function Register() {
                       id="password"
                       name="password"
                       type="password"
-                      autoComplete="current-password"
                       required
                       className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                       placeholder="Password"
@@ -182,7 +223,6 @@ export default function Register() {
                       id="confirm-password"
                       name="confirm-password"
                       type="confirm-password"
-                      autoComplete="current-password"
                       required
                       className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                       placeholder="Confirm Password"

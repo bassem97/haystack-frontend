@@ -1,7 +1,5 @@
 import React from "react";
 import {styles} from "../styles";
-import {Icon} from "antd";
-import SupportEngine from "../index";
 import Chatbot from "../../Chatbot/Chatbot";
 
 const SupportWindow = props =>{
@@ -13,8 +11,8 @@ const SupportWindow = props =>{
                 ...{opacity: props.visible ? '1' : '0'}
 
             }}
-            >
-        <Chatbot/>
+        >
+            <Chatbot/>
         </div>
 
     )

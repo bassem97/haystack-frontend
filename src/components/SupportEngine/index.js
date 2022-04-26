@@ -19,18 +19,17 @@ const SupportEngine = () => {
     }, [ref])
     return (
         <div
-        ref={ref}>
+            ref={ref}>
             <SupportWindow
                 visible = {visible}
             />
 
             <Avatar
-              onClick={() => setVisible(true)}
-              style = {{ position: 'fixed',bottom: '24px',right: '24px'}}
+                onClick={() => setVisible(true)}
+                style = {{ position: 'fixed',bottom: '24px',right: '24px'}}
             />
         </div>
     )
 }
 
 export default SupportEngine;
-

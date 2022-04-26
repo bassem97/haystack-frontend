@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { useLocation } from "react-router";
 import { userRequest } from "../requestMethods";
 import localStorage from "redux-persist/es/storage";
+import StripeCheckout from "react-stripe-checkout";
 
 const Success = () => {
 
@@ -26,9 +27,12 @@ const Success = () => {
                     })),
                     amount: cart.total,
                     address: data.billing_details.address,
+                    email : data.billing_details.name,
+
                 });
                 setOrderId(res.data._id);
-                console.log("SUCESSS  29 res"+res);
+                localStorage.removeItem("persist:root");
+
             } catch {}
         };
         data && createOrder();
@@ -47,7 +51,7 @@ const Success = () => {
             {orderId
                 ? `Order has been created successfully. Your order number is ${orderId}`
                 : `Successfull. Your order is being prepared...`}
-            <button style={{ padding: 10, marginTop: 20 }}>Go to Homepage</button>
+            <button onClick={()=> window.location.href="/"} style={{ padding: 10, marginTop: 20 }}>Go to Homepage</button>
         </div>
     );
 };

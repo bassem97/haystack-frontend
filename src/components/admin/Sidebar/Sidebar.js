@@ -140,13 +140,34 @@ export default function Sidebar() {
                 >
                   <i
                     className={
-                      "fas fa-table mr-2 text-sm " +
+                      "fas fa-user mr-2 text-sm " +
                       (window.location.href.indexOf("/admin/tables") !== -1
                         ? "opacity-75"
                         : "text-blueGray-300")
                     }
                   ></i>{" "}
-                  Tables
+                  Users
+                </Link>
+              </li>
+              <li className="items-center">
+                <Link
+                    className={
+                      "text-xs uppercase py-3 font-bold block " +
+                      (window.location.href.indexOf("/admin/tables") !== -1
+                          ? "text-lightBlue-500 hover:text-lightBlue-600"
+                          : "text-blueGray-700 hover:text-blueGray-500")
+                    }
+                    to="/admin/orders"
+                >
+                  <i
+                      className={
+                        "fas fa-clipboard-list mr-2 text-sm " +
+                        (window.location.href.indexOf("/admin/tables") !== -1
+                            ? "opacity-75"
+                            : "text-blueGray-300")
+                      }
+                  ></i>{" "}
+                  Orders
                 </Link>
               </li>
 
@@ -274,60 +295,13 @@ export default function Sidebar() {
                 </a>
               </li>
 
-              <li className="inline-flex">
-                <a
-                  href="https://www.creative-tim.com/learning-lab/tailwind/js/overview/notus"
-                  target="_blank"
-                  className="text-blueGray-700 hover:text-blueGray-500 text-sm block mb-4 no-underline font-semibold"
-                >
-                  <i className="fab fa-js-square mr-2 text-blueGray-300 text-base"></i>
-                  Javascript
-                </a>
-              </li>
 
-              <li className="inline-flex">
-                <a
-                  href="https://www.creative-tim.com/learning-lab/tailwind/nextjs/overview/notus"
-                  target="_blank"
-                  className="text-blueGray-700 hover:text-blueGray-500 text-sm block mb-4 no-underline font-semibold"
-                >
-                  <i className="fab fa-react mr-2 text-blueGray-300 text-base"></i>
-                  NextJS
-                </a>
-              </li>
 
-              <li className="inline-flex">
-                <a
-                  href="https://www.creative-tim.com/learning-lab/tailwind/react/overview/notus"
-                  target="_blank"
-                  className="text-blueGray-700 hover:text-blueGray-500 text-sm block mb-4 no-underline font-semibold"
-                >
-                  <i className="fab fa-react mr-2 text-blueGray-300 text-base"></i>
-                  React
-                </a>
-              </li>
 
-              <li className="inline-flex">
-                <a
-                  href="https://www.creative-tim.com/learning-lab/tailwind/svelte/overview/notus"
-                  target="_blank"
-                  className="text-blueGray-700 hover:text-blueGray-500 text-sm block mb-4 no-underline font-semibold"
-                >
-                  <i className="fas fa-link mr-2 text-blueGray-300 text-base"></i>
-                  Svelte
-                </a>
-              </li>
 
-              <li className="inline-flex">
-                <a
-                  href="https://www.creative-tim.com/learning-lab/tailwind/vue/overview/notus"
-                  target="_blank"
-                  className="text-blueGray-700 hover:text-blueGray-500 text-sm block mb-4 no-underline font-semibold"
-                >
-                  <i className="fab fa-vuejs mr-2 text-blueGray-300 text-base"></i>
-                  VueJS
-                </a>
-              </li>
+
+
+
             </ul>
           </div>
         </div>
