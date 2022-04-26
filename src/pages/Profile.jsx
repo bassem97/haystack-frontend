@@ -4,15 +4,18 @@ import Product from '../components/ProductAlt'
 import axios from "axios";
 
 import { useParams } from "react-router-dom"
+import {useAuthState} from "../Context";
 
 export default function Profile() {
     const params = useParams()
-    const connectedUser = (localStorage.getItem('data') && JSON.parse(localStorage.getItem('data')).user._id)
+    //const connectedUser = (localStorage.getItem('data') && JSON.parse(localStorage.getItem('data')).user._id)
+    const userDetails = useAuthState();
+    const connectedUser = userDetails.user;
 
     let [products, setProducts] = useState([]);
 
     let [user, setUser] = useState({
-        _id: params.userId || connectedUser,
+        _id: params.userId || connectedUser._id,
         bio: "", email: "",
         experience: 0,
         firstName: "",
@@ -81,7 +84,7 @@ export default function Profile() {
                 <Title size={3}>{`${user.firstName} ${user.lastName}`}</Title>
                 <Title size={1.5}>Level {user.level || 0}</Title>
                 {
-                    (params.userId && localStorage.getItem('data')) &&
+                    (params.userId) &&
                     <button
                         className="bg-gray-800 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded mt-6 w-24 text-sm"
                         onClick={handleFollow}
