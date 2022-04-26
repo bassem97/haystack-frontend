@@ -12,7 +12,9 @@ const Feed = () => {
                 const res = await axios.get(
                     process.env.REACT_APP_API_URL + "/user/feed/624b77b7a7a94effd792c275"
                 );
-                await setProducts(res.data.products);
+
+                console.log(res.data.product)
+                await setProducts(res.data.product);
                 } catch (err) {
             }
         };
