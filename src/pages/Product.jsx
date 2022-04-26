@@ -137,7 +137,7 @@ const Product = () => {
                                     : <p>Out of Stock !</p>
                                 }
 
-                            {user != null && product.owner == user._id &&
+                            {user != null && product.owner == user._id && product.stock > 0 &&
                                 <div>
                                 <NavLink to={"/updateProduct/" + product._id}>
                                 <button
