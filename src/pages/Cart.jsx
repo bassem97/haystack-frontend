@@ -182,7 +182,7 @@ const Cart = () => {
                         stripeData: res.data,
                         cart : cart
                     } });
-                    // products: cart });
+                // products: cart });
 
             } catch {}
         };
@@ -194,7 +194,7 @@ const Cart = () => {
                 <Title>YOUR BAG</Title>
                 <Top>
                     <TopButton  onClick={()=> {
-                       localStorage.removeItem("persist:root");
+                        localStorage.removeItem("persist:root");
                         window.location.reload(true);
 
 
@@ -250,12 +250,14 @@ const Cart = () => {
                         <StripeCheckout
                             name="Hay Stack"
                             //image="https://avatars.githubusercontent.com/u/1486366?v=4"
+                            locale="en"
                             billingAddress
-                            shippingAddress
+                            email="haystack.placeholder@gmail.com"
                             description={`Your total is $${cart.total}`}
                             amount={cart.total * 100}
                             token={onToken}
                             stripeKey={KEY}
+
                         >
                             <Button>CHECKOUT NOW</Button>
                         </StripeCheckout>
