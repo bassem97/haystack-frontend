@@ -12,4 +12,5 @@ export default function (state = {messages:[]}, action) {
         default:
             return state;
     }
+
 }

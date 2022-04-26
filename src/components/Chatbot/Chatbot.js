@@ -6,22 +6,14 @@ import Message from './Sections/Message';
 import { List, Icon, Avatar } from 'antd';
 import Card from "./Sections/Card";
 import SupportEngine from "../SupportEngine";
+import {useAuthDispatch, useAuthState} from "../../Context";
 function Chatbot() {
     const dispatch = useDispatch();
     const messagesFromRedux = useSelector(state => state.message.messages)
+    const user = (localStorage.getItem('currentUser') && JSON.parse(localStorage.getItem('currentUser')).user);
+    const dispatchu = useAuthDispatch();
+    const userDetails = useAuthState();
 
-    useEffect(() => {
-
-        eventQuery('welcometohaystack')
-        window.addEventListener("beforeunload", alertUser);
-        return () => {
-            window.removeEventListener("beforeunload", alertUser);
-        };
-
-    }, [])
-    const alertUser = (e) => {
-        console.log("aasba")
-    };
 
 
     const textQuery = async (text) => {
@@ -35,7 +27,6 @@ function Chatbot() {
                 }
             }
         }
-
         dispatch(saveMessage(conversation))
         // console.log('text I sent', conversation)
 
@@ -44,8 +35,27 @@ function Chatbot() {
             text
         }
         try {
-            //I will send request to the textQuery ROUTE 
-            const response = await Axios.post('http://localhost:8080/api/dialogflow/textQuery', textQueryVariables)
+            //I will send request to the textQuery ROUTE
+            console.log(conversation.content.text.text.includes('complaint','Complaint'))
+
+            if (!user && (conversation.content.text.text.includes('Complaint')||conversation.content.text.text.includes('complaint')))
+            {
+                conversation = {
+                    who: 'bot',
+                    content: {
+                        text: {
+                            text: "You need to login first . If you don't have an account , I can help you create one , just type create an account. "
+                        }
+                    }
+                }
+                dispatch(saveMessage(conversation))
+            }else{
+                console.log("token")
+                console.log(userDetails);
+            const response = await Axios.post('http://localhost:8080/api/dialogflow/textQuery', textQueryVariables,
+                {
+                    headers: { Authorization: `Bearer ${userDetails.token}` }
+                })
 
             for (let content of response.data.fulfillmentMessages) {
 
@@ -55,7 +65,7 @@ function Chatbot() {
                 }
 
                 dispatch(saveMessage(conversation))
-            }
+            }}
 
 
         } catch (error) {
@@ -84,7 +94,10 @@ function Chatbot() {
         }
         try {
             //I will send request to the textQuery ROUTE 
-            const response = await Axios.post('http://localhost:8080/api/dialogflow/eventQuery', eventQueryVariables)
+            const response = await Axios.post('http://localhost:8080/api/dialogflow/eventQuery', eventQueryVariables,
+                {
+                    headers: { Authorization: `Bearer ${userDetails.token}` }
+                })
             for (let content of response.data.fulfillmentMessages) {
 
                 let conversation = {
@@ -132,9 +145,7 @@ function Chatbot() {
 
 
     const renderOneMessage = (message, i) => {
-        console.log('message', message)
-
-        // we need to give some condition here to separate message kinds 
+        // we need to give some condition here to separate message kinds
 
         // template for normal text 
         if (message.content && message.content.text && message.content.text.text) {
@@ -180,19 +191,15 @@ function Chatbot() {
             height: '100%', width: '100%',
 
         }}>
-            <div style={{ height: 644, width: '100%', overflow: 'auto' }}>
-
-
-
-
+                <div>
+            <div>
 
                 {renderMessage(messagesFromRedux)}
 
-
-            </div>
+            </div></div>
             <input  type="text" className="form-control"
                 style={{
-                     width: '100%', height: 50,
+                     width: '100%', height: 50,float:'bottom'
 
                 }}
                 placeholder="Write here ..."
