@@ -8,17 +8,17 @@ import {useAuthState} from "../Context";
 
 export default function Profile() {
     const params = useParams()
+    //const connectedUser = (localStorage.getItem('data') && JSON.parse(localStorage.getItem('data')).user._id)
     const userDetails = useAuthState();
     const connectedUser = userDetails.user;
-    console.log(connectedUser);
 
     let [products, setProducts] = useState([]);
 
     let [user, setUser] = useState({
-        _id: params.userId || connectedUser,
-        bio: "", email: "", 
-        experience: 0, 
-        firstName: "", 
+        _id: params.userId || connectedUser._id,
+        bio: "", email: "",
+        experience: 0,
+        firstName: "",
         lastName: "",
         image: "avatar.jpg",
         level: 0,
@@ -42,7 +42,7 @@ export default function Profile() {
         const getProducts = async () => {
             try {
                 const res = await axios.get(
-                    process.env.REACT_APP_API_URL+"/products/owner/" + user._id._id
+                    process.env.REACT_APP_API_URL+"/products/owner/" + user._id
                 );
                 await setProducts(res.data.products);
             } catch (err) {
@@ -51,8 +51,7 @@ export default function Profile() {
         getProducts();
 
         (async () => {
-            console.log(user._id._id)
-            const newUser = await axios.get(`${process.env.REACT_APP_API_URL}/user/${user._id._id}`)
+            const newUser = await axios.get(`${process.env.REACT_APP_API_URL}/user/${user._id}`)
             console.log(newUser)
             setUser(newUser.data.user)
         })()
@@ -64,7 +63,7 @@ export default function Profile() {
                 .then(res => {
                     setPrompt(res.data.following ? 'unfollow' : 'follow')
                 })
-        
+
     }, [user._id, connectedUser, params.userId])
 
     // useEffect(() => console.log(user), [user])
@@ -85,8 +84,8 @@ export default function Profile() {
                 <Title size={3}>{`${user.firstName} ${user.lastName}`}</Title>
                 <Title size={1.5}>Level {user.level || 0}</Title>
                 {
-                    (params.userId && localStorage.getItem('data')) &&
-                    <button 
+                    (params.userId) &&
+                    <button
                         className="bg-gray-800 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded mt-6 w-24 text-sm"
                         onClick={handleFollow}
                     >
@@ -201,4 +200,4 @@ const Lego = styled(Container)`
   margin: 0px 0px 15px;
   flex-wrap: wrap;
   box-shadow: 0px 2px 5px rgb(31, 41, 55)
-  `
+`

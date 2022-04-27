@@ -132,6 +132,7 @@ const Summary = styled.div`
   border: 0.5px solid lightgray;
   border-radius: 10px;
   padding: 20px;
+  margin-right: 70px;
   height: 50vh;
 `;
 

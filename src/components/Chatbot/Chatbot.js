@@ -6,27 +6,19 @@ import Message from './Sections/Message';
 import { List, Icon, Avatar } from 'antd';
 import Card from "./Sections/Card";
 import SupportEngine from "../SupportEngine";
+import {useAuthDispatch, useAuthState} from "../../Context";
 function Chatbot() {
     const dispatch = useDispatch();
     const messagesFromRedux = useSelector(state => state.message.messages)
+    const user = (localStorage.getItem('currentUser') && JSON.parse(localStorage.getItem('currentUser')).user);
+    const dispatchu = useAuthDispatch();
+    const userDetails = useAuthState();
 
-    useEffect(() => {
-
-        eventQuery('welcometohaystack')
-        window.addEventListener("beforeunload", alertUser);
-        return () => {
-            window.removeEventListener("beforeunload", alertUser);
-        };
-
-    }, [])
-    const alertUser = (e) => {
-        console.log("aasba")
-    };
 
 
     const textQuery = async (text) => {
 
-        //  First  Need to  take care of the message I sent     
+        //  First  Need to  take care of the message I sent
         let conversation = {
             who: 'user',
             content: {
@@ -35,27 +27,45 @@ function Chatbot() {
                 }
             }
         }
-
         dispatch(saveMessage(conversation))
         // console.log('text I sent', conversation)
 
-        // We need to take care of the message Chatbot sent 
+        // We need to take care of the message Chatbot sent
         const textQueryVariables = {
             text
         }
         try {
-            //I will send request to the textQuery ROUTE 
-            const response = await Axios.post('http://localhost:8080/api/dialogflow/textQuery', textQueryVariables)
+            //I will send request to the textQuery ROUTE
+            console.log(conversation.content.text.text.includes('complaint','Complaint'))
 
-            for (let content of response.data.fulfillmentMessages) {
-
+            if (!user && (conversation.content.text.text.includes('Complaint')||conversation.content.text.text.includes('complaint')))
+            {
                 conversation = {
                     who: 'bot',
-                    content: content
+                    content: {
+                        text: {
+                            text: "You need to login first . If you don't have an account , I can help you create one , just type create an account. "
+                        }
+                    }
                 }
-
                 dispatch(saveMessage(conversation))
-            }
+            }else{
+                console.log("token")
+                console.log(userDetails);
+                const response = await Axios.post('http://localhost:8080/api/dialogflow/textQuery', textQueryVariables,
+                    {
+                        headers: { Authorization: `Bearer ${userDetails.token}` }
+                    })
+
+                for (let content of response.data.fulfillmentMessages) {
+
+                    conversation = {
+                        who: 'bot',
+                        content: content
+                    }
+
+                    dispatch(saveMessage(conversation))
+                }}
 
 
         } catch (error) {
@@ -78,13 +88,16 @@ function Chatbot() {
 
     const eventQuery = async (event) => {
 
-        // We need to take care of the message Chatbot sent 
+        // We need to take care of the message Chatbot sent
         const eventQueryVariables = {
             event
         }
         try {
-            //I will send request to the textQuery ROUTE 
-            const response = await Axios.post('http://localhost:8080/api/dialogflow/eventQuery', eventQueryVariables)
+            //I will send request to the textQuery ROUTE
+            const response = await Axios.post('http://localhost:8080/api/dialogflow/eventQuery', eventQueryVariables,
+                {
+                    headers: { Authorization: `Bearer ${userDetails.token}` }
+                })
             for (let content of response.data.fulfillmentMessages) {
 
                 let conversation = {
@@ -118,7 +131,7 @@ function Chatbot() {
                 return alert('you need to type something first')
             }
 
-            //we will send request to text query route 
+            //we will send request to text query route
             textQuery(e.target.value)
 
 
@@ -132,11 +145,9 @@ function Chatbot() {
 
 
     const renderOneMessage = (message, i) => {
-        console.log('message', message)
+        // we need to give some condition here to separate message kinds
 
-        // we need to give some condition here to separate message kinds 
-
-        // template for normal text 
+        // template for normal text
         if (message.content && message.content.text && message.content.text.text) {
             return <Message key={i} who={message.who} text={message.content.text.text} />
         } else if (message.content && message.content.payload.fields.card) {
@@ -151,7 +162,7 @@ function Chatbot() {
 
 
 
-        // template for card message 
+        // template for card message
 
 
 
@@ -176,31 +187,27 @@ function Chatbot() {
 
 
             <div style={{
-            //height: 700, width: 700,
-            height: '100%', width: '100%',
+                //height: 700, width: 700,
+                height: '100%', width: '100%',
 
-        }}>
-            <div style={{ height: 644, width: '100%', overflow: 'auto' }}>
+            }}>
+                <div>
+                    <div>
 
+                        {renderMessage(messagesFromRedux)}
 
+                    </div></div>
+                <input  type="text" className="form-control"
+                        style={{
+                            width: '100%', height: 50,float:'bottom'
 
-
-
-                {renderMessage(messagesFromRedux)}
-
+                        }}
+                        placeholder="Write here ..."
+                        onKeyPress={keyPressHanlder}
+                        type="text"
+                />
 
             </div>
-            <input  type="text" className="form-control"
-                style={{
-                     width: '100%', height: 50,
-
-                }}
-                placeholder="Write here ..."
-                onKeyPress={keyPressHanlder}
-                type="text"
-            />
-
-        </div>
 
         </div>
     )
