@@ -24,6 +24,7 @@ import VideoChat from "./pages/VideoChat";
 import UpdateProduct from "./pages/UpdateProduct";
 import SupportEngine from "./components/SupportEngine";
 //import SupportEngine from "./components/SupportEngine";
+import Spinner from './components/Spinner'
 
 const Home = React.lazy(() => import("./pages/Home"));
 const Login = React.lazy(() => import("./pages/auth/Login"));
@@ -52,7 +53,7 @@ const App = () => {
 
         <BrowserRouter basename="/">
           <Navbar/>
-          <Suspense fallback={<p>...Loading page please wait</p>}>
+          <Suspense fallback={<div className="w-full h-screen flex justify-center items-center"> <Spinner/> </div>}>
             <Routes>
               <Route path="/"  element={<Home/>}/>
               <Route path="/login"  element={<Login/>}/>
