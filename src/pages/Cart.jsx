@@ -132,6 +132,7 @@ const Summary = styled.div`
   border: 0.5px solid lightgray;
   border-radius: 10px;
   padding: 20px;
+  margin-right: 70px;
   height: 50vh;
 `;
 
@@ -169,12 +170,7 @@ const Cart = () => {
         setStripeToken(token);
     };
 
-    const handleClick = () => {
-        dispatch(
-            removeProduct({ })
 
-        );
-    };
     useEffect(() => {
         const makeRequest = async () => {
             try {
@@ -187,7 +183,7 @@ const Cart = () => {
                         stripeData: res.data,
                         cart : cart
                     } });
-                    // products: cart });
+                // products: cart });
 
             } catch {}
         };
@@ -198,8 +194,15 @@ const Cart = () => {
             <Wrapper>
                 <Title>YOUR BAG</Title>
                 <Top>
-                    <TopButton>CONTINUE SHOPPING</TopButton>
+                    <TopButton  onClick={()=> {
+                        localStorage.removeItem("persist:root");
+                        window.location.reload(true);
 
+
+                    }}
+                    >
+                        CLEAR CART
+                    </TopButton>
 
                 </Top>
                 <Bottom>
@@ -226,10 +229,7 @@ const Cart = () => {
                                     <ProductPrice>
                                         $ {product.price * product.quantity}
                                     </ProductPrice>
-                                    <button  onClick={handleClick}
-                                    >
-                                        remove
-                                    </button>
+
                                 </PriceDetail>
 
                             </Product>
@@ -251,16 +251,20 @@ const Cart = () => {
                         <StripeCheckout
                             name="Hay Stack"
                             //image="https://avatars.githubusercontent.com/u/1486366?v=4"
+                            locale="en"
                             billingAddress
-                            shippingAddress
+                            email="haystack.placeholder@gmail.com"
                             description={`Your total is $${cart.total}`}
                             amount={cart.total * 100}
                             token={onToken}
                             stripeKey={KEY}
+
                         >
                             <Button>CHECKOUT NOW</Button>
                         </StripeCheckout>
+
                     </Summary>
+
                 </Bottom>
             </Wrapper>
             <Footer />

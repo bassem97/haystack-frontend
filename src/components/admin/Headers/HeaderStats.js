@@ -4,12 +4,14 @@ import React, {useEffect, useState} from "react";
 
 import CardStats from "../Cards/CardStats.js";
 import axios from "axios";
+import {useAuthState} from "../../../Context";
 
 export default function HeaderStats() {
   const [productsNumber, setProductsNumber] = useState(0);
   const [soldProductsNumber, setSoldProductsNumber] = useState(0);
   const [usersNumber, setUsersNumber] = useState(0);
   const [ordersNumber, setOrdersNumber] = useState(0);
+  const userDetails = useAuthState();
 
   useEffect(() => {
     const getProductsNumber = async () => {
@@ -32,7 +34,7 @@ export default function HeaderStats() {
 
             "http://localhost:8080/user",
             {
-              headers: { Authorization: `Bearer ${JSON.parse(localStorage.getItem("data")).token}` }
+              headers: { Authorization: `Bearer ${userDetails.token}` }
             }
         );
         setUsersNumber(res.data.users.length);
@@ -48,7 +50,7 @@ export default function HeaderStats() {
 
             "http://localhost:8080/orders",
             {
-              headers: { Authorization: `Bearer ${JSON.parse(localStorage.getItem("data")).token}` }
+              headers: { Authorization: `Bearer ${userDetails.token}` }
             }
         );
         setOrdersNumber(res.data.length);

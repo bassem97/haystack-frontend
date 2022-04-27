@@ -1,7 +1,5 @@
 import React from "react";
 import {styles} from "../styles";
-import {Icon} from "antd";
-import SupportEngine from "../index";
 import Chatbot from "../../Chatbot/Chatbot";
 
 const SupportWindow = props =>{
@@ -10,11 +8,11 @@ const SupportWindow = props =>{
             className="transition-5"
             style={{
                 ...styles.supportWindow,
-                ...{opacity: props.visible ? '1' : '0'}
-
+                ...{opacity: props.visible ? '1' : '0'},
+                display: props.visible ? "block" : "none"
             }}
-            >
-        <Chatbot/>
+        >
+            <Chatbot/>
         </div>
 
     )
