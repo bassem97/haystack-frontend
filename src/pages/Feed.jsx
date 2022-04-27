@@ -2,17 +2,19 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import InfiniteScroll from 'react-infinite-scroll-component'
 import Product from '../components/ProductAlt'
+import {useAuthState} from "../Context";
 
 const Feed = () => {
     const [products, setProducts] = useState([]);
     const [step, setStep] = useState(3);
     const [hasMore, setHasMore] = useState(true);
-    
+    const userDetails = useAuthState();
+    const user = userDetails.user;
     const getProducts = async () => {
         const res = await axios.get(
-            process.env.REACT_APP_API_URL + `/user/feed/624b77b7a7a94effd792c275/${step}`
+            process.env.REACT_APP_API_URL + `/user/feed/${user._id}/${step}`
         );
-        
+
         if(res.data.products.length > 0) {
             setProducts([...products, ...res.data.products]);
             setStep(step + 1);
@@ -23,12 +25,12 @@ const Feed = () => {
 
         console.log(products, step, hasMore)
     };
-    
+
     useEffect(() => {
         (async () => {const res = await axios.get(
-            process.env.REACT_APP_API_URL + `/user/feed/624b77b7a7a94effd792c275`
+            process.env.REACT_APP_API_URL + `/user/feed/${user._id}`
         );
-        
+
         if(res.data.products.length > 0) {
             setProducts([...products, ...res.data.products]);
             setStep(step + 1);
