@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import {useEffect, useRef, useState} from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 // material
 import { Menu, MenuItem, IconButton, ListItemIcon, ListItemText } from '@mui/material';
@@ -14,15 +14,13 @@ export default function UserMoreMenu({user}) {
   const [isOpen, setIsOpen] = useState(false);
   const [dialogIsOpen, setDialogIsOpen] = useState(false);
 
-    const handleClickOpen = () => {
-        dialogIsOpen(true);
-    };
+    useEffect(() => {
+        return () => {
+            console.log(isOpen);
+            console.log(dialogIsOpen);
+        };
+    }, [isOpen, dialogIsOpen]);
 
-    const handleClose = () => {
-        dialogIsOpen(false);
-    };
-
-  console.log(user)
 
   return (
     <>
