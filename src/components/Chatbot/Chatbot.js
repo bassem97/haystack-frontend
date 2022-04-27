@@ -18,7 +18,7 @@ function Chatbot() {
 
     const textQuery = async (text) => {
 
-        //  First  Need to  take care of the message I sent     
+        //  First  Need to  take care of the message I sent
         let conversation = {
             who: 'user',
             content: {
@@ -30,7 +30,7 @@ function Chatbot() {
         dispatch(saveMessage(conversation))
         // console.log('text I sent', conversation)
 
-        // We need to take care of the message Chatbot sent 
+        // We need to take care of the message Chatbot sent
         const textQueryVariables = {
             text
         }
@@ -52,20 +52,20 @@ function Chatbot() {
             }else{
                 console.log("token")
                 console.log(userDetails);
-            const response = await Axios.post('http://localhost:8080/api/dialogflow/textQuery', textQueryVariables,
-                {
-                    headers: { Authorization: `Bearer ${userDetails.token}` }
-                })
+                const response = await Axios.post('http://localhost:8080/api/dialogflow/textQuery', textQueryVariables,
+                    {
+                        headers: { Authorization: `Bearer ${userDetails.token}` }
+                    })
 
-            for (let content of response.data.fulfillmentMessages) {
+                for (let content of response.data.fulfillmentMessages) {
 
-                conversation = {
-                    who: 'bot',
-                    content: content
-                }
+                    conversation = {
+                        who: 'bot',
+                        content: content
+                    }
 
-                dispatch(saveMessage(conversation))
-            }}
+                    dispatch(saveMessage(conversation))
+                }}
 
 
         } catch (error) {
@@ -88,12 +88,12 @@ function Chatbot() {
 
     const eventQuery = async (event) => {
 
-        // We need to take care of the message Chatbot sent 
+        // We need to take care of the message Chatbot sent
         const eventQueryVariables = {
             event
         }
         try {
-            //I will send request to the textQuery ROUTE 
+            //I will send request to the textQuery ROUTE
             const response = await Axios.post('http://localhost:8080/api/dialogflow/eventQuery', eventQueryVariables,
                 {
                     headers: { Authorization: `Bearer ${userDetails.token}` }
@@ -131,7 +131,7 @@ function Chatbot() {
                 return alert('you need to type something first')
             }
 
-            //we will send request to text query route 
+            //we will send request to text query route
             textQuery(e.target.value)
 
 
@@ -147,7 +147,7 @@ function Chatbot() {
     const renderOneMessage = (message, i) => {
         // we need to give some condition here to separate message kinds
 
-        // template for normal text 
+        // template for normal text
         if (message.content && message.content.text && message.content.text.text) {
             return <Message key={i} who={message.who} text={message.content.text.text} />
         } else if (message.content && message.content.payload.fields.card) {
@@ -162,7 +162,7 @@ function Chatbot() {
 
 
 
-        // template for card message 
+        // template for card message
 
 
 
@@ -187,27 +187,27 @@ function Chatbot() {
 
 
             <div style={{
-            //height: 700, width: 700,
-            height: '100%', width: '100%',
+                //height: 700, width: 700,
+                height: '100%', width: '100%',
 
-        }}>
+            }}>
                 <div>
-            <div>
+                    <div>
 
-                {renderMessage(messagesFromRedux)}
+                        {renderMessage(messagesFromRedux)}
 
-            </div></div>
-            <input  type="text" className="form-control"
-                style={{
-                     width: '100%', height: 50,float:'bottom'
+                    </div></div>
+                <input  type="text" className="form-control"
+                        style={{
+                            width: '100%', height: 50,float:'bottom'
 
-                }}
-                placeholder="Write here ..."
-                onKeyPress={keyPressHanlder}
-                type="text"
-            />
+                        }}
+                        placeholder="Write here ..."
+                        onKeyPress={keyPressHanlder}
+                        type="text"
+                />
 
-        </div>
+            </div>
 
         </div>
     )

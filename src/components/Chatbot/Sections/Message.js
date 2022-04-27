@@ -8,13 +8,13 @@ function Message(props) {
     const  description = props.description
     return (
         <List.Item style={{ padding: '1rem' }}>
-<div><center>
-            <List.Item.Meta
-                title={props.who}
-                description={props.text}
-                style={{background: '#8997ee'}}
-            /></center>
-</div>
+            <div><center>
+                <List.Item.Meta
+                    title={props.who}
+                    description={props.text}
+                    style={{background: '#8997ee'}}
+                /></center>
+            </div>
         </List.Item>
 
     )
