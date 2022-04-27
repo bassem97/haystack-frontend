@@ -13,6 +13,7 @@ const AddProduct = () => {
     // const user = (localStorage.getItem('currentUser') && JSON.parse(localStorage.getItem('currentUser')).user);
     const userDetails = useAuthState();
     const user = userDetails.user;
+    console.log(userDetails)
 
     const navigate = useNavigate();
     const [categoriesList, setCategoriesList] = useState([]);

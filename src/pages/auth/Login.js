@@ -34,7 +34,10 @@ export default function Login(props) {
       if (!response.user)
         setMsg(response)
       else
-        navigate("/");
+        if (response.role == "SuperAdmin")
+          navigate("/admin")
+        else
+          navigate("/")
     } catch (error) {
       console.log(error)
     }
@@ -58,7 +61,11 @@ export default function Login(props) {
     try {
       let response = await loginUser(dispatch, payload,path )//loginUser action makes the request and handles all the neccessary state changes
       if (!response.user) setMsg(response)
-      navigate("/");
+      else
+      if (response.role == "SuperAdmin")
+        navigate("/admin")
+      else
+        navigate("/")
     } catch (error) {
       console.log(error)
       setMsg(error)
@@ -82,7 +89,11 @@ export default function Login(props) {
     try {
       let response = await loginUser(dispatch, payload,path )//loginUser action makes the request and handles all the neccessary state changes
       if (!response.user) setMsg(response)
-      navigate("/");
+      else
+      if (response.role == "SuperAdmin")
+        navigate("/admin")
+      else
+        navigate("/")
     } catch (error) {
       console.log(error)
       setMsg(error)
