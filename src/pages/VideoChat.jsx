@@ -9,7 +9,8 @@ import Peer from "simple-peer"
 import io from "socket.io-client"
 import "./VideoChat.css"
 
-const socket = io.connect('http://localhost:8080')
+//const socket = io.connect('http://localhost:8080')
+const socket = io.connect('http://192.168.18.1:8080')
 const VideoChat = () => {
     const [ me, setMe ] = useState("")
     const [ stream, setStream ] = useState()
