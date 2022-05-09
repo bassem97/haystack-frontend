@@ -31,7 +31,7 @@ export default function Profile() {
 
     const handleFollow = () => {
         axios.post(`${process.env.REACT_APP_API_URL}/user/${prompt}`, {
-            id: connectedUser,
+            id: connectedUser._id,
             followerId: params.userId
         })
 
@@ -52,14 +52,13 @@ export default function Profile() {
 
         (async () => {
             const newUser = await axios.get(`${process.env.REACT_APP_API_URL}/user/${user._id}`)
-            console.log(newUser)
             setUser(newUser.data.user)
         })()
 
         //prompt set up
         if(params.userId)
             axios
-                .get(`${process.env.REACT_APP_API_URL}/user/${connectedUser}/following/${params.userId}`)
+                .get(`${process.env.REACT_APP_API_URL}/user/${connectedUser._id}/following/${params.userId}`)
                 .then(res => {
                     setPrompt(res.data.following ? 'unfollow' : 'follow')
                 })
