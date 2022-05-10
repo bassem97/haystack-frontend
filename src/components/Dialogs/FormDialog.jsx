@@ -14,20 +14,18 @@ import axios from "axios";
 
 export default function FormDialog({isOpen,user,index}) {
     const [open, setOpen] = React.useState(isOpen);
-    const [snackOpen, setSnackOpen] = React.useState(false);
 
-    const role =()=> {
+     const role =()=> {
          if (index === 1)
              if(user.role === "User" || user.role === "Admin")
-                 return "super admin"
-             else return "admin"
+                 return "SuperAdmin"
+             else return "Admin"
          else
              if(user.role === "SuperAdmin" || user.role === "Admin")
-                 return "user"
-             else return "admin"
+                 return "User"
+             else return "Admin"
     }
 
-    // const role = "asba"
 
     const handleClickOpen = () => {
         setOpen(true);

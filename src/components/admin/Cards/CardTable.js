@@ -156,7 +156,7 @@ export default function CardTable({ color }) {
                             <div className="flex">
                               {user.followers.slice(0,5).map( u =>
                                   (<img
-                                      src={users.find(usr => usr._id == u).image ? users.find(usr => usr._id == u).image.includes("http") ? users.find(usr => usr._id == u).image : 'http://localhost:8080/files/' + users.find(usr => usr._id == u).image : 'http://localhost:8080/files/avatar.jpg'}
+                                      src={users.find(usr => usr._id == u).image ? users.find(usr => usr._id == u).image.includes("https") ? users.find(usr => usr._id == u).image : 'http://localhost:8080/files/' + users.find(usr => usr._id == u).image : 'http://localhost:8080/files/avatar.jpg'}
                                       title={users.find(usr => usr._id == u).email}
                                       className="w-10 h-10 rounded-full border-2 border-blueGray-50 shadow -ml-4"
                                       alt={users.find(usr => usr._id == u).email}/>)
