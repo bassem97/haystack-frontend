@@ -184,11 +184,11 @@ function Chatbot() {
     return (
         <div
             style={{
-                height: '100%', width: '100%'
+                height: '100%', width: '100%', scrollbarWidth: 'none'
             }}
         >
             <div
-                style={{height: '90%', overflow: 'scroll'}}
+                style={{height: '90%', overflow: 'scroll', scrollbarWidth: 'none'}}
             >
                 <div>
                     {renderMessage(messagesFromRedux)}
