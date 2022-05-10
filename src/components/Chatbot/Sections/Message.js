@@ -13,6 +13,7 @@ function Message(props) {
                 style={{
                     display: 'flex',
                     flexDirection: 'column',
+                    width: '100%',
                     alignItems: props.who === 'bot' ? 'flex-start' : 'flex-end'
                 }}
             >
