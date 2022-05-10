@@ -6,7 +6,7 @@ import CardComplaint from "../../components/admin/Cards/CardComplaint.js";
 import Sidebar from "../../components/admin/Sidebar/Sidebar";
 import HeaderStats from "../../components/admin/Headers/HeaderStats";
 
-export default function Orders() {
+export default function Complaints() {
     return (
         <>
             <Sidebar />

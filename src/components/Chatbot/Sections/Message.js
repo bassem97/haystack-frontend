@@ -7,7 +7,8 @@ function Message(props) {
     const title = props.title
     const  description = props.description
     return (
-        <List.Item style={{ padding: '1rem' }}>
+        <List.Item style={{ padding: '1rem',display: 'flex',
+            justifycontent:'end' }}>
             <div
                 style={{
                     display: 'flex',
