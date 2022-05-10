@@ -5,7 +5,7 @@ import Chatbot from "../../Chatbot/Chatbot";
 const SupportWindow = props =>{
     return (
         <div
-            className="transition-5"
+            className="transition-5 chatbot"
             style={{
                 ...styles.supportWindow,
                 ...{opacity: props.visible ? '1' : '0'},

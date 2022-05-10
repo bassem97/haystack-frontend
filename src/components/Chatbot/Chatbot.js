@@ -183,11 +183,13 @@ function Chatbot() {
 
     return (
         <div
+            className={'chatbot'}
             style={{
                 height: '100%', width: '100%', scrollbarWidth: 'none'
             }}
         >
             <div
+                className='chatbot'
                 style={{height: '90%', overflow: 'scroll', scrollbarWidth: 'none'}}
             >
                 <div>

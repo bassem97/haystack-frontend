@@ -143,7 +143,7 @@ export default function CardComplaint({ color }) {
                                 </td>
                                 <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                                     <div className="flex items-center">
-                                        <button  onClick={ sendMail(complaint)}>ab3ath ya walid</button>
+                                        <button  onClick={ sendMail(complaint)}>ab3ath</button>
                                     </div>
                                 </td>
 
