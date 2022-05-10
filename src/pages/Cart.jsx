@@ -10,6 +10,8 @@ import { useNavigate } from "react-router-dom";
 import {Size} from "@material-ui/core";
 import { removeProduct} from "../redux/carttRedux";
 
+import {useAuthState} from "../Context";
+
 const KEY = "pk_test_51KdlDGLEkrbTJcCqkL6LpNLGfpWaJdcyAq84KLY8YUokfRRQEq2jKGgpfvQw7Bd5t7cnasr6mEIol1emsrmauMox00ybSS6XOH";
 
 const Container = styled.div``;
@@ -132,6 +134,7 @@ const Summary = styled.div`
   border: 0.5px solid lightgray;
   border-radius: 10px;
   padding: 20px;
+  margin-right: 70px;
   height: 50vh;
 `;
 
@@ -169,6 +172,8 @@ const Cart = () => {
         setStripeToken(token);
     };
 
+    const userDetails = useAuthState();
+    const connectedUser = userDetails.user;
 
     useEffect(() => {
         const makeRequest = async () => {
@@ -176,13 +181,14 @@ const Cart = () => {
                 const res = await userRequest.post("/checkout/payment", {
                     tokenId: stripeToken.id,
                     amount: cart.total * 100,
+                    userId: connectedUser._id
                 });
                 navigate ("/success", {
                     state : {
                         stripeData: res.data,
                         cart : cart
                     } });
-                    // products: cart });
+                // products: cart });
 
             } catch {}
         };
@@ -194,7 +200,7 @@ const Cart = () => {
                 <Title>YOUR BAG</Title>
                 <Top>
                     <TopButton  onClick={()=> {
-                       localStorage.removeItem("persist:root");
+                        localStorage.removeItem("persist:root");
                         window.location.reload(true);
 
 
@@ -250,12 +256,14 @@ const Cart = () => {
                         <StripeCheckout
                             name="Hay Stack"
                             //image="https://avatars.githubusercontent.com/u/1486366?v=4"
+                            locale="en"
                             billingAddress
-                            shippingAddress
+                            email="haystack.placeholder@gmail.com"
                             description={`Your total is $${cart.total}`}
                             amount={cart.total * 100}
                             token={onToken}
                             stripeKey={KEY}
+
                         >
                             <Button>CHECKOUT NOW</Button>
                         </StripeCheckout>

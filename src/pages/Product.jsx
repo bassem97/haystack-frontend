@@ -137,7 +137,7 @@ const Product = () => {
                                     : <p>Out of Stock !</p>
                                 }
 
-                            {user != null && product.owner == user._id &&
+                            {user != null && product.owner == user._id && product.stock > 0 &&
                                 <div>
                                 <NavLink to={"/updateProduct/" + product._id}>
                                 <button
@@ -216,6 +216,14 @@ const Product = () => {
                                 </div>
                             }
                         </div>
+
+                        {user._id !== product.owner && <NavLink to={"/profile/" + product.owner}>
+                                <button
+                                        className="mt-10 w-full bg-indigo-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                                >
+                                    Owner Profile
+                                </button>
+                        </NavLink>}
 
                         <div className="py-10 lg:pt-6 lg:pb-16 lg:col-start-1 lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
                             {/* Description and details */}

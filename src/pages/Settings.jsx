@@ -2,13 +2,16 @@ import React, { useState } from "react"
 import { publicRequest } from "../requestMethods";
 
 import axios from "axios";
+import {useAuthState} from "../Context";
 
 const Settings = () => {
+    const userDetails = useAuthState();
+    const localUser = userDetails.user;
     let [user, setUser] = useState({
-        _id: localStorage.getItem('data') && JSON.parse(localStorage.getItem('data')).user._id,
-        bio: "", 
-        email: "", 
-        firstName: "", 
+        _id: localUser._id,
+        bio: "",
+        email: "",
+        firstName: "",
         lastName: "",
         password: "",
         newPassword: ""
@@ -31,11 +34,13 @@ const Settings = () => {
         })
         setColor('lightBlue')
         setPrompt('update profile')
+
+        console.log(user)
     }
 
     const submitHandler = async e => {
         e.preventDefault();
-        
+
         publicRequest.put(`/user/${user._id}`, user)
         .then(response => {
             if(response.status === 200){
@@ -44,13 +49,13 @@ const Settings = () => {
             }
             else{
                 setColor('red')
-                setPrompt('❌')    
+                setPrompt('❌')
             }
         })
         .catch(error => {
             console.log(error)
             setColor('red')
-            setPrompt('❌')    
+            setPrompt('❌')
         })
     }
 
@@ -134,7 +139,7 @@ const Settings = () => {
                                         value={user.newPassword || ''}
                                         onChange={changeHandler}
                                     />
-                                </div>    
+                                </div>
                             </div>
                         </div>
                         <hr className="mt-6 border-b-1 border-blueGray-300" />

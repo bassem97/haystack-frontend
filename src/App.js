@@ -18,10 +18,13 @@ import Maps from "./pages/admin/Maps";
 import Settings from "./pages/admin/Settings";
 import Tables from "./pages/admin/Tables";
 import Orders from "./pages/admin/Orders";
+import Complaint from "./pages/admin/Complaint";
 import ProfileSettings from './pages/Settings'
 import VideoChat from "./pages/VideoChat";
 import UpdateProduct from "./pages/UpdateProduct";
+import SupportEngine from "./components/SupportEngine";
 //import SupportEngine from "./components/SupportEngine";
+import Spinner from './components/Spinner'
 
 const Home = React.lazy(() => import("./pages/Home"));
 const Login = React.lazy(() => import("./pages/auth/Login"));
@@ -50,7 +53,7 @@ const App = () => {
 
         <BrowserRouter basename="/">
           <Navbar/>
-          <Suspense fallback={<p>...Loading page please wait</p>}>
+          <Suspense fallback={<div className="w-full h-screen flex justify-center items-center"> <Spinner/> </div>}>
             <Routes>
               <Route path="/"  element={<Home/>}/>
               <Route path="/login"  element={<Login/>}/>
@@ -63,6 +66,7 @@ const App = () => {
               <Route path="/admin/settings"  element={<Settings/>} />
               <Route path="/admin/tables"  element={<Tables/>} />
               <Route path="/admin/orders"  element={<Orders/>} />
+              <Route path="/admin/complaints"  element={<Complaint/>} />
 
               <Route path="/shoppingCart"  element={<Cart/>}/>
               <Route path="/cart"  element={<Cart/>}/>
@@ -84,7 +88,7 @@ const App = () => {
               <Route path="/password-recovery/:id"  element={<NewPasswordRecovery/>}/>
             </Routes>
           </Suspense>
-          {/*<SupportEngine/>*/}
+          <SupportEngine/>
         </BrowserRouter>
       </>
   )

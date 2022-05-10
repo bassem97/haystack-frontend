@@ -5,38 +5,30 @@ import PropTypes from "prop-types";
 
 import axios from "axios";
 import TableDropdown from "../Dropdowns/TableDropdown";
-import {addProduct} from "../../../redux/carttRedux";
-import Axios from "axios";
-
-/*const update = async (order) => {
-    order.status = "Pending"
-    await axios.put("http://localhost:8080/orders/"+order.id,{order:order})
-
-}*/
 
 
 
 
 
-export default function CardOrder({ color }) {
-    const [orders, setorders] = useState([]);
-    const getOrders = async () => {
-        try {
-            const res = await axios.get("http://localhost:8080/orders",
-
-            );
-            setorders(res.data);
-        } catch (err) {}
-
-    };
+export default function CardComplaint({ color }) {
+    const [complaints, setcomplaints] = useState([]);
     useEffect(() => {
-        getOrders();
+        const getComplaints = async () => {
+            try {
+                const res = await axios.get("http://localhost:8080/complaint",
+
+                );
+                console.log(res)
+                setcomplaints(res.data);
+            } catch (err) {}
+        };
+        getComplaints();
     }, []);
 
-    async function sendMail(order) {
-        await axios.get("http://localhost:8080/OrderEmail/send/" + order._id);
-        getOrders()
+    async function sendMail(complaint) {
+        await axios.get("http://localhost:8080/ComplaintEmail/send/" + complaint._id);
     }
+
 
     return (
         <>
@@ -55,7 +47,7 @@ export default function CardOrder({ color }) {
                                     (color === "light" ? "text-blueGray-700" : "text-white")
                                 }
                             >
-                                Orders
+                                Complaints
                             </h3>
                         </div>
                     </div>
@@ -73,7 +65,7 @@ export default function CardOrder({ color }) {
                                         : "bg-lightBlue-800 text-lightBlue-300 border-lightBlue-700")
                                 }
                             >
-                                Email
+                                User
                             </th>
                             <th
                                 className={
@@ -83,17 +75,7 @@ export default function CardOrder({ color }) {
                                         : "bg-lightBlue-800 text-lightBlue-300 border-lightBlue-700")
                                 }
                             >
-                                Amount
-                            </th>
-                            <th
-                                className={
-                                    "px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left " +
-                                    (color === "light"
-                                        ? "bg-blueGray-50 text-blueGray-500 border-blueGray-100"
-                                        : "bg-lightBlue-800 text-lightBlue-300 border-lightBlue-700")
-                                }
-                            >
-                                Address
+                                Object
                             </th>
 
                             <th
@@ -104,9 +86,18 @@ export default function CardOrder({ color }) {
                                         : "bg-lightBlue-800 text-lightBlue-300 border-lightBlue-700")
                                 }
                             >
-                                status
+                                Description
                             </th>
-
+                            <th
+                                className={
+                                    "px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left " +
+                                    (color === "light"
+                                        ? "bg-blueGray-50 text-blueGray-500 border-blueGray-100"
+                                        : "bg-lightBlue-800 text-lightBlue-300 border-lightBlue-700")
+                                }
+                            >
+                                Status
+                            </th>
 
                             <th
                                 className={
@@ -115,17 +106,15 @@ export default function CardOrder({ color }) {
                                         ? "bg-blueGray-50 text-blueGray-500 border-blueGray-100"
                                         : "bg-lightBlue-800 text-lightBlue-300 border-lightBlue-700")
                                 }
-                            ></th>
+                            >
+                                Treat
+                            </th>
+
                         </tr>
                         </thead>
                         <tbody>
-                        {orders.map((order)=>(
+                        {complaints.map((complaint)=>(
                             <tr>
-                                <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                    <div className="flex items-center">
-                                        {order.email}
-                                    </div>
-                                </td>
                                 <th className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left flex items-center">
 
                                     <span
@@ -134,32 +123,32 @@ export default function CardOrder({ color }) {
                                             +(color === "light" ? "text-blueGray-600" : "text-white")
                                         }
                                     >
-                    {order.amount} $
+                    {complaint.user}
                   </span>
                                 </th>
                                 <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                    {order.address.city} , {order.address.country}
+                                    {complaint.ComplaintObject}
                                 </td>
 
 
                                 <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                                     <div className="flex items-center">
-                                        {order.status ? <>  <i className="fas fa-circle text-emerald-500 mr-2"></i>{" "}Verified</> : <><i className="fas fa-circle text-red-500 mr-2"></i> Pending</>}
-
+                                        {complaint.Description}
+                                    </div>
+                                </td>
+                                <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                                    <div className="flex items-center">
+                                        {complaint.status}
+                                    </div>
+                                </td>
+                                <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                                    <div className="flex items-center">
+                                        <button  onClick={ sendMail(complaint)}>ab3ath ya walid</button>
                                     </div>
                                 </td>
 
                                 <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                                     <div className="flex items-center">
-                                        <button onClick={()=> sendMail(order)}>ab3ath</button>
-                                    </div>
-                                </td>
-
-
-
-                                <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                    <div className="flex items-center">
-
                                     </div>
                                 </td>
 
@@ -178,10 +167,10 @@ export default function CardOrder({ color }) {
     );
 }
 
-CardOrder.defaultProps = {
+CardComplaint.defaultProps = {
     color: "light",
 };
 
-CardOrder.propTypes = {
+CardComplaint.propTypes = {
     color: PropTypes.oneOf(["light", "dark"]),
 };

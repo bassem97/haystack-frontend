@@ -6,6 +6,7 @@ import {mobile} from "../responsive";
 import {useLocation} from "react-router";
 import {useState} from "react";
 import {useAuthState} from "../Context";
+import { RadioGroup } from '@headlessui/react'
 
 const Container = styled.div``;
 
@@ -42,7 +43,17 @@ const ProductList = () => {
     const cat = location.pathname.split("/")[2];
     const [filters, setFilters] = useState({});
     const [sort, setSort] = useState("newest");
+    const  colors =  [
+        { name: 'White', class: 'bg-white', selectedClass: 'ring-gray-400' },
+        { name: 'Gray', class: 'bg-gray-200', selectedClass: 'ring-gray-400' },
+        { name: 'Black', class: 'bg-gray-900', selectedClass: 'ring-gray-900' },
+    ];
+    function classNames(...classes) {
+        return classes.filter(Boolean).join(' ')
+    }
+
     const [search, setSearch] = useState("");
+    const [color, setColor] = useState("");
     const userDetails = useAuthState();
     const user = userDetails.user;
     console.log(user);
@@ -53,32 +64,34 @@ const ProductList = () => {
             ...filters,
             [e.target.name]: value,
         });
+        console.log(e.target.value)
     };
 
     return (
         <Container>
             <Title>{cat}</Title>
             <FilterContainer>
-                {/* <Filter>
+                 <Filter>
                     <FilterText>Filter Products:</FilterText>
-                    <Select name="color" onChange={handleFilters}>
-                        <Option disabled>Color</Option>
-                        <Option>white</Option>
-                        <Option>black</Option>
-                        <Option>red</Option>
-                        <Option>blue</Option>
-                        <Option>yellow</Option>
-                        <Option>green</Option>
+                    <Select  onChange={(e) => setColor(e.target.value)}>
+                        <Option selected value="">All</Option>
+                        <Option value="red">Red</Option>
+                        <Option value="yellow">Yellow</Option>
+                        <Option value="blue">Blue</Option>
+                        <Option value="white">White</Option>
+                        <Option value="black">Black</Option>
+                        <Option value="purple">Purple</Option>
+                        <Option value="green">Green</Option>
                     </Select>
-                    <Select name="size" onChange={handleFilters}>
+                    {/*<Select name="size" onChange={handleFilters}>
                         <Option disabled>Size</Option>
                         <Option>XS</Option>
                         <Option>S</Option>
                         <Option>M</Option>
                         <Option>L</Option>
                         <Option>XL</Option>
-                    </Select>
-                </Filter>*/}
+                    </Select>*/}
+                </Filter>
                 <Filter>
                     <input
                         type="search"
@@ -113,7 +126,7 @@ const ProductList = () => {
                     </Select>
                 </Filter>
             </FilterContainer>
-            <Products cat={cat} filters={filters} sort={sort} search={search}/>
+            <Products cat={cat} color={color} sort={sort} search={search}/>
             <Newsletter/>
             <Footer/>
         </Container>
