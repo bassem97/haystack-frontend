@@ -71,10 +71,10 @@ export default function Profile() {
         <>
             <Banner
                 style={{
-                    background: `url('${user.cover ? `http://localhost:8080/files/${user.cover}` : 'http://localhost:8080/files/cover.jpg'}') rgba(31, 41, 55, 0.6)`,
-                    backgroundSize: 'cover',
+                    background: `url('${user.cover ? `http://localhost:8080/files/${user.cover}` : 'http://localhost:8080/files/cover.jpg'}') rgba(31, 41, 55, 0.6) center center / cover no-repeat fixed`,
                     backgroundPosition: 'center center',
-                    backgroundBlendMode: 'multiply'
+                    backgroundBlendMode: 'multiply',
+                    backgroundSize: 'cover',
                 }}
             >
 
@@ -158,7 +158,8 @@ const Banner = styled.div`
 const Avatar = styled.img`
   border-radius: 50%;
   border: 7px solid white;
-  width: 250px
+  width: 250px;
+  height: 250px;
 `
 
 const Title = styled.h1`
