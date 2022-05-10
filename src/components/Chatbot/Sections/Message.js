@@ -8,12 +8,24 @@ function Message(props) {
     const  description = props.description
     return (
         <List.Item style={{ padding: '1rem' }}>
-            <div><center>
+            <div
+                style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: props.who === 'bot' ? 'flex-start' : 'flex-end'
+                }}
+            >
+                <p className="text-sm" style={{width: '44%'}}>{props.who}</p>
                 <List.Item.Meta
-                    title={props.who}
+                    // title={props.who}
                     description={props.text}
-                    style={{background: '#8997ee'}}
-                /></center>
+                    style={{
+                        background: props.who === 'bot' ? '#f5f5f5' : '#8997ee',
+                        borderRadius: '7px', 
+                        padding: '0.5rem',
+                        width: '44%'
+                    }}
+                />
             </div>
         </List.Item>
 
