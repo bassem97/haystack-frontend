@@ -145,6 +145,9 @@ const Products = ({ cat, color, sort, search }) => {
                                         </a>
                                     </h3>
                                     <p className="mt-1 text-sm text-gray-900">{product.description}</p>
+                                    {product.stock == 0 &&
+                                    <span>Out Of Stock !</span>
+                                    }
                                 </div>
                                 <p className="text-sm font-medium text-gray-900">{product.price} DT</p>
                             </div>

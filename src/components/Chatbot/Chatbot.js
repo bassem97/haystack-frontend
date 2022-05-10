@@ -182,33 +182,29 @@ function Chatbot() {
 
 
     return (
-        <div>
-
-
-
-            <div style={{
-                //height: 700, width: 700,
+        <div
+            style={{
                 height: '100%', width: '100%',
-
-            }}>
+            }}
+        >
+            <div
+                style={{height: '90%', overflow: 'scroll'}}
+            >
                 <div>
-                    <div>
-
-                        {renderMessage(messagesFromRedux)}
-
-                    </div></div>
-                <input  type="text" className="form-control"
-                        style={{
-                            width: '100%', height: 50,float:'bottom'
-
-                        }}
-                        placeholder="Write here ..."
-                        onKeyPress={keyPressHanlder}
-                        type="text"
-                />
-
+                    {renderMessage(messagesFromRedux)}
+                </div>
             </div>
-
+            <input  type="text" className="form-control"
+                style={{
+                    width: '100%',
+                    height: '10%',
+                    position: 'relative',
+                    bottom: 0
+                }}
+                placeholder="Write here ..."
+                onKeyPress={keyPressHanlder}
+                type="text"
+            />
         </div>
     )
 }

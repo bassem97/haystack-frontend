@@ -31,6 +31,7 @@ const Success = () => {
 
                 });
                 setOrderId(res.data._id);
+                localStorage.removeItem("persist:root");
 
             } catch {}
         };

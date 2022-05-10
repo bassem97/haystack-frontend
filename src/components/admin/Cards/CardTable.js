@@ -6,6 +6,7 @@ import PropTypes from "prop-types";
 import TableDropdown from "../Dropdowns/TableDropdown.js";
 import axios from "axios";
 import {useAuthState} from "../../../Context";
+import UserMoreMenu from "../../UserMoreMenu";
 
 export default function CardTable({ color }) {
   const userDetails = useAuthState();
@@ -110,7 +111,7 @@ export default function CardTable({ color }) {
                       : "bg-lightBlue-800 text-lightBlue-300 border-lightBlue-700")
                   }
                 >
-                  Level
+                  Role
                 </th>
                 <th
                   className={
@@ -194,19 +195,12 @@ export default function CardTable({ color }) {
                     </td>
                     <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                       <div className="flex items-center">
-                        <span className="mr-2">100%</span>
-                        <div className="relative w-full">
-                          <div className="overflow-hidden h-2 text-xs flex rounded bg-emerald-200">
-                            <div
-                                style={{ width: "100%" }}
-                                className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-emerald-500"
-                            ></div>
-                          </div>
-                        </div>
+                        {user.role}
                       </div>
                     </td>
                     <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-right">
-                      <TableDropdown />
+                      {/*<TableDropdown />*/}
+                      <UserMoreMenu user={user} />
                     </td>
                   </tr>
               ))}

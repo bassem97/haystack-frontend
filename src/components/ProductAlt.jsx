@@ -1,5 +1,10 @@
+import { Link } from 'react-router-dom'
+
 const product = ({product}) => (
     <div className="w-75 max-w-m my-3 mx-4 rounded-md shadow-md overflow-hidden">
+        <Link
+            to={`/product/${product._id}`}
+        >
         <div className="flex items-end justify-end h-56 w-full bg-cover bg-center bg-top" style={{backgroundImage: `url('http://localhost:8080/files/${product.image}')`}}>
             <button className={`p-4 rounded-full text-white mx-5 -mb-4 focus:outline-none`}
             style={{backgroundColor: product.color}}
@@ -7,10 +12,10 @@ const product = ({product}) => (
             </button>
         </div>
         <div className="px-5 py-3">
-            <h3 className="text-gray-700 uppercase">{product.label}</h3>
-            <p className="text-gray-700">{product.description}</p>
+                <h3 className="text-gray-700 capitalize font-bold">{product.name}</h3>
             <span className="text-gray-500 mt-2">{product.price}TND</span>
         </div>
+        </Link>
     </div>
 )
 

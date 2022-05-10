@@ -10,6 +10,8 @@ import { useNavigate } from "react-router-dom";
 import {Size} from "@material-ui/core";
 import { removeProduct} from "../redux/carttRedux";
 
+import {useAuthState} from "../Context";
+
 const KEY = "pk_test_51KdlDGLEkrbTJcCqkL6LpNLGfpWaJdcyAq84KLY8YUokfRRQEq2jKGgpfvQw7Bd5t7cnasr6mEIol1emsrmauMox00ybSS6XOH";
 
 const Container = styled.div``;
@@ -132,6 +134,7 @@ const Summary = styled.div`
   border: 0.5px solid lightgray;
   border-radius: 10px;
   padding: 20px;
+  margin-right: 70px;
   height: 50vh;
 `;
 
@@ -169,6 +172,8 @@ const Cart = () => {
         setStripeToken(token);
     };
 
+    const userDetails = useAuthState();
+    const connectedUser = userDetails.user;
 
     useEffect(() => {
         const makeRequest = async () => {
@@ -176,6 +181,7 @@ const Cart = () => {
                 const res = await userRequest.post("/checkout/payment", {
                     tokenId: stripeToken.id,
                     amount: cart.total * 100,
+                    userId: connectedUser._id
                 });
                 navigate ("/success", {
                     state : {
